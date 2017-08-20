@@ -1,17 +1,39 @@
 package com.example.abhishek.knocksense.components;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Abhishek on 15-08-2017.
  */
 
 public class Article {
-    private String id, date, author, title, content, featuredImage, articleImages[], imageAltText[];
+
+    // TODO: 20-08-2017 There is a certain flow to display text and image. How is that handled????
+    private String id, date, author;
+
+    @SerializedName("title.rendered")
+    private String title;
+
+    @SerializedName("content.rendered")
+    private String content;
+
+    @SerializedName("better_featured_image.source_url")
+    private String featuredImage;
+    private String link;
 
     //TODO id, date, articleImages data types; imageAltText maybe [][] to hold image id and alt text
     public Article() {
     }
 
-    public Article(String id, String date, String author, String title, String content, String featuredImage, String[] articleImages, String imageAltText[]) {
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public Article(String id, String date, String author, String title, String content, String featuredImage, String[] articleImages, String link) {
 
         this.id = id;
         this.date = date;
@@ -19,8 +41,8 @@ public class Article {
         this.title = title;
         this.content = content;
         this.featuredImage = featuredImage;
-        this.articleImages = articleImages;
-        this.imageAltText = imageAltText;
+        this.link = link;
+
     }
 
     public String getId() {
@@ -71,19 +93,5 @@ public class Article {
         this.featuredImage = featuredImage;
     }
 
-    public String[] getArticleImages() {
-        return articleImages;
-    }
 
-    public void setArticleImages(String[] articleImages) {
-        this.articleImages = articleImages;
-    }
-
-    public String[] getImageAltText() {
-        return imageAltText;
-    }
-
-    public void setImageAltText(String imageAltText[]) {
-        this.imageAltText = imageAltText;
-    }
 }

@@ -21,6 +21,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public ArticleListAdapter.ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //// TODO: 20-08-2017 make this to be of dynamic layout
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.article_list_view_item_row, parent, false);
 
@@ -30,9 +31,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     @Override
     public void onBindViewHolder(ArticleListAdapter.ArticleViewHolder holder, int position) {
         Article article = articleList.get(position);
-        //---not sure about format yet
-        holder.articleImage.setImageURI(article.getFeaturedImage());
-        //---
+
+        //todo:---not sure about format yet
+      // holder.articleImage.setImageURI(article.getFeaturedImage());
+
         holder.articleTitle.setText(article.getTitle());
         holder.articleAuthor.setText(article.getAuthor());
         holder.articlePublishedDate.setText(article.getDate());

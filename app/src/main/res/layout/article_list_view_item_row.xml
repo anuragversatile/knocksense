@@ -6,7 +6,8 @@
     android:orientation="horizontal"
     android:paddingBottom="15dp"
     android:paddingLeft="10dp"
-    android:paddingTop="15dp">
+    android:paddingTop="15dp"
+    android:weightSum="1">
     <!--TODO imageview and contentview must be separately tap able -->
     <ImageView
         android:id="@+id/list_view_item_row_image"
@@ -16,8 +17,9 @@
         android:src="@mipmap/knocksense" />
 
     <LinearLayout
-        android:layout_width="220dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingRight="7.45dp">
 
