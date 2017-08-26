@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class Article {
 
     // TODO: 20-08-2017 There is a certain flow to display text and image. How is that handled????
-    private String id, date, author;
+    private String id, date, author, name, count;
 
     @SerializedName("title.rendered")
     private String title;
@@ -22,7 +22,19 @@ public class Article {
     private String link;
 
     //TODO id, date, articleImages data types; imageAltText maybe [][] to hold image id and alt text
-    public Article() {
+
+    public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] articleImages, String link) {
+
+        this.id = id;
+        this.name = name;
+        this.count = count;
+        this.date = date;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+        this.featuredImage = featuredImage;
+        this.link = link;
+
     }
 
     public String getLink() {
@@ -33,16 +45,20 @@ public class Article {
         this.link = link;
     }
 
-    public Article(String id, String date, String author, String title, String content, String featuredImage, String[] articleImages, String link) {
+    public String getName() {
+        return name;
+    }
 
-        this.id = id;
-        this.date = date;
-        this.author = author;
-        this.title = title;
-        this.content = content;
-        this.featuredImage = featuredImage;
-        this.link = link;
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public String getId() {

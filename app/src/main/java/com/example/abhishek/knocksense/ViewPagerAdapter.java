@@ -18,7 +18,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         if (position == 0)
         {
-            fragment = HomeFragment.newInstance("param1","param2");
+            fragment = HomeFragment.newInstance(1);
         }
         else if (position == 1)
         {
