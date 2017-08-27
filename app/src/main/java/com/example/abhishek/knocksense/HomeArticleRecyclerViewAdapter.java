@@ -1,14 +1,25 @@
 package com.example.abhishek.knocksense;
 
+import android.view.View;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -31,6 +42,8 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<HomeArt
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.article_item_row, parent, false);
+
+
         return new ViewHolder(view);
     }
 
@@ -41,6 +54,29 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<HomeArt
         holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
 
+ //     holder.featuredImage.setImageUrl(mValues.get(position).getFeaturedImage(), imageLoader);
+        final ViewHolder finalHolder = holder;
+        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                //finalHolder.progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+              //  finalHolder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +106,8 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<HomeArt
         public final TextView author;
         public final TextView date;
 
+    public final ImageView featuredImage;
+
         public Article mItem;
 
         public ViewHolder(View view) {
@@ -78,6 +116,8 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<HomeArt
             title = (TextView) view.findViewById(R.id.article_item_row_title);
             author = (TextView) view.findViewById(R.id.article_item_row_author);
             date = (TextView) view.findViewById(R.id.article_item_row_date);
+
+      featuredImage = (ImageView)view.findViewById(R.id.featuredImage);
 
         }
 

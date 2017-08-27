@@ -111,6 +111,7 @@ public class GlobalLists extends Application {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
 
                                 articleList.add(articleModel);
+                                Log.d(articleModel.getFeaturedImage(),"Count");
                                 if (articleList.size() == ParentArray.length()) {
                                     GlobalLists.setHomeDataLoaded(true);
                                 }

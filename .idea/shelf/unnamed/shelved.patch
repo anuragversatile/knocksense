@@ -1,0 +1,133 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(date 1503757225000)
++++ .idea/modules.xml	(revision )
+@@ -2,8 +2,8 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/Knocksense.iml" filepath="$PROJECT_DIR$/Knocksense.iml" />
+       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
++      <module fileurl="file://$PROJECT_DIR$/knocksense.iml" filepath="$PROJECT_DIR$/knocksense.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/res/layout/article_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_item_row.xml	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ app/src/main/res/layout/article_item_row.xml	(revision )
+@@ -4,11 +4,10 @@
+     android:layout_height="wrap_content"
+     android:orientation="horizontal">
+ 
+-    <com.android.volley.toolbox.NetworkImageView
+-        android:id="@+id/featured_image"
++    <ImageView
+         android:layout_width="95dp"
+         android:layout_height="95dp"
+-        android:scaleType="centerCrop" />
++        android:id="@+id/featuredImage"/>
+ 
+     <LinearLayout
+         android:layout_width="match_parent"
+Index: app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java	(revision )
+@@ -1,13 +1,19 @@
+ package com.example.abhishek.knocksense;
+ 
++import android.graphics.Bitmap;
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.ImageView;
+ import android.widget.TextView;
+ 
++import com.android.volley.Response;
++import com.android.volley.VolleyError;
++import com.android.volley.toolbox.ImageRequest;
+ import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++import com.example.abhishek.knocksense.components.VolleySingleton;
+ 
+ import java.util.List;
+ 
+@@ -21,6 +27,7 @@
+     private final List<Article> mValues;
+     private final OnListFragmentInteractionListener mListener;
+ 
++Article article=new Article();
+     public ArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
+         mValues = items;
+         mListener = listener;
+@@ -59,8 +66,23 @@
+                 //// TODO: 26-08-2017 save and share functionality
+             }
+         });
++        ImageRequest imageRequest=new ImageRequest(article.getFeaturedImage(),
++                new Response.Listener<Bitmap>() {
++                    @Override
++                    public void onResponse(Bitmap response) {
++                     article.getFeaturedImage().setImageBitmap(response);
+-    }
++                    }
++                }, 95, 95, ImageView.ScaleType.CENTER_CROP, null, new Response.ErrorListener() {
++            @Override
++            public void onErrorResponse(VolleyError error) {
++                error.printStackTrace();
++            }
++        }
+ 
++        );
++        VolleySingleton.getInstance(ArticleRecyclerViewAdapter.this).addToRequestQueue(imageRequest);
++    }
++
+     @Override
+     public int getItemCount() {
+         return mValues.size();
+@@ -71,6 +93,7 @@
+         public final TextView title;
+         public final TextView author;
+         public final TextView date;
++        public final ImageView featuredImage;
+ //        public final NetworkImageView featuredImage;
+ 
+         public Article mItem;
+@@ -81,6 +104,7 @@
+             title = (TextView) view.findViewById(R.id.article_item_row_title);
+             author = (TextView) view.findViewById(R.id.article_item_row_author);
+             date = (TextView) view.findViewById(R.id.article_item_row_date);
++            featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
+ //            featuredImage = (NetworkImageView)view.findViewById(R.id.featured_image);
+ 
+         }
+Index: app/src/main/java/com/example/abhishek/knocksense/components/Article.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/Article.java	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ app/src/main/java/com/example/abhishek/knocksense/components/Article.java	(revision )
+@@ -22,7 +22,8 @@
+     private String link;
+ 
+     //TODO id, date, articleImages data types; imageAltText maybe [][] to hold image id and alt text
+-
++public  Article()
++{}
+     public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] articleImages, String link) {
+ 
+         this.id = id;
+\ No newline at end of file
