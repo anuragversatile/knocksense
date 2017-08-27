@@ -1,12 +1,14 @@
 package com.example.abhishek.knocksense;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,10 +17,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
 
 public class MainActivityScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener {
 
+    SwipeRefreshLayout swipeRefreshLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private TabLayout tabLayout;
@@ -44,6 +48,24 @@ public class MainActivityScreen extends AppCompatActivity
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                        }, 5000);
+                        GlobalLists.fetchHomeData(getApplicationContext(), null, null);
+//                        GlobalLists.fetchCityData(getApplicationContext(),null);
+                        Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+        );
     }
 
     @Override
@@ -103,14 +125,14 @@ public class MainActivityScreen extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     @Override
     public void onListFragmentInteraction(Article item) {
         Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-
+        Intent intent = new Intent(this, WebViewScreen.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("uri", item.getLink());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

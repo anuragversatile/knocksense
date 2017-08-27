@@ -1,5 +1,6 @@
 package com.example.abhishek.knocksense;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,12 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecyclerViewAdapter.ViewHolder> {
+public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<HomeArticleRecyclerViewAdapter.ViewHolder> {
 
     private final List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public ArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
+    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, RecyclerView recyclerView, final Context context) {
         mValues = items;
         mListener = listener;
     }
@@ -35,13 +36,10 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-//        ImageLoader.ImageCache imageCache = new BitmapLruCache();
-//        ImageLoader imageLoader = new ImageLoader(VolleySingleton.getInstance(GlobalLists.getContext()).getRequestQueue(), imageCache);
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
         holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
-//        holder.featuredImage.setImageUrl(mValues.get(position).getFeaturedImage(), imageLoader);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +69,6 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
         public final TextView title;
         public final TextView author;
         public final TextView date;
-//        public final NetworkImageView featuredImage;
 
         public Article mItem;
 
@@ -81,7 +78,6 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
             title = (TextView) view.findViewById(R.id.article_item_row_title);
             author = (TextView) view.findViewById(R.id.article_item_row_author);
             date = (TextView) view.findViewById(R.id.article_item_row_date);
-//            featuredImage = (NetworkImageView)view.findViewById(R.id.featured_image);
 
         }
 

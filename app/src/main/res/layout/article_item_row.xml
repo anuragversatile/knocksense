@@ -35,8 +35,7 @@
             android:id="@+id/article_item_row_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="12/06/17" />
+            android:maxLines="1" />
     </LinearLayout>
 
     <ImageView

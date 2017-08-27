@@ -22,7 +22,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         }
         else if (position == 1)
         {
-            fragment = CityFragment.newInstance("param1","param2");
+            fragment = CityFragment.newInstance(1);
         }
         return fragment;
     }

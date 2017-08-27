@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Article {
 
-    // TODO: 20-08-2017 There is a certain flow to display text and image. How is that handled????
     private String id, date, author, name, count;
 
     @SerializedName("title.rendered")
@@ -20,8 +19,6 @@ public class Article {
     @SerializedName("better_featured_image.source_url")
     private String featuredImage;
     private String link;
-
-    //TODO id, date, articleImages data types; imageAltText maybe [][] to hold image id and alt text
 
     public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] articleImages, String link) {
 

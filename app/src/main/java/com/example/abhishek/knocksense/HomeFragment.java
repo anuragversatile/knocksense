@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
@@ -57,7 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_article_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_article_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -69,9 +70,30 @@ public class HomeFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             if (GlobalLists.isHomeDataLoaded() == true) {
-                recyclerView.setAdapter(new ArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener));
+                recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener, recyclerView, getContext()));
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
+                        int totalItemCount = layoutManager.getItemCount();
+                        int lastVisible = layoutManager.findLastVisibleItemPosition();
+
+                        if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
+                            View view = layoutManager.findViewByPosition(lastVisible);
+                            if (view == null) {
+                                Toast.makeText(getContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //you have reached to the bottom of your recycler view
+                                TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
+                                String date = textView.getText().toString();
+                                GlobalLists.fetchHomeData(getContext(), date, recyclerView.getAdapter());
+                            }
+
+                        }
+                    }
+                });
             } else {
-                Toast.makeText(getActivity(), "Data not available!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Home Data not available!!!", Toast.LENGTH_SHORT).show();
             }
 
         }

@@ -31,7 +31,7 @@
         <activity android:name=".components.ArticleListView" />
         <activity android:name=".SelectCityScreen" />
         <activity android:name=".CategoryOrAuthorScreen" />
-        <activity android:name=".CategoryAndAuthorScreen"></activity>
+        <activity android:name=".WebViewScreen"></activity>
     </application>
 
 </manifest>
