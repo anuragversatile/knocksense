@@ -28,6 +28,7 @@ public class SplashScreen extends AppCompatActivity {
         GlobalLists.fetchCityData(getApplicationContext(), "630", null);
         GlobalLists.fetchHomeData(getApplicationContext(), null, null);
         GlobalLists.fetchCategoryData(getApplicationContext(), null);
+
         new Handler().postDelayed(new Runnable() {
 
             @Override

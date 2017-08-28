@@ -1,0 +1,461 @@
+Index: app/src/main/res/layout/article_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_item_row.xml	(date 1503834351000)
++++ app/src/main/res/layout/article_item_row.xml	(revision )
+@@ -44,5 +44,10 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/ic_more_vert_black_24dp" />
++    <TextView
++        android:layout_width="0dp"
++        android:layout_height="0dp"
++        android:id="@+id/view_type"
++        android:visibility="gone"/>
+ 
+ </LinearLayout>
+Index: app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(date 1503834351000)
++++ app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(revision )
+@@ -1,14 +1,19 @@
+ package com.example.abhishek.knocksense;
+ 
+ import android.content.Context;
++import android.graphics.Bitmap;
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.ImageView;
+ import android.widget.TextView;
+ 
+ import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++import com.nostra13.universalimageloader.core.ImageLoader;
++import com.nostra13.universalimageloader.core.assist.FailReason;
++import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+ 
+ import java.util.List;
+ 
+@@ -40,7 +45,29 @@
+         holder.title.setText(mValues.get(position).getTitle());
+         holder.author.setText(mValues.get(position).getAuthor());
+         holder.date.setText(mValues.get(position).getDate());
++        final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
++        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
++            @Override
++            public void onLoadingStarted(String s, View view) {
++                //finalHolder.progressBar.setVisibility(View.VISIBLE);
++            }
+ 
++            @Override
++            public void onLoadingFailed(String s, View view, FailReason failReason) {
++
++            }
++
++            @Override
++            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
++                //  finalHolder.progressBar.setVisibility(View.GONE);
++            }
++
++            @Override
++            public void onLoadingCancelled(String s, View view) {
++
++            }
++        });
++
+         holder.mView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+@@ -69,7 +96,7 @@
+         public final TextView title;
+         public final TextView author;
+         public final TextView date;
+-
++public  final ImageView featuredImage;
+         public Article mItem;
+ 
+         public ViewHolder(View view) {
+@@ -78,7 +105,7 @@
+             title = (TextView) view.findViewById(R.id.article_item_row_title);
+             author = (TextView) view.findViewById(R.id.article_item_row_author);
+             date = (TextView) view.findViewById(R.id.article_item_row_date);
+-
++featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
+         }
+ 
+         @Override
+Index: app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java	(date 1503834351000)
++++ app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java	(revision )
+@@ -28,6 +28,7 @@
+         GlobalLists.fetchCityData(getApplicationContext(), "630", null);
+         GlobalLists.fetchHomeData(getApplicationContext(), null, null);
+         GlobalLists.fetchCategoryData(getApplicationContext(), null);
++
+         new Handler().postDelayed(new Runnable() {
+ 
+             @Override
+Index: app/src/main/res/layout/article_big_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_big_item_row.xml	(revision )
++++ app/src/main/res/layout/article_big_item_row.xml	(revision )
+@@ -0,0 +1,45 @@
++<?xml version="1.0" encoding="utf-8"?>
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:id="@+id/article_big_item_row_relative_layout"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="200dp"
++>
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical"
++        android:paddingLeft="15dp"
++        android:paddingRight="15dp"
++        android:paddingBottom="15dp"
++        android:layout_alignParentBottom="true">
++        <TextView
++            android:id="@+id/big_item_row_content"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:paddingBottom="5dp"
++            android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
++            android:maxLines="3"/>
++
++        <LinearLayout
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:orientation="horizontal">
++
++            <TextView
++                android:id="@+id/big_item_row_author"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:maxLines="1"
++                android:paddingRight="15dp"
++                android:text="author name" />
++
++            <TextView
++                android:id="@+id/big_item_row_date"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:maxLines="1"
++                android:text="12/08/2017" />
++        </LinearLayout>
++    </LinearLayout>
++</RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(date 1503834351000)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -5,15 +5,18 @@
+ import android.os.Handler;
+ import android.support.design.widget.NavigationView;
+ import android.support.design.widget.TabLayout;
++import android.support.v4.app.Fragment;
+ import android.support.v4.view.GravityCompat;
+ import android.support.v4.view.ViewPager;
+ import android.support.v4.widget.DrawerLayout;
+ import android.support.v4.widget.SwipeRefreshLayout;
+ import android.support.v7.app.ActionBarDrawerToggle;
+ import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.RecyclerView;
+ import android.support.v7.widget.Toolbar;
+ import android.view.Menu;
+ import android.view.MenuItem;
++import android.view.View;
+ import android.widget.Toast;
+ 
+ import com.example.abhishek.knocksense.components.Article;
+@@ -59,8 +62,34 @@
+                                 swipeRefreshLayout.setRefreshing(false);
+                             }
+                         }, 5000);
+-                        GlobalLists.fetchHomeData(getApplicationContext(), null, null);
+-//                        GlobalLists.fetchCityData(getApplicationContext(),null);
++
++//                        Fragment homeViewFragment = viewPagerAdapter.getItem(0);
++//                        Fragment cityViewFragment = viewPagerAdapter.getItem(1);
++                        Fragment homeViewFragment = getSupportFragmentManager().findFragmentByTag("home_fragment");
++                        Fragment cityViewFragment = getSupportFragmentManager().findFragmentByTag("city_fragment");
++                        //Fragment homeViewFragment=null, cityViewFragment=null;
++                        RecyclerView homeRecyclerView;
++                        RecyclerView cityRecyclerView;
++                        RecyclerView.Adapter homeAdapter=null;
++                        RecyclerView.Adapter cityAdapter=null;
++                        if(homeViewFragment!=null){
++                            homeRecyclerView = (RecyclerView) homeViewFragment.getView().findViewById(R.id.home_fragment_list);
++                            if(homeRecyclerView!=null && homeRecyclerView.getAdapter()!=null){
++                                homeAdapter = homeRecyclerView.getAdapter();
++                            }
++                        }
++                        if(cityViewFragment!=null){
++                            cityRecyclerView = (RecyclerView)cityViewFragment.getView().findViewById(R.id.city_fragment_list);
++                            if(cityRecyclerView!=null && cityRecyclerView.getAdapter()!=null){
++                                homeAdapter = cityRecyclerView.getAdapter();
++                            }
++                        }
++                        if(homeAdapter==null){
++                            Toast.makeText(MainActivityScreen.this, "null :(", Toast.LENGTH_SHORT).show();
++                        }
++                        GlobalLists.fetchHomeData(getApplicationContext(), null, homeAdapter);
++                        //// TODO: 27/08/17 change this
++                        GlobalLists.fetchCityData(getApplicationContext(),"630",cityAdapter);
+                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
+ 
+                     }
+Index: app/src/main/res/layout/fragment_city.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_city.xml	(date 1503834351000)
++++ app/src/main/res/layout/fragment_city.xml	(revision )
+@@ -4,6 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/city_fragment_list"
+     android:name="com.example.abhishek.knocksense.CityFragment"
++    android:tag="city_fragment"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:layout_marginLeft="16dp"
+Index: app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(date 1503834351000)
++++ app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(revision )
+@@ -11,6 +11,7 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.ImageView;
++import android.widget.Switch;
+ import android.widget.TextView;
+ 
+ import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
+@@ -40,21 +41,34 @@
+ 
+     @Override
+     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+-        View view = LayoutInflater.from(parent.getContext())
++        View view;
++                switch(viewType)
++        { case article_big_item_row:
++             view   =LayoutInflater.from(parent.getContext())
++                .inflate(R.layout.article_big_item_row, parent, false);
++            return new ViewHolder(view);
++            case article_two_item_row:
++                view   =LayoutInflater.from(parent.getContext())
++                        .inflate(R.layout.article_two_item_row, parent, false);
++                return new ViewHolder(view);
++            case article_item_row:
++                view   =LayoutInflater.from(parent.getContext())
+-                .inflate(R.layout.article_item_row, parent, false);
++                        .inflate(R.layout.article_item_row, parent, false);
+-
+-
+-        return new ViewHolder(view);
++                return new ViewHolder(view);
++
+-    }
++        }
++        return null;
++    }
+ 
+     @Override
+     public void onBindViewHolder(final ViewHolder holder, int position) {
++       Article object=mValues.get( position);
++
+         holder.mItem = mValues.get(position);
+         holder.title.setText(mValues.get(position).getTitle());
+         holder.author.setText(mValues.get(position).getAuthor());
+         holder.date.setText(mValues.get(position).getDate());
+ 
+- //     holder.featuredImage.setImageUrl(mValues.get(position).getFeaturedImage(), imageLoader);
+         final ViewHolder finalHolder = holder;
+         ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+             @Override
+@@ -69,7 +83,7 @@
+ 
+             @Override
+             public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+-              //  finalHolder.progressBar.setVisibility(View.GONE);
++                //  finalHolder.progressBar.setVisibility(View.GONE);
+             }
+ 
+             @Override
+Index: app/src/main/res/layout/article_two_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_two_item_row.xml	(revision )
++++ app/src/main/res/layout/article_two_item_row.xml	(revision )
+@@ -0,0 +1,98 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="horizontal"
++    android:layout_height="200dp"
++    android:layout_width="match_parent"
++    android:gravity="fill"
++    android:weightSum="1">
++    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++        android:id="@+id/article_two_item_row_left_relative_layout"
++        android:orientation="vertical"
++        android:layout_weight="0.5"
++        android:layout_width="0dp"
++        android:layout_height="match_parent"
++        >
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:paddingLeft="15dp"
++            android:paddingRight="15dp"
++            android:paddingBottom="15dp"
++            android:layout_alignParentBottom="true">
++            <TextView
++                android:id="@+id/two_item_row_left_content"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:paddingBottom="5dp"
++                android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
++                android:maxLines="3"/>
++
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal">
++
++                <TextView
++                    android:id="@+id/two_item_row_left_author"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:maxLines="1"
++                    android:paddingRight="15dp"
++                    android:text="author name" />
++
++                <TextView
++                    android:id="@+id/two_item_row_left_date"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:maxLines="1"
++                    android:text="12/08/2017" />
++            </LinearLayout>
++        </LinearLayout>
++    </RelativeLayout>
++    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++        android:id="@+id/article_two_item_row_right_relative_layout"
++        android:orientation="vertical"
++        android:layout_weight="0.5"
++        android:layout_width="0dp"
++        android:layout_height="match_parent"
++        >
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:paddingLeft="15dp"
++            android:paddingRight="15dp"
++            android:paddingBottom="15dp"
++            android:layout_alignParentBottom="true">
++            <TextView
++                android:id="@+id/two_item_row_right_content"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:paddingBottom="5dp"
++                android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
++                android:maxLines="3"/>
++
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal">
++
++                <TextView
++                    android:id="@+id/two_item_row_right_author"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:maxLines="1"
++                    android:paddingRight="15dp"
++                    android:text="author name" />
++
++                <TextView
++                    android:id="@+id/two_item_row_right_date"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:maxLines="1"
++                    android:text="12/08/2017" />
++            </LinearLayout>
++        </LinearLayout>
++    </RelativeLayout>
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/CityFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CityFragment.java	(date 1503834351000)
++++ app/src/main/java/com/example/abhishek/knocksense/CityFragment.java	(revision )
+@@ -14,6 +14,9 @@
+ 
+ import com.example.abhishek.knocksense.components.Article;
+ import com.example.abhishek.knocksense.components.GlobalLists;
++import com.nostra13.universalimageloader.core.DisplayImageOptions;
++import com.nostra13.universalimageloader.core.ImageLoader;
++import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+ 
+ /**
+  * A fragment representing a list of Items.
+@@ -59,7 +62,14 @@
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         View view = inflater.inflate(R.layout.fragment_city, container, false);
+-
++        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
++                .cacheInMemory(true)
++                .cacheOnDisk(true)
++                .build();
++        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity())
++                .defaultDisplayImageOptions(defaultOptions)
++                .build();
++        ImageLoader.getInstance().init(config);
+         // Set the adapter
+         if (view instanceof RecyclerView) {
+             Context context = view.getContext();
+Index: app/src/main/res/layout/fragment_home_article_list.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_home_article_list.xml	(date 1503834351000)
++++ app/src/main/res/layout/fragment_home_article_list.xml	(revision )
+@@ -3,6 +3,7 @@
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/home_fragment_list"
++    android:tag="home_fragment"
+     android:name="com.example.abhishek.knocksense.HomeFragment"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"

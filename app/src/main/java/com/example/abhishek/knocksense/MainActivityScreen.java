@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
@@ -59,8 +62,34 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 5000);
-                        GlobalLists.fetchHomeData(getApplicationContext(), null, null);
-//                        GlobalLists.fetchCityData(getApplicationContext(),null);
+
+//                        Fragment homeViewFragment = viewPagerAdapter.getItem(0);
+//                        Fragment cityViewFragment = viewPagerAdapter.getItem(1);
+                        Fragment homeViewFragment = getSupportFragmentManager().findFragmentByTag("home_fragment");
+                        Fragment cityViewFragment = getSupportFragmentManager().findFragmentByTag("city_fragment");
+                        //Fragment homeViewFragment=null, cityViewFragment=null;
+                        RecyclerView homeRecyclerView;
+                        RecyclerView cityRecyclerView;
+                        RecyclerView.Adapter homeAdapter=null;
+                        RecyclerView.Adapter cityAdapter=null;
+                        if(homeViewFragment!=null){
+                            homeRecyclerView = (RecyclerView) homeViewFragment.getView().findViewById(R.id.home_fragment_list);
+                            if(homeRecyclerView!=null && homeRecyclerView.getAdapter()!=null){
+                                homeAdapter = homeRecyclerView.getAdapter();
+                            }
+                        }
+                        if(cityViewFragment!=null){
+                            cityRecyclerView = (RecyclerView)cityViewFragment.getView().findViewById(R.id.city_fragment_list);
+                            if(cityRecyclerView!=null && cityRecyclerView.getAdapter()!=null){
+                                homeAdapter = cityRecyclerView.getAdapter();
+                            }
+                        }
+                        if(homeAdapter==null){
+                            Toast.makeText(MainActivityScreen.this, "null :(", Toast.LENGTH_SHORT).show();
+                        }
+                        GlobalLists.fetchHomeData(getApplicationContext(), null, homeAdapter);
+                        //// TODO: 27/08/17 change this
+                        GlobalLists.fetchCityData(getApplicationContext(),"630",cityAdapter);
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
                     }
