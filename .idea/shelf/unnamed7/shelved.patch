@@ -1,0 +1,69 @@
+Index: app/src/main/res/layout/activity_select_city_screen.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_select_city_screen.xml	(date 1503952551000)
++++ app/src/main/res/layout/activity_select_city_screen.xml	(revision )
+@@ -32,10 +32,10 @@
+             android:textStyle="bold"
+             android:textColor="@color/white"
+             android:textAlignment="center"
+-            android:background="@mipmap/jaipur"
++            android:background="@mipmap/jaipurs"
+             android:text="@string/jaipur"/>
+         <TextView
+-            android:id="@+id/city_mumbai"
++            android:id="@+id/city_lucknow"
+             android:layout_width="match_parent"
+             android:onClick="onCitySelected"
+             android:clickable="true"
+@@ -45,10 +45,10 @@
+             android:textSize="16dp"
+             android:textStyle="bold"
+             android:textColor="@color/white"
+-            android:background="@mipmap/mumbai"
+-            android:text="@string/mumbai"/>
++            android:background="@mipmap/lucknows"
++            android:text="@string/lucknow"/>
+         <TextView
+-            android:id="@+id/city_new_delhi"
++            android:id="@+id/city_mumbai"
+             android:layout_width="match_parent"
+             android:onClick="onCitySelected"
+             android:clickable="true"
+@@ -58,10 +58,10 @@
+             android:textSize="16dp"
+             android:textStyle="bold"
+             android:textColor="@color/white"
+-            android:background="@mipmap/delhi"
+-            android:text="@string/new_delhi"/>
++            android:background="@mipmap/mumbais"
++            android:text="@string/mumbai"/>
+         <TextView
+-            android:id="@+id/city_lucknow"
++            android:id="@+id/city_new_delhi"
+             android:layout_width="match_parent"
+             android:onClick="onCitySelected"
+             android:clickable="true"
+@@ -71,8 +71,9 @@
+             android:textSize="16dp"
+             android:textStyle="bold"
+             android:textColor="@color/white"
+-            android:background="@mipmap/lucknow"
+-            android:text="@string/lucknow"/>
++            android:background="@mipmap/delhis"
++            android:text="@string/new_delhi"/>
++
+         <TextView
+             android:id="@+id/city_india"
+             android:layout_width="match_parent"
+@@ -84,7 +85,7 @@
+             android:textStyle="bold"
+             android:textColor="@color/white"
+             android:gravity="center"
+-            android:background="@mipmap/india"
++            android:background="@mipmap/restofindias"
+             android:text="@string/rest_of_india"/>
+ 
+ 

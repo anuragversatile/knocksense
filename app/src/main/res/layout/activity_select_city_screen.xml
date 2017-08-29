@@ -84,7 +84,7 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"
-            android:background="@mipmap/india"
+            android:background="@mipmap/restofindia"
             android:text="@string/rest_of_india"/>
 
 
