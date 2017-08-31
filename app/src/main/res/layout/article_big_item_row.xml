@@ -4,12 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:padding="7.5dp"
 >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/big_item_row_image"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:scaleType="fitXY"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +26,8 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
-            android:maxLines="3"/>
+            android:maxLines="3"
+            android:paddingLeft="7.45dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -36,15 +39,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:paddingRight="15dp"
-                android:text="author name" />
+
+                android:text="author name"
+                android:paddingLeft="7.45dp"/>
 
             <TextView
                 android:id="@+id/big_item_row_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="12/08/2017" />
+                android:text="12/08/2017"
+                android:paddingLeft="7.45dp"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

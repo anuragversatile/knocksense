@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
+    android:orientation="horizontal"
+    android:padding="7.5dp"
+ >
     <ImageView
         android:id="@+id/featuredImage"
         android:layout_width="95dp"
         android:layout_height="95dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        />
 
 
     <LinearLayout
@@ -16,27 +18,32 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingRight="7.45dp">
+        >
 
         <TextView
             android:id="@+id/article_item_row_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate" />
+
+            android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
+            android:paddingLeft="7.45dp"/>
 
         <TextView
             android:id="@+id/article_item_row_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="Author name" />
+            android:text="Author name"
+            android:paddingLeft="7.45dp"/>
 
         <TextView
             android:id="@+id/article_item_row_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:paddingLeft="7.45dp"/>
+
     </LinearLayout>
 
     <ImageView
@@ -49,5 +56,6 @@
         android:layout_height="0dp"
         android:id="@+id/view_type"
         android:visibility="gone"/>
+
 
 </LinearLayout>
