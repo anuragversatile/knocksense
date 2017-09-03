@@ -26,6 +26,7 @@
             android:maxLines="3"
             android:paddingLeft="7.45dp"
             android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
+            android:textSize="16dp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,6 +36,8 @@
             android:maxLines="1"
             android:paddingLeft="7.45dp"
             android:text="Author name"
+
+            android:textSize="12dp"
             android:textStyle="bold" />
 
         <TextView
@@ -42,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textSize="9dp"
             android:paddingLeft="7.45dp"
             android:textStyle="bold" />
 
