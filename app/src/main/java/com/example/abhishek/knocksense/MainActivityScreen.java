@@ -1,5 +1,6 @@
 package com.example.abhishek.knocksense;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
@@ -29,6 +29,9 @@ public class MainActivityScreen extends AppCompatActivity
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private TabLayout tabLayout;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +125,8 @@ public class MainActivityScreen extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
+
             return true;
         }
 
@@ -152,6 +156,23 @@ public class MainActivityScreen extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void displayView(int position) {
+        fragment = null;
+        String fragmentTags = "";
+        switch (position) {
+            case 0:
+                fragment=new SearchFragment();
+                break;
+
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            fragmentManager = getFragmentManager();
+           // fragmentManager.beginTransaction().replace(R.id.content_frame,fragment, fragmentTags).commit();
+        }
     }
 
 

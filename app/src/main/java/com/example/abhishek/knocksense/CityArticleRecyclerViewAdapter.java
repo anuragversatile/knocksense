@@ -41,11 +41,16 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+       DateConverter dateConverter=new DateConverter();
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
+
         holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
+        holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+
         final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
+
         ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
@@ -105,7 +110,7 @@ public  final ImageView featuredImage;
             title = (TextView) view.findViewById(R.id.article_item_row_title);
             author = (TextView) view.findViewById(R.id.article_item_row_author);
             date = (TextView) view.findViewById(R.id.article_item_row_date);
-featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
+            featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
         }
 
         @Override

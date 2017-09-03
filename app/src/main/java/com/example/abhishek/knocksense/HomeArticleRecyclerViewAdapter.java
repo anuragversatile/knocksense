@@ -55,12 +55,16 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
+        DateConverter dateConverter=new DateConverter();
         if(position%2==0){
             SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
             holder.mItem = mValues.get(position);
             holder.title.setText(mValues.get(position).getTitle());
             holder.author.setText(mValues.get(position).getAuthor());
             holder.date.setText(mValues.get(position).getDate());
+
+            holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+
             ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String s, View view) {
@@ -102,10 +106,12 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         }
         else{
             final BigArticleViewHolder holder=(BigArticleViewHolder) h;
+
             holder.mItem = mValues.get(position);
             holder.title.setText(mValues.get(position).getTitle());
-            holder.author.setText(mValues.get(position).getAuthor());
-            holder.date.setText(mValues.get(position).getDate());
+          //  holder.author.setText(mValues.get(position).getAuthor());
+           // holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+
             ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String s, View view) {
@@ -129,22 +135,22 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             });
 
 //
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (null != mListener) {
-//                        // Notify the active callbacks interface (the activity, if the
-//                        // fragment is attached to one) that an item has been selected.
-//                        mListener.onListFragmentInteraction(holder.mItem);
-//                    }
-//                }
-//            });
-//            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    //// TODO: 26-08-2017 save and share functionality
-//                }
-//            });
+         /*  holder.mView.setOnClickListener(new View.OnClickListener() {
+               @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+                }
+            });*/
         }
 
     }
@@ -185,23 +191,23 @@ featuredImage=(ImageView)view.findViewById(R.id.featuredImage);
     public class BigArticleViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView title;
-        public final TextView author;
-        public final TextView date;
+       // public final TextView author;
+        //public final TextView date;
         public Article mItem;
         public final ImageView big_item_row_image;
         public BigArticleViewHolder(View view) {
             super(view);
             mView = view;
             title = (TextView) view.findViewById(R.id.big_item_row_title);
-            author = (TextView) view.findViewById(R.id.big_item_row_author);
-            date = (TextView) view.findViewById(R.id.big_item_row_date);
+            //author = (TextView) view.findViewById(R.id.big_item_row_author);
+          //  date = (TextView) view.findViewById(R.id.big_item_row_date);
             big_item_row_image=(ImageView)view.findViewById(R.id.big_item_row_image);
 
         }
 
-        @Override
+        /*@Override
         public String toString() {
             return super.toString() + " '" + author.getText() + "'";
         }
-    }
+   */ }
 }
