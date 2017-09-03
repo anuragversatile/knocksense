@@ -70,6 +70,7 @@ public class MainActivityScreen extends AppCompatActivity
 //                        Fragment cityViewFragment = viewPagerAdapter.getItem(1);
                         Fragment homeViewFragment = getSupportFragmentManager().findFragmentByTag("home_fragment");
                         Fragment cityViewFragment = getSupportFragmentManager().findFragmentByTag("city_fragment");
+                        Fragment searchViewFragment=getSupportFragmentManager().findFragmentByTag("search_fragment");
                         //Fragment homeViewFragment=null, cityViewFragment=null;
                         RecyclerView homeRecyclerView;
                         RecyclerView cityRecyclerView;
@@ -87,6 +88,7 @@ public class MainActivityScreen extends AppCompatActivity
                                 homeAdapter = cityRecyclerView.getAdapter();
                             }
                         }
+
                         if(homeAdapter==null){
                             Toast.makeText(MainActivityScreen.this, "null :(", Toast.LENGTH_SHORT).show();
                         }
