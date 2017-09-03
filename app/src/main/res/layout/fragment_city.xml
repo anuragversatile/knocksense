@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/city_fragment_list"
     android:name="com.example.abhishek.knocksense.CityFragment"
+    android:tag="city_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"

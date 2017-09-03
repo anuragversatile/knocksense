@@ -1,14 +1,19 @@
 package com.example.abhishek.knocksense;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -36,10 +41,37 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+       DateConverter dateConverter=new DateConverter();
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
+
         holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
+        holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+
+        final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
+
+        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                //finalHolder.progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                //  finalHolder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +101,7 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
         public final TextView title;
         public final TextView author;
         public final TextView date;
-
+public  final ImageView featuredImage;
         public Article mItem;
 
         public ViewHolder(View view) {
@@ -78,7 +110,7 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
             title = (TextView) view.findViewById(R.id.article_item_row_title);
             author = (TextView) view.findViewById(R.id.article_item_row_author);
             date = (TextView) view.findViewById(R.id.article_item_row_date);
-
+            featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
         }
 
         @Override

@@ -25,9 +25,11 @@ public class SplashScreen extends AppCompatActivity {
             GlobalLists.fetchCityData(getApplicationContext(), CitiesID.getCityId(selectedCity), null);
         }
         //// TODO: 27-08-2017 change this
-        GlobalLists.fetchCityData(getApplicationContext(), "630", null);
+        GlobalLists.fetchCityData(getApplicationContext(), "631", null);
         GlobalLists.fetchHomeData(getApplicationContext(), null, null);
         GlobalLists.fetchCategoryData(getApplicationContext(), null);
+       // GlobalLists.fetchAuthorData(GlobalLists.getContext(),null,null);
+
         new Handler().postDelayed(new Runnable() {
 
             @Override

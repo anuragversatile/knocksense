@@ -1,0 +1,91 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ .idea/misc.xml	(revision )
+@@ -37,7 +37,7 @@
+     <ConfirmationsSetting value="0" id="Add" />
+     <ConfirmationsSetting value="0" id="Remove" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ .idea/modules.xml	(revision )
+@@ -2,8 +2,8 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/Knocksense.iml" filepath="$PROJECT_DIR$/Knocksense.iml" />
+       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
++      <module fileurl="file://$PROJECT_DIR$/knocksense.iml" filepath="$PROJECT_DIR$/knocksense.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java	(revision d521f9107f9456783b0c714ed4421a5a664892cb)
++++ app/src/main/java/com/example/abhishek/knocksense/ArticleRecyclerViewAdapter.java	(revision )
+@@ -6,8 +6,13 @@
+ import android.view.ViewGroup;
+ import android.widget.TextView;
+ 
++import com.android.volley.toolbox.ImageLoader;
++import com.android.volley.toolbox.NetworkImageView;
+ import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++import com.example.abhishek.knocksense.components.BitmapLruCache;
++import com.example.abhishek.knocksense.components.GlobalLists;
++import com.example.abhishek.knocksense.components.VolleySingleton;
+ 
+ import java.util.List;
+ 
+@@ -35,13 +40,13 @@
+ 
+     @Override
+     public void onBindViewHolder(final ViewHolder holder, int position) {
+-//        ImageLoader.ImageCache imageCache = new BitmapLruCache();
+-//        ImageLoader imageLoader = new ImageLoader(VolleySingleton.getInstance(GlobalLists.getContext()).getRequestQueue(), imageCache);
++        ImageLoader.ImageCache imageCache = new BitmapLruCache();
++ImageLoader imageLoader = new ImageLoader(VolleySingleton.getInstance(GlobalLists.getContext()).getRequestQueue(), imageCache);
+         holder.mItem = mValues.get(position);
+         holder.title.setText(mValues.get(position).getTitle());
+         holder.author.setText(mValues.get(position).getAuthor());
+         holder.date.setText(mValues.get(position).getDate());
+-//        holder.featuredImage.setImageUrl(mValues.get(position).getFeaturedImage(), imageLoader);
++       //holder.featuredImage.setImageUrl(mValues.get(position).getFeaturedImage(), imageLoader);
+ 
+         holder.mView.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -71,7 +76,7 @@
+         public final TextView title;
+         public final TextView author;
+         public final TextView date;
+-//        public final NetworkImageView featuredImage;
++        public final NetworkImageView featuredImage;
+ 
+         public Article mItem;
+ 
+@@ -81,7 +86,7 @@
+             title = (TextView) view.findViewById(R.id.article_item_row_title);
+             author = (TextView) view.findViewById(R.id.article_item_row_author);
+             date = (TextView) view.findViewById(R.id.article_item_row_date);
+-//            featuredImage = (NetworkImageView)view.findViewById(R.id.featured_image);
++          featuredImage = (NetworkImageView)view.findViewById(R.id.featured_image);
+ 
+         }
+ 

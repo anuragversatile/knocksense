@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Article {
 
-    private String id, date, author, name, count;
+    private String id, date, author, count;
 
     @SerializedName("title.rendered")
     private String title;
@@ -20,6 +20,7 @@ public class Article {
     private String featuredImage;
     private String link;
 
+private String name;
     public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] articleImages, String link) {
 
         this.id = id;

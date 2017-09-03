@@ -18,9 +18,19 @@ public class UrlConstants {
     private static final String articleContentURL = "http://www.knocksense.com/wp-json/wp/v2/posts/<__postID__>?fields=id,content";
     //private static final String allArticlesAfterDate="http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media&filter[date_query][after]=<__timeStamp__>";
     //private static String allCitiesURL = "http://www.knocksense.com/wp-json/wp/v2/categories?filter[category_name]=Cities&fields=id,count,link";
-    //private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
+   // private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
+    //private static String afterDateURL="https://www.knocksense.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=asc&after=2015-08-31T17:00:00&fields=id,title,date";
+private static String searchUrl="http://www.knocksense.com/wp-json/wp/v2/posts?search=<__search__>&per_page=25&fields=id,date,title";
 
+    public static String getSearchUrl(String searchString) {
+        return searchUrl.replace("<__search__>",searchString);
+    }
 
+    /*public static String getAfterDateURL() {
+
+            return afterDateURL;
+        }
+    */
     public static String getAllArticlesURL() {
         return allArticlesURL;
     }
@@ -44,4 +54,8 @@ public class UrlConstants {
     public static String getArticleContent(String articleID) {
         return articleContentURL.replace("<__postID__>", articleID);
     }
+
+   /* public static String getAllAuthorsURL() {
+        return allAuthorsURL;
+    }*/
 }

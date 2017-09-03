@@ -27,9 +27,20 @@ public class GlobalLists extends Application {
     private static List<Article> cityArticlesList = new ArrayList<>();
     private static List<Article> homeArticlesList = new ArrayList<>();
     private static List<Article> categoriesList = new ArrayList<>();
+    private static List<Article> searchList=new ArrayList<>();
     private static boolean cityDataLoaded = false;
     private static boolean homeDataLoaded = false;
     private static boolean categoryDataLoaded = false;
+    private static boolean searchDataLoaded=false;
+
+    public static boolean isSearchDataLoaded() {
+        return searchDataLoaded;
+    }
+
+
+    public static void setSearchDataLoaded(boolean searchDataLoaded) {
+        GlobalLists.searchDataLoaded = searchDataLoaded;
+    }
 
     public static Context getContext() {
         return getContext();
@@ -84,6 +95,10 @@ public class GlobalLists extends Application {
         GlobalLists.categoriesList = categoriesList;
     }
 
+    public static List<Article> getSearchList() {
+        return searchList;
+    }
+
     public static void fetchHomeData(Context context, String d, final RecyclerView.Adapter adapter) {
         final String date = d;
         String url = UrlConstants.getAllArticlesURL();
@@ -111,6 +126,7 @@ public class GlobalLists extends Application {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
 
                                 articleList.add(articleModel);
+                                Log.d(articleModel.getFeaturedImage(),"Count");
                                 if (articleList.size() == ParentArray.length()) {
                                     GlobalLists.setHomeDataLoaded(true);
                                 }
@@ -171,6 +187,7 @@ public class GlobalLists extends Application {
                                     GlobalLists.setCityDataLoaded(true);
                                 }
                             }
+                            Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
                             Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
                             if (GlobalLists.isCityDataLoaded()) {
                                 GlobalLists.setCityArticlesList(articleList);
@@ -235,6 +252,101 @@ public class GlobalLists extends Application {
 //        });
 //        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
+   /* public static void fetchAuthorData(Context context, String selectedCityId, final RecyclerView.Adapter adapter) {
 
+        final List<Article> articleList = new ArrayList<>();
+        GlobalLists.setCityDataLoaded(false);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getAllAuthorsURL(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONArray ParentArray = new JSONArray(s);
+                            for (int i = 0; i < ParentArray.length(); i++) {
+                                JSONObject ParentObject = ParentArray.getJSONObject(i);
+                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                articleModel.setId(ParentObject.getString("id"));
+                                articleModel.setName(ParentObject.getString("name"));
+
+                                articleList.add(articleModel);
+                                if (articleList.size() == ParentArray.length()) {
+                                    GlobalLists.setCityDataLoaded(true);
+                                }
+                            }
+                            Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
+                            if (GlobalLists.isCityDataLoaded()) {
+                                GlobalLists.setCityArticlesList(articleList);
+                                if (adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                volleyError.printStackTrace();
+            }
+        });
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+
+    }
+
+*/
+   public static void fetchSearchData(Context context, String searchString, final RecyclerView.Adapter adapter) {
+
+       final List<Article> articleList = new ArrayList<>();
+       GlobalLists.setSearchDataLoaded(false);
+       StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getSearchUrl(searchString),
+               new Response.Listener<String>() {
+                   @Override
+                   public void onResponse(String s) {
+                       try {
+                           Gson gson = new Gson();
+                           JSONArray ParentArray = new JSONArray(s);
+                           for (int i = 0; i < ParentArray.length(); i++) {
+                               JSONObject ParentObject = ParentArray.getJSONObject(i);
+                               Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                               articleModel.setId(ParentObject.getString("id"));
+                               articleModel.setDate(ParentObject.getString("date"));
+                               articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
+                               articleModel.setAuthor(ParentObject.getString("author"));
+                               articleModel.setLink(ParentObject.getString("link"));
+                               articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+                               articleList.add(articleModel);
+                               if (articleList.size() == ParentArray.length()) {
+                                   GlobalLists.setCityDataLoaded(true);
+                               }
+                           }
+                           Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
+                           Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
+                           if (GlobalLists.isCityDataLoaded()) {
+                               GlobalLists.setCityArticlesList(articleList);
+                               if (adapter != null) {
+                                   adapter.notifyDataSetChanged();
+                               }
+                           }
+
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                       }
+                   }
+               }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError volleyError) {
+
+               volleyError.printStackTrace();
+           }
+       });
+       VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+
+   }
 
 }
