@@ -79,8 +79,8 @@ public class CityFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if (GlobalLists.isCityDataLoaded() == true) {
-                recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener, recyclerView, getContext()));
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener));
+            if (GlobalLists.getCityArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -96,7 +96,8 @@ public class CityFragment extends Fragment {
                                 //you have reached to the bottom of your recycler view
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
-                                GlobalLists.fetchCityData(getContext(), date, recyclerView.getAdapter());
+                                //// TODO: 03/09/17 fetch from shared prefrences
+                                GlobalLists.fetchCityData(getContext(),"631", null);
                             }
 
                         }

@@ -1,0 +1,540 @@
+Index: app/src/main/java/com/example/abhishek/knocksense/SearchResultAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SearchResultAdapter.java	(revision )
++++ app/src/main/java/com/example/abhishek/knocksense/SearchResultAdapter.java	(revision )
+@@ -0,0 +1,112 @@
++package com.example.abhishek.knocksense;
++
++import android.content.Context;
++import android.graphics.Typeface;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.BaseAdapter;
++import android.widget.Button;
++import android.widget.TextView;
++
++import com.example.abhishek.knocksense.components.Article;
++
++import java.util.ArrayList;
++
++/**
++ * Created by anuragdwivedi on 05/09/17.
++ */
++class SearchResultsAdapter extends BaseAdapter
++{
++    private LayoutInflater layoutInflater;
++
++    private ArrayList<Article> productDetails=new ArrayList<Article>();
++    int count;
++    Typeface type;
++    Context context;
++
++    //constructor method
++    public SearchResultsAdapter(Context context, ArrayList<Article> product_details) {
++
++        layoutInflater = LayoutInflater.from(context);
++
++        this.productDetails=product_details;
++        this.count= product_details.size();
++        this.context = context;
++        //type= Typeface.createFromAsset(context.getAssets(),"fonts/book.TTF");
++
++    }
++
++    @Override
++    public int getCount() {
++        return count;
++    }
++
++    @Override
++    public Object getItem(int arg0) {
++        return productDetails.get(arg0);
++    }
++
++    @Override
++    public long getItemId(int arg0) {
++        return arg0;
++    }
++
++    @Override
++    public View getView(int position, View convertView, ViewGroup parent)
++    {
++
++        ViewHolder holder;
++        Article tempProduct = productDetails.get(position);
++
++        if (convertView == null)
++        {
++            convertView = layoutInflater.inflate(R.layout.listtwo_searchresults, null);
++            holder = new ViewHolder();
++            holder.product_name = (TextView) convertView.findViewById(R.id.product_name);
++            holder.product_mrp = (TextView) convertView.findViewById(R.id.product_mrp);
++            holder.product_mrpvalue = (TextView) convertView.findViewById(R.id.product_mrpvalue);
++            holder.product_bb = (TextView) convertView.findViewById(R.id.product_bb);
++            holder.product_bbvalue = (TextView) convertView.findViewById(R.id.product_bbvalue);
++            //holder.addToCart = (Button) convertView.findViewById(R.id.add_cart);
++
++            convertView.setTag(holder);
++        }
++        else
++        {
++            holder = (ViewHolder) convertView.getTag();
++        }
++
++
++        holder.product_name.setText(tempProduct.getTitle());
++        holder.product_name.setTypeface(type);
++
++        holder.product_mrp.setTypeface(type);
++
++        holder.product_mrpvalue.setText(tempProduct.getAuthor());
++        holder.product_mrpvalue.setTypeface(type);
++
++        holder.product_bb.setTypeface(type);
++
++        holder.product_bbvalue.setText(tempProduct.getAuthor());
++        holder.product_bbvalue.setTypeface(type);
++
++        return convertView;
++    }
++
++    static class ViewHolder
++    {
++        TextView product_name;
++        TextView product_mrp;
++        TextView product_mrpvalue;
++        TextView product_bb;
++        TextView product_bbvalue;
++        TextView product_savings;
++        TextView product_savingsvalue;
++        TextView qty;
++        TextView product_value;
++        Button addToCart;
++
++    }
++
++}
+Index: app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java	(date 1504427291000)
++++ app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java	(revision )
+@@ -1,123 +1,254 @@
+ package com.example.abhishek.knocksense;
+ 
++import java.util.ArrayList;
++import java.util.List;
++
++import org.json.JSONArray;
++import org.json.JSONException;
++import org.json.JSONObject;
++
++import android.annotation.SuppressLint;
++import android.app.ProgressDialog;
+ import android.content.Context;
+-import android.net.Uri;
++import android.graphics.Typeface;
++import android.os.AsyncTask;
+ import android.os.Bundle;
+ import android.support.v4.app.Fragment;
+-import android.support.v4.app.ListFragment;
++import android.support.v7.widget.RecyclerView;
++import android.util.Log;
++import android.view.Gravity;
+ import android.view.LayoutInflater;
+-import android.view.Menu;
+-import android.view.MenuInflater;
+-import android.view.MenuItem;
+ import android.view.View;
+ import android.view.ViewGroup;
+-import android.widget.ArrayAdapter;
++import android.widget.BaseAdapter;
++import android.widget.Button;
++import android.widget.ImageButton;
+ import android.widget.ListView;
+ import android.widget.SearchView;
++import android.widget.SearchView.OnQueryTextListener;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
++import com.android.volley.Request;
++import com.android.volley.Response;
++import com.android.volley.VolleyError;
++import com.android.volley.toolbox.StringRequest;
++import com.example.abhishek.knocksense.components.Article;
+ import com.example.abhishek.knocksense.components.GlobalLists;
+-import com.google.android.gms.plus.PlusOneButton;
++import com.example.abhishek.knocksense.components.VolleySingleton;
++import com.google.gson.Gson;
+ 
+-import java.util.ArrayList;
+-import java.util.List;
+ 
+-public class SearchFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
++public class Search extends Fragment {
++    View myFragmentView;
++    SearchView search;
++    ImageButton buttonBarcode;
++    ImageButton buttonAudio;
++    Typeface type;
++    ListView searchResults;
++    String found = "N";
+ 
+-    List<String> mAllValues;
+-    private ArrayAdapter<String> mAdapter;
+-    private Context mContext;
+ 
++    //This arraylist will have data as pulled from server. This will keep cumulating.
++    ArrayList<Article> productResults = new ArrayList<Article>();
++    //Based on the search string, only filtered products will be moved here from productResults
++    ArrayList<Article> filteredProductResults = new ArrayList<Article>();
++
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+-        mContext = getActivity();
+-        setHasOptionsMenu(true);
+-        populateList();
++    }
+ 
+ 
+-    }
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        //get the context of the HomeScreen Activity
++        final MainActivityScreen activity = (MainActivityScreen) getActivity();
+ 
++        //define a typeface for formatting text fields and listview.
++
++        //   type= Typeface.createFromAsset(activity.getAssets(),"fonts/book.TTF");
++        myFragmentView = inflater.inflate(R.layout.fragment_search, container, false);
++
++        search = (SearchView) myFragmentView.findViewById(R.id.searchView1);
++        search.setQueryHint("Start typing to search...");
++
++        searchResults = (ListView) myFragmentView.findViewById(R.id.listview_search);
++
++
++        //this part of the code is to handle the situation when user enters any search criteria, how should the
++        //application behave?
++
++        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
++
+-    @Override
++            @Override
+-    public void onListItemClick(ListView listView, View v, int position, long id) {
+-        String item = (String) listView.getAdapter().getItem(position);
+-        if (getActivity() instanceof OnItem1SelectedListener) {
+-            ((OnItem1SelectedListener) getActivity()).OnItem1SelectedListener(item);
++            public void onFocusChange(View v, boolean hasFocus) {
++                // TODO Auto-generated method stub
++
++                //Toast.makeText(activity, String.valueOf(hasFocus),Toast.LENGTH_SHORT).show();
+-        }
++            }
+-        getFragmentManager().popBackStack();
+-    }
++        });
+ 
++        search.setOnQueryTextListener(new OnQueryTextListener() {
++
+-    @Override
++            @Override
+-    public void onDetach() {
+-        super.onDetach();
++            public boolean onQueryTextSubmit(String query) {
++                // TODO Auto-generated method stub
++
++                return false;
+-    }
++            }
+ 
+-    @Override
++            @Override
+-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+-        View layout = inflater.inflate(R.layout.fragment_search, container, false);
+-        ListView listView = (ListView) layout.findViewById(android.R.id.list);
+-        TextView emptyTextView = (TextView) layout.findViewById(android.R.id.empty);
+-        listView.setEmptyView(emptyTextView);
+-        return layout;
++            public boolean onQueryTextChange(String newText) {
++
++                if (newText.length() > 3) {
++
++                    searchResults.setVisibility(myFragmentView.VISIBLE);
++                    myAsyncTask m = (myAsyncTask) new myAsyncTask().execute(newText);
++                } else {
++
++                    searchResults.setVisibility(myFragmentView.INVISIBLE);
+-    }
++                }
+ 
+-    @Override
+-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+-        inflater.inflate(R.menu.main, menu);
+-        MenuItem searchItem = menu.findItem(R.id.action_search);
+-        SearchView searchView = (SearchView) searchItem.getActionView();
+-        searchView.setOnQueryTextListener(this);
+-        searchView.setQueryHint("Search");
+ 
+-        super.onCreateOptionsMenu(menu, inflater);
++                return false;
++            }
+ 
+-        super.onCreateOptionsMenu(menu, inflater);
++        });
++        return myFragmentView;
+     }
+ 
+-    @Override
+-    public boolean onQueryTextSubmit(String query) {
+-        return true;
++    //this filters products from productResults and copies to filteredProductResults based on search text
++
++    public void filterProductArray(String newText) {
++
++        String pName;
++
++        filteredProductResults.clear();
++        for (int i = 0; i < productResults.size(); i++) {
++            pName = productResults.get(i).getProductName().toLowerCase();
++            if (pName.contains(newText.toLowerCase()) ||
++                    productResults.get(i).getProductBarcode().contains(newText)) {
++                filteredProductResults.add(productResults.get(i));
++
+-    }
++            }
++        }
+ 
+-    @Override
+-    public boolean onQueryTextChange(String newText) {
+-        if (newText == null || newText.trim().isEmpty()) {
+-            resetSearch();
+-            return false;
+-        }
++    }
++}
++    class myAsyncTask extends AsyncTask<String, Void, String> {
+ 
+-        List<String> filteredValues = new ArrayList<String>(mAllValues);
+-        GlobalLists.fetchSearchData(getContext(),newText,null);
++        JSONArray productList;
++        String url = new String();
++        String textSearch;
++        ProgressDialog pd;
++        private static List<Article> searchDataList = new ArrayList<>();
++        private static boolean searchDataLoaded = false;
+ 
++        public static List<Article> getSearchDataList() {
++            return searchDataList;
++        }
+ 
+-        mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
+-        setListAdapter(mAdapter);
++        public static void setSearchDataList(List<Article> searchDataList) {
++            myAsyncTask.searchDataList = searchDataList;
++        }
+ 
+-        return false;
++        public static boolean isSearchDataLoaded() {
++            return searchDataLoaded;
+-    }
++        }
+ 
+-    public void resetSearch() {
+-        mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, mAllValues);
+-        setListAdapter(mAdapter);
++        public static void setSearchDataLoaded(boolean searchDataLoaded) {
++            myAsyncTask.searchDataLoaded = searchDataLoaded;
+-    }
++        }
+ 
+-    @Override
++        @Override
+-    public boolean onMenuItemActionExpand(MenuItem item) {
+-        return true;
++
++        protected void onPreExecute() {
++            super.onPreExecute();
++
++            productList = new JSONArray();
++
+-    }
++           }
+ 
+-    @Override
++        @Override
+-    public boolean onMenuItemActionCollapse(MenuItem item) {
+-        return true;
++        protected String doInBackground(String... sText) {
++
++            fetchSearchData(GlobalLists.getContext(),sText[0],null);
++
++            this.textSearch = sText[0];
++            return "OK";
++
+-    }
++        }
++        public static void fetchSearchData(Context context, String searchString, final RecyclerView.Adapter adapter) {
+ 
+-    public interface OnItem1SelectedListener {
+-        void OnItem1SelectedListener(String item);
++            final List<Article> articleList = new ArrayList<>();
++            setSearchDataLoaded(false);
++            StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getSearchUrl(searchString),
++                    new Response.Listener<String>() {
++                        @Override
++                        public void onResponse(String s) {
++                            try {
++                                Gson gson = new Gson();
++                                JSONArray ParentArray = new JSONArray(s);
++                                for (int i = 0; i < ParentArray.length(); i++) {
++                                    JSONObject ParentObject = ParentArray.getJSONObject(i);
++                                    Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
++                                    articleModel.setId(ParentObject.getString("id"));
++                                    articleModel.setDate(ParentObject.getString("date"));
++                                    articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
++                                    articleModel.setAuthor(ParentObject.getString("author"));
++                                    articleModel.setLink(ParentObject.getString("link"));
++                                    articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
++                                    articleList.add(articleModel);
++                                    if (articleList.size() == ParentArray.length()) {
++                                       setSearchDataLoaded(true);
+-    }
++                                    }
+-    public void populateList() {
+-        mAllValues = new ArrayList<>();
+-        mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, mAllValues);
+-        setListAdapter(mAdapter);
+-    }
++                                }
++                                Log.d("XYZ", "setCityDataLoaded()==>" + isSearchDataLoaded());
++                                if (isSearchDataLoaded()) {
++                                    setSearchDataList(articleList);
++                                    if (adapter != null) {
++                                        adapter.notifyDataSetChanged();
+-    }
++                                    }
++                                }
++
++                            } catch (JSONException e) {
++                                e.printStackTrace();
++                            }
++                        }
++                }, new Response.ErrorListener() {
++                @Override
++                public void onErrorResponse(VolleyError volleyError) {
++
++                    volleyError.printStackTrace();
++                }
++            });
++            VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
++
++
++        }
++
++
++        @Override
++        protected void onPostExecute(String result) {
++
++            super.onPostExecute(result);
++
++            if (result.equalsIgnoreCase("Exception Caught")) {
++                Toast.makeText(getActivity(), "Unable to connect to server,please try later", Toast.LENGTH_LONG).show();
++
++                pd.dismiss();
++            } else {
++
++
++                //calling this method to filter the search results from productResults and move them to
++                //filteredProductResults
++                filterProductArray(textSearch);
++                searchResults.setAdapter(new SearchResultsAdapter(getActivity(), filteredProductResults));
++                pd.dismiss();
++            }
++        }
++    }
++
+ 
+Index: app/src/main/res/menu/activity_main_drawer.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/activity_main_drawer.xml	(date 1504427291000)
++++ app/src/main/res/menu/activity_main_drawer.xml	(revision )
+@@ -31,9 +31,41 @@
+                 android:icon="@drawable/ic_menu_send"
+                 android:title="Notification Center" />
+             <item
+-                android:id="@+id/nav_city"
+-                android:icon="@drawable/ic_menu_send"
+-                android:title="Change City" />
++                android:id="@+id/nav_Entertainment"
++                android:title="Entertainment" />
++            <item
++                android:id="@+id/KnockKnock"
++
++                android:title="Knock Knock" />
++            <item
++                android:id="@+id/News"
++
++                android:title="News" />
++            <item
++                android:id="@+id/Sports"
++
++                android:title="Sports" />
++            <item
++                android:id="@+id/YourSpace"
++
++                android:title="YourSpace" />
++            <item
++                android:id="@+id/TechSense"
++
++                android:title="TechSense" />
++            <item
++                android:id="@+id/WeReview"
++
++                android:title="We Review" />
++            <item
++                android:id="@+id/DineSense"
++
++                android:title="Dine Sense" />
++            <item
++                android:id="@+id/ExperienceIndia"
++
++                android:title="Experience India" />
++
+         </menu>
+     </item>
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/myAsyncTask.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/myAsyncTask.java	(revision )
++++ app/src/main/java/com/example/abhishek/knocksense/myAsyncTask.java	(revision )
+@@ -0,0 +1,15 @@
++package com.example.abhishek.knocksense;
++
++import android.app.ProgressDialog;
++import android.os.AsyncTask;
++
++import org.json.JSONArray;
++
++/**
++ * Created by anuragdwivedi on 05/09/17.
++ */
++
++
++
++
++

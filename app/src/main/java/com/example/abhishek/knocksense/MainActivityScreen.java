@@ -13,14 +13,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+
+import java.util.ArrayList;
 
 public class MainActivityScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener {
@@ -31,6 +37,10 @@ public class MainActivityScreen extends AppCompatActivity
     private TabLayout tabLayout;
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
+    RecyclerView recyclerView;
+    EditText editTextSearch;
+
+    CustomAdapter adapter;
 
 
     @Override
@@ -64,44 +74,57 @@ public class MainActivityScreen extends AppCompatActivity
                             public void run() {
                                 swipeRefreshLayout.setRefreshing(false);
                             }
-                        }, 5000);
-
-//                        Fragment homeViewFragment = viewPagerAdapter.getItem(0);
-//                        Fragment cityViewFragment = viewPagerAdapter.getItem(1);
-                        Fragment homeViewFragment = getSupportFragmentManager().findFragmentByTag("home_fragment");
-                        Fragment cityViewFragment = getSupportFragmentManager().findFragmentByTag("city_fragment");
-                        Fragment searchViewFragment=getSupportFragmentManager().findFragmentByTag("search_fragment");
-                        //Fragment homeViewFragment=null, cityViewFragment=null;
-                        RecyclerView homeRecyclerView;
-                        RecyclerView cityRecyclerView;
-                        RecyclerView.Adapter homeAdapter=null;
-                        RecyclerView.Adapter cityAdapter=null;
-                        if(homeViewFragment!=null){
-                            homeRecyclerView = (RecyclerView) homeViewFragment.getView().findViewById(R.id.home_fragment_list);
-                            if(homeRecyclerView!=null && homeRecyclerView.getAdapter()!=null){
-                                homeAdapter = homeRecyclerView.getAdapter();
-                            }
-                        }
-                        if(cityViewFragment!=null){
-                            cityRecyclerView = (RecyclerView)cityViewFragment.getView().findViewById(R.id.city_fragment_list);
-                            if(cityRecyclerView!=null && cityRecyclerView.getAdapter()!=null){
-                                homeAdapter = cityRecyclerView.getAdapter();
-                            }
-                        }
-
-                        if(homeAdapter==null){
-                            Toast.makeText(MainActivityScreen.this, "null :(", Toast.LENGTH_SHORT).show();
-                        }
-                        GlobalLists.fetchHomeData(getApplicationContext(), null, homeAdapter);
-                        //// TODO: 27/08/17 change this
-                        GlobalLists.fetchCityData(getApplicationContext(),"630",cityAdapter);
+                        }, 3000);
+                        GlobalLists.fetchHomeData(getApplicationContext(),null);
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
                     }
                 }
         );
-    }
+        /*recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        editTextSearch = (EditText) findViewById(R.id.editTextSearch);
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new CustomAdapter(GlobalLists.getHomeArticlesList());
+
+        recyclerView.setAdapter(adapter);
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //after the change calling the method and passing the search input
+                filter(editable.toString());
+            }
+        });
+    }
+    private void filter(String text) {
+        //new array list that will hold the filtered data
+        ArrayList<Article> filterdNames = new ArrayList<>();
+
+        //looping through existing elements
+        for (Article s : GlobalLists.getHomeArticlesList()) {
+            //if the existing elements contains the search input
+            if (s.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                //adding the element to filtered list
+                filterdNames.add(s);
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        adapter.filterList(filterdNames);
+    */}
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -187,4 +210,5 @@ public class MainActivityScreen extends AppCompatActivity
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
 }

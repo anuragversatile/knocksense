@@ -1,16 +1,23 @@
 package com.example.abhishek.knocksense;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListObserver;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -22,26 +29,30 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListObserver {
 
-    private final List<Article> mValues;
+    private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager;
 
-    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, RecyclerView recyclerView, final Context context) {
+
+    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        GlobalLists.getGlobalListsInstance().registerObserver("home",this);
     }
 
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType==0 ){
+        if(viewType==1 || viewType==2 ||viewType==3 ||viewType==4  ){
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.article_item_row, parent, false);
             return new SingleArticleViewHolder(view);
         }
-        if(viewType ==1){
+        if(viewType ==0){
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.article_big_item_row, parent, false);
             return new BigArticleViewHolder(view);
@@ -56,8 +67,8 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
         DateConverter dateConverter=new DateConverter();
-        if(position%2==0){
-            SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
+        if(position%5==1 || position%5==2 || position%5==3 || position%5==4){
+            final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
             holder.mItem = mValues.get(position);
             holder.title.setText(mValues.get(position).getTitle());
             holder.author.setText(mValues.get(position).getAuthor());
@@ -87,24 +98,25 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 }
             });
 
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (null != mListener) {
-//                        // Notify the active callbacks interface (the activity, if the
-//                        // fragment is attached to one) that an item has been selected.
-//                        mListener.onListFragmentInteraction(holder.mItem);
-//                    }
-//                }
-//            });
-//            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    //// TODO: 26-08-2017 save and share functionality
-//                }
-//            });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+
+                }
+            });
         }
-        else{
+        else {
             final BigArticleViewHolder holder=(BigArticleViewHolder) h;
 
             holder.mItem = mValues.get(position);
@@ -157,12 +169,18 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemViewType(int position) {
-        return position%2;
+        return position%5;
     }
 
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public void updateList(List<Article> articleList) {
+        mValues= articleList;
+        this.notifyDataSetChanged();
     }
 
     public class SingleArticleViewHolder extends RecyclerView.ViewHolder {

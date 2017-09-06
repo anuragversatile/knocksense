@@ -27,7 +27,7 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
     private final List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, RecyclerView recyclerView, final Context context) {
+    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

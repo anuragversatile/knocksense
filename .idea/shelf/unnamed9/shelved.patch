@@ -1,0 +1,146 @@
+Index: app/src/main/res/layout/fragment_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_search.xml	(date 1504427291000)
++++ app/src/main/res/layout/fragment_search.xml	(revision )
+@@ -1,20 +1,42 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="fill_parent"
++    android:layout_height="fill_parent"
+     android:orientation="vertical"
+-    android:background="#fff">
++    android:background="#E6E6E6">
+ 
+-    <ListView
+-        android:id="@android:id/list"
++    <View
++        android:id="@+id/view1"
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent"/>
++        android:layout_height="45dp"
++        android:layout_alignParentTop="true"
++        android:background="#FFFFFF"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="5dp"
++        android:layout_marginRight="5dp"/>
+ 
+-    <TextView
+-        android:id="@android:id/empty"
+-        android:text="No results found."
+-        android:gravity="center"
++    <SearchView
++        android:id="@+id/searchView1"
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent" />
++        android:layout_height="wrap_content"
++        android:layout_alignParentTop="true"
+ 
+-</LinearLayout>
+\ No newline at end of file
++        android:layout_marginTop="3dp"
++        android:layout_marginLeft="10dp"
++        android:layout_marginRight="10dp">
++
++    </SearchView>
++
++
++
++    <ListView
++        android:id="@+id/listview_search"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:layout_centerHorizontal="true"
++        android:layout_below="@+id/action_search"
++        android:layout_marginTop="25dp"
++        android:dividerHeight="5dp"
++        android:divider="#E6E6E6"/>
++
++</RelativeLayout>
+Index: app/src/main/res/layout/listtwo_searchresults.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/listtwo_searchresults.xml	(revision )
++++ app/src/main/res/layout/listtwo_searchresults.xml	(revision )
+@@ -0,0 +1,74 @@
++<?xml version="1.0" encoding="utf-8"?>
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:background="#FFFFFF"
++    android:layout_marginLeft="5dp"
++    android:layout_marginRight="5dp"
++    android:layout_height="match_parent">
++
++
++    <TextView
++        android:id="@+id/product_name"
++        android:layout_width="210dp"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="5dp"
++        android:text="Product Name"
++        android:textAppearance="?android:attr/textAppearanceMedium"
++        android:textColor="#000000"
++        android:textSize="18dp" />
++
++    <TextView
++        android:id="@+id/product_mrp"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_below="@+id/product_name"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="5dp"
++        android:text="MRP:"
++        android:textColor="#000000"
++        android:textAppearance="?android:attr/textAppearanceMedium"
++        android:textSize="14dp" />
++
++    <TextView
++        android:id="@+id/product_mrpvalue"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toRightOf="@+id/product_mrp"
++        android:layout_below="@+id/product_name"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="5dp"
++        android:text="Rs 100"
++        android:textColor="#000000"
++        android:textAppearance="?android:attr/textAppearanceMedium"
++        android:textSize="14dp" />
++
++    <TextView
++        android:id="@+id/product_bb"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toRightOf="@+id/product_mrpvalue"
++        android:layout_below="@+id/product_name"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="20dp"
++        android:text="BB Price:"
++        android:textAppearance="?android:attr/textAppearanceMedium"
++        android:textColor="#000000"
++        android:textSize="14dp" />
++
++    <TextView
++        android:id="@+id/product_bbvalue"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toRightOf="@+id/product_bb"
++        android:layout_below="@+id/product_name"
++        android:layout_marginTop="5dp"
++        android:layout_marginLeft="5dp"
++        android:text="Rs 95"
++        android:textAppearance="?android:attr/textAppearanceMedium"
++        android:textColor="#000000"
++        android:textSize="14dp" />
++
++
++</RelativeLayout>
++

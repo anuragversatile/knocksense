@@ -25,7 +25,7 @@ public class SelectCityScreen extends AppCompatActivity {
        selectedCity= CitiesID.getCityId(selectedCity);
         Log.d("count:",selectedCity);
 
-       //GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
+       GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.shared_preference_saved_city),selectedCity);

@@ -81,8 +81,8 @@ public class HomeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if (GlobalLists.isHomeDataLoaded() == true) {
-                recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener, recyclerView, getContext()));
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener));
+            if (GlobalLists.getHomeArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -93,18 +93,21 @@ public class HomeFragment extends Fragment {
                         if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
                             View view = layoutManager.findViewByPosition(lastVisible);
                             if (view == null) {
-                                Toast.makeText(getContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "last view ITS NULL", Toast.LENGTH_SHORT).show();
                             } else {
                                 //you have reached to the bottom of your recycler view
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
-                                GlobalLists.fetchHomeData(getContext(), date, recyclerView.getAdapter());
+                                Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
+                                GlobalLists.fetchHomeData(getContext(), date);
                             }
 
                         }
                     }
                 });
             } else {
+                GlobalLists.fetchHomeData(getContext(),null);
+                //// TODO: 03/09/17 close previous requests for home data
                 Toast.makeText(getActivity(), "Home Data not available!!!", Toast.LENGTH_SHORT).show();
             }
 

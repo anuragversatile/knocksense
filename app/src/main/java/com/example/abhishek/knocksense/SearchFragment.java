@@ -87,7 +87,7 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
         }
 
         List<String> filteredValues = new ArrayList<String>(mAllValues);
-        GlobalLists.fetchSearchData(getContext(),newText,null);
+        //GlobalLists.fetchSearchData(getContext(),newText,null);
 
 
         mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
