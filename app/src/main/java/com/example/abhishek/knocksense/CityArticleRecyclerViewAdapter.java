@@ -1,6 +1,7 @@
 package com.example.abhishek.knocksense;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
@@ -26,10 +28,12 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
 
     private final List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private  Context context;
 
-    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
+    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
+        this.context=context;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
        DateConverter dateConverter=new DateConverter();
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
@@ -87,8 +91,21 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
             @Override
             public void onClick(View v) {
                 //// TODO: 26-08-2017 save and share functionality
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/html");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+
+                try {
+                    context.startActivity(shareIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
             }
         });
+
     }
 
     @Override

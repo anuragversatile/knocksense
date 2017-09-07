@@ -31,7 +31,7 @@
             android:maxLines="3"
             android:paddingLeft="7.45dp"/>
 
-        <!--<LinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -58,6 +58,6 @@
 
                 android:text="12/08/2017"
                 android:paddingLeft="7.45dp"/>
-        </LinearLayout>-->
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

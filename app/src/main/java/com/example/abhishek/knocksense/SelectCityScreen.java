@@ -13,7 +13,16 @@ import com.example.abhishek.knocksense.components.GlobalLists;
 
 public class SelectCityScreen extends AppCompatActivity {
 
-    private String selectedCity;
+    private static String selectedCity;
+
+    public static String getSelectedCity() {
+        return selectedCity;
+    }
+
+    public static void setSelectedCity(String selectedCity) {
+        SelectCityScreen.selectedCity = selectedCity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,15 +31,15 @@ public class SelectCityScreen extends AppCompatActivity {
     public void onCitySelected(View view){
         TextView textView = (TextView) view;
         selectedCity = textView.getText().toString();
-       selectedCity= CitiesID.getCityId(selectedCity);
+       setSelectedCity(CitiesID.getCityId(selectedCity));
         Log.d("count:",selectedCity);
 
-       GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
+
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.shared_preference_saved_city),selectedCity);
+        editor.putString(getString(R.string.shared_preference_saved_city),getSelectedCity());
         editor.commit();
-
+        GlobalLists.fetchCityData(getApplicationContext(),getSelectedCity(),null);
         Intent intent = new Intent(this, MainActivityScreen.class);
         startActivity(intent);
 //// TODO: 19-08-2017 cities should be ordered alphabetically

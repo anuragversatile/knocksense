@@ -79,7 +79,7 @@ public class CityFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener));
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener,context));
             if (GlobalLists.getCityArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
@@ -97,7 +97,7 @@ public class CityFragment extends Fragment {
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
                                 //// TODO: 03/09/17 fetch from shared prefrences
-                                GlobalLists.fetchCityData(getContext(),"631", null);
+                                GlobalLists.fetchCityData(getContext(),SelectCityScreen.getSelectedCity(), null);
                             }
 
                         }
