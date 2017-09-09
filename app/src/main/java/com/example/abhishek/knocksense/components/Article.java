@@ -19,12 +19,23 @@ public class Article {
     @SerializedName("better_featured_image.source_url")
     private String featuredImage;
     private String link;
+    private String[] categories;
 
 private String name;
-    public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] articleImages, String link) {
+
+    public String[] getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String[] categories) {
+        this.categories = categories;
+    }
+
+    public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] categories, String link) {
 
         this.id = id;
         this.name = name;
+
         this.count = count;
         this.date = date;
         this.author = author;
@@ -32,6 +43,7 @@ private String name;
         this.content = content;
         this.featuredImage = featuredImage;
         this.link = link;
+        this.categories=categories;
 
     }
 

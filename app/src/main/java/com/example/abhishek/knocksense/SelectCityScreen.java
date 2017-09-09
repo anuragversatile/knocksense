@@ -1,6 +1,5 @@
 package com.example.abhishek.knocksense;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,14 +13,14 @@ import com.example.abhishek.knocksense.components.ListNameConstants;
 
 public class SelectCityScreen extends AppCompatActivity {
 
-    private static String selectedCity;
+    private static String selectedCityId;
 
-    public static String getSelectedCity() {
-        return SelectCityScreen.selectedCity;
+    public static String getSelectedCityId() {
+        return SelectCityScreen.selectedCityId;
     }
 
-    public static void setSelectedCity(String selectedCity) {
-        SelectCityScreen.selectedCity = selectedCity;
+    public static void setSelectedCityId(String selectedCityId) {
+        SelectCityScreen.selectedCityId = selectedCityId;
     }
 
     @Override
@@ -31,15 +30,15 @@ public class SelectCityScreen extends AppCompatActivity {
     }
     public void onCitySelected(View view){
         TextView textView = (TextView) view;
-        selectedCity = textView.getText().toString();
-       setSelectedCity(CitiesID.getCityId(selectedCity));
+        String selectedCity = textView.getText().toString().toUpperCase();
+       setSelectedCityId(CitiesID.getCityId(selectedCity));
 
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(getString(R.string.saved_selected_city), getSelectedCity());
+        editor.putString(getString(R.string.saved_selected_city), getSelectedCityId());
         editor.commit();
-        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,false,getSelectedCity());
+        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,false, getSelectedCityId());
 
 
 
