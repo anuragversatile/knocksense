@@ -47,6 +47,7 @@ public class CategoryFragmentFragment extends Fragment  {
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
+
         return fragment;
     }
 

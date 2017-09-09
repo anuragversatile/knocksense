@@ -35,10 +35,12 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+    private List<Article> authorList;
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
 private List<ListObserver> categoryListObserverList;
+    private List<ListObserver> authorListObserverList;
     private  static GlobalLists instance=null;
 
 
@@ -46,9 +48,11 @@ private List<ListObserver> categoryListObserverList;
         cityArticlesList=new ArrayList<>();
         homeArticlesList=new ArrayList<>();
         categoryArticlesList=new ArrayList<>();
+        authorList=new ArrayList<>();
         cityListObserverList=new ArrayList<>();
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
+        authorListObserverList=new ArrayList<>();
     }
 
     public static GlobalLists getGlobalListsInstance(){
@@ -85,6 +89,14 @@ private List<ListObserver> categoryListObserverList;
 
     private static void setHomeArticlesList(List<Article> articles) {
         getGlobalListsInstance().homeArticlesList = articles;
+    }
+
+    public static List<Article> getAuthorList() {
+        return getGlobalListsInstance().authorList;
+    }
+
+    public static void setAuthorList(List<Article> authorList) {
+        getGlobalListsInstance().authorList = authorList;
     }
 
     private static void fetchHomeData(Context context, String d) {
@@ -253,7 +265,57 @@ private List<ListObserver> categoryListObserverList;
 
 
     }
+    private static void fetchAuthorData(Context context,String d) {
+        final String date = d;
+        String url = UrlConstants.getAllAuthorsURL();
+        if(date!=null){
+            url = UrlConstants.getAllArticlesBeforeDate(date);
+        }
 
+        final List<Article> articleList = new ArrayList<>();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONArray ParentArray = new JSONArray(s);
+                            for (int i = 0; i < ParentArray.length(); i++) {
+                                JSONObject ParentObject = ParentArray.getJSONObject(i);
+                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                articleModel.setId(ParentObject.getString("id"));
+                                articleModel.setDate(ParentObject.getString("name"));
+                                articleList.add(articleModel);
+                                if (articleList.size() == ParentArray.length()) {
+                                    if (date != null) {
+                                        //having date means that it has to append
+                                        List<Article> globalArticles = GlobalLists.getAuthorList();
+                                        globalArticles.addAll(articleList);
+                                        GlobalLists.setAuthorList(globalArticles);
+                                    } else {
+                                        GlobalLists.setAuthorList(articleList);
+                                    }
+                                    Integer newItemCount= (date==null)?null:articleList.size();
+                                    getGlobalListsInstance().notifyListObservers(AUTHOR,newItemCount);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                volleyError.printStackTrace();
+            }
+        });
+        stringRequest.setTag(AUTHOR);
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+
+    }
     public static void fireRefreshData(Context context, String listType, String date, String id){
         /*
             * id :? selectedCityId, authorId, categoryId, etc
@@ -278,7 +340,10 @@ private List<ListObserver> categoryListObserverList;
                 break;
             case AUTHOR:
                 //// TODO: 09/09/17
+                requestQueue.cancelAll(AUTHOR);
+                fetchAuthorData(context, date);
                 break;
+
         }
 
     }
@@ -294,6 +359,9 @@ private List<ListObserver> categoryListObserverList;
                 break;
             case "category":
                 categoryListObserverList.add(listObserver);
+                break;
+            case "author":
+                authorListObserverList.add(listObserver);
                 break;
             default:
                 Log.e("List observers", "registerObserver: incorrect string passed");
@@ -312,7 +380,9 @@ private List<ListObserver> categoryListObserverList;
             case "category":
                 categoryListObserverList.remove(listObserver);
                 break;
-
+            case "author":
+                authorListObserverList.remove(listObserver);
+                break;
             default:
                 Log.e("List observers", "removeObserver: incorrect string passed");
         }
@@ -337,7 +407,11 @@ private List<ListObserver> categoryListObserverList;
                     o.updateList(categoryArticlesList, newItemCount);
                 }
                 break;
-
+            case AUTHOR:
+                for(ListObserver o: authorListObserverList){
+                    o.updateList(authorList, newItemCount);
+                }
+                break;
             default:
                 Log.e("List observers", "registerObserver: incorrect string passed");
         }
