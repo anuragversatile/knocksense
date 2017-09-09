@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -79,8 +80,8 @@ public class CityFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if (GlobalLists.isCityDataLoaded() == true) {
-                recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener, recyclerView, getContext()));
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener,context));
+            if (GlobalLists.getCityArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -96,14 +97,16 @@ public class CityFragment extends Fragment {
                                 //you have reached to the bottom of your recycler view
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
-                                GlobalLists.fetchCityData(getContext(), date, recyclerView.getAdapter());
+                                //// TODO: 03/09/17 fetch from shared prefrences
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, date ,SelectCityScreen.getSelectedCity());
                             }
 
                         }
                     }
                 });
             } else {
-                Toast.makeText(getActivity(), "City Data not available!!!", Toast.LENGTH_SHORT).show();
+                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, null, SelectCityScreen.getSelectedCity());
+                Toast.makeText(getActivity(), "City Data not available. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
         }
         return view;

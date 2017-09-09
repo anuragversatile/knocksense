@@ -10,10 +10,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 
 public class SelectCityScreen extends AppCompatActivity {
 
-    private String selectedCity;
+    private static String selectedCity;
+
+    public static String getSelectedCity() {
+        return SelectCityScreen.selectedCity;
+    }
+
+    public static void setSelectedCity(String selectedCity) {
+        SelectCityScreen.selectedCity = selectedCity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +32,17 @@ public class SelectCityScreen extends AppCompatActivity {
     public void onCitySelected(View view){
         TextView textView = (TextView) view;
         selectedCity = textView.getText().toString();
-       selectedCity= CitiesID.getCityId(selectedCity);
-        Log.d("count:",selectedCity);
+       setSelectedCity(CitiesID.getCityId(selectedCity));
 
-       //GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
+
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.shared_preference_saved_city),selectedCity);
+        editor.putString(getString(R.string.shared_preference_saved_city),getSelectedCity());
         editor.commit();
+        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,null,getSelectedCity());
+
+        selectedCity = sharedPref.getString(getString(R.string.shared_preference_saved_city), "ERROR HERE!!!");
+        Log.e("Select city", "selectedCity="+selectedCity,null);
 
         Intent intent = new Intent(this, MainActivityScreen.class);
         startActivity(intent);

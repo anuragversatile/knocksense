@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -81,8 +82,8 @@ public class HomeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if (GlobalLists.isHomeDataLoaded() == true) {
-                recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener, recyclerView, getContext()));
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener,context));
+            if (GlobalLists.getHomeArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -93,19 +94,21 @@ public class HomeFragment extends Fragment {
                         if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
                             View view = layoutManager.findViewByPosition(lastVisible);
                             if (view == null) {
-                                Toast.makeText(getContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "last view ITS NULL", Toast.LENGTH_SHORT).show();
                             } else {
                                 //you have reached to the bottom of your recycler view
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
-                                GlobalLists.fetchHomeData(getContext(), date, recyclerView.getAdapter());
+                                Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, date, null);
                             }
 
                         }
                     }
                 });
             } else {
-                Toast.makeText(getActivity(), "Home Data not available!!!", Toast.LENGTH_SHORT).show();
+                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, null, null);
+                Toast.makeText(getActivity(), "Home Data not available yet. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
 
         }

@@ -13,29 +13,45 @@
         android:layout_height="match_parent"
         >
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/two_item_row_image_left"
-            android:layout_alignParentStart="true"
-            android:scaleType="fitXY"/>
-
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            android:id="@+id/two_item_row_left_image"
+            android:padding="10dp"/>
+        <ImageView
+            android:id="@+id/article_item_row_more_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="130dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_more_vert_white_24dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/view_type_left"
+            android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
             android:layout_alignParentBottom="true">
             <TextView
                 android:id="@+id/two_item_row_left_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-
+                android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
-                android:maxLines="3"/>
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black_overlay"
+                android:maxLines="3"
+                android:paddingLeft="7.45dp"
+
+
+            android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,15 +64,17 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:paddingRight="15dp"
-                    android:text="author name" />
+                     />
 
                 <TextView
                     android:id="@+id/two_item_row_left_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="12/08/2017" />
+                     />
             </LinearLayout>
+
+
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,29 +85,44 @@
         android:layout_height="match_parent"
         >
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/two_item_row_image_right"
-            android:layout_alignParentStart="true"
-            android:scaleType="fitXY"/>
-
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            android:padding="10dp"
+            android:id="@+id/two_item_row_right_image"/>
+        <ImageView
+            android:id="@+id/article_item_row_more_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="130dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_more_vert_white_24dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/view_type"
+            android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
             android:layout_alignParentBottom="true">
+
             <TextView
                 android:id="@+id/two_item_row_right_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:textColor="@color/white"
-
-                android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
-                android:maxLines="3"/>
+                android:paddingTop="5dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/black_overlay"
+                android:maxLines="3"
+                android:paddingLeft="7.45dp"
+            android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -102,15 +135,19 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:paddingRight="15dp"
-                    android:text="author name" />
+                   />
 
                 <TextView
                     android:id="@+id/two_item_row_right_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="12/08/2017" />
+                 />
             </LinearLayout>
+
+
+
+
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

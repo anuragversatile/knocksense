@@ -2,10 +2,12 @@ package com.example.abhishek.knocksense.components;
 
 import android.app.Application;
 import android.content.Context;
+import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -19,87 +21,73 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.abhishek.knocksense.components.ListNameConstants.AUTHOR;
+import static com.example.abhishek.knocksense.components.ListNameConstants.CATEGORY;
+import static com.example.abhishek.knocksense.components.ListNameConstants.CITY;
+import static com.example.abhishek.knocksense.components.ListNameConstants.HOME;
+
 /**
  * Created by anuragdwivedi on 21/08/17.
  */
 
-public class GlobalLists extends Application {
-    private static List<Article> cityArticlesList = new ArrayList<>();
-    private static List<Article> homeArticlesList = new ArrayList<>();
-    private static List<Article> categoriesList = new ArrayList<>();
-    private static List<Article> searchList=new ArrayList<>();
-    private static boolean cityDataLoaded = false;
-    private static boolean homeDataLoaded = false;
-    private static boolean categoryDataLoaded = false;
-    private static boolean searchDataLoaded=false;
+public class GlobalLists extends Application implements ListPublisher {
 
-    public static boolean isSearchDataLoaded() {
-        return searchDataLoaded;
+    private  List<Article> cityArticlesList;
+    private  List<Article> homeArticlesList;
+    private List<Article> categoryArticlesList;
+
+    private  List<ListObserver> cityListObserverList;
+    private  List<ListObserver> homeListObserverList;
+private List<ListObserver> categoryListObserverList;
+    private  static GlobalLists instance=null;
+
+
+    private GlobalLists(){
+        cityArticlesList=new ArrayList<>();
+        homeArticlesList=new ArrayList<>();
+        categoryArticlesList=new ArrayList<>();
+        cityListObserverList=new ArrayList<>();
+        homeListObserverList=new ArrayList<>();
+        categoryListObserverList=new ArrayList<>();
     }
 
-
-    public static void setSearchDataLoaded(boolean searchDataLoaded) {
-        GlobalLists.searchDataLoaded = searchDataLoaded;
+    public static GlobalLists getGlobalListsInstance(){
+        if(instance==null){
+            instance = new GlobalLists();
+        }
+        return instance;
     }
 
     public static Context getContext() {
         return getContext();
     }
 
-    public static boolean isCityDataLoaded() {
-        return cityDataLoaded;
+    public static List<Article> getCategoryArticlesList() {
+        return getGlobalListsInstance().categoryArticlesList;
     }
 
-    public static void setCityDataLoaded(boolean cityDataLoaded) {
-        GlobalLists.cityDataLoaded = cityDataLoaded;
-    }
-
-    public static boolean isHomeDataLoaded() {
-        return homeDataLoaded;
-    }
-
-    public static void setHomeDataLoaded(boolean homeDataLoaded) {
-        GlobalLists.homeDataLoaded = homeDataLoaded;
-    }
-
-    public static boolean isCategoryDataLoaded() {
-        return categoryDataLoaded;
-    }
-
-    public static void setCategoryDataLoaded(boolean categoryDataLoaded) {
-        GlobalLists.categoryDataLoaded = categoryDataLoaded;
+    public static void setCategoryArticlesList(List<Article> categoryArticlesList) {
+        getGlobalListsInstance().categoryArticlesList = categoryArticlesList;
     }
 
     public static List<Article> getCityArticlesList() {
-        return GlobalLists.cityArticlesList;
+        return getGlobalListsInstance().cityArticlesList;
     }
 
-    public static void setCityArticlesList(List<Article> cityArticlesList) {
-        GlobalLists.cityArticlesList = cityArticlesList;
+    private static void setCityArticlesList(List<Article> cityArticlesList) {
+        getGlobalListsInstance().cityArticlesList = cityArticlesList;
     }
 
 
     public static List<Article> getHomeArticlesList() {
-        return GlobalLists.homeArticlesList;
+        return getGlobalListsInstance().homeArticlesList;
     }
 
-    public static void setHomeArticlesList(List<Article> articles) {
-        GlobalLists.homeArticlesList = articles;
+    private static void setHomeArticlesList(List<Article> articles) {
+        getGlobalListsInstance().homeArticlesList = articles;
     }
 
-    public static List<Article> getCategoriesList() {
-        return GlobalLists.categoriesList;
-    }
-
-    public static void setCategoriesList(List<Article> categoriesList) {
-        GlobalLists.categoriesList = categoriesList;
-    }
-
-    public static List<Article> getSearchList() {
-        return searchList;
-    }
-
-    public static void fetchHomeData(Context context, String d, final RecyclerView.Adapter adapter) {
+    private static void fetchHomeData(Context context, String d) {
         final String date = d;
         String url = UrlConstants.getAllArticlesURL();
         if (date != null) {
@@ -107,7 +95,6 @@ public class GlobalLists extends Application {
         }
 
         final List<Article> articleList = new ArrayList<>();
-        GlobalLists.setHomeDataLoaded(false);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -126,25 +113,18 @@ public class GlobalLists extends Application {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
 
                                 articleList.add(articleModel);
-                                Log.d(articleModel.getFeaturedImage(),"Count");
                                 if (articleList.size() == ParentArray.length()) {
-                                    GlobalLists.setHomeDataLoaded(true);
-                                }
-                            }
-                            if (GlobalLists.isHomeDataLoaded()) {
-                                if (date != null) {
-                                    //having date means that it has to append
-                                    List<Article> globalArticles = GlobalLists.getHomeArticlesList();
-                                    globalArticles.addAll(articleList);
-                                    GlobalLists.setHomeArticlesList(globalArticles);
-                                    if (adapter != null) {
-                                        adapter.notifyDataSetChanged();
+                                    if (date != null) {
+                                        //having date means that it has to append
+                                        List<Article> globalArticles = GlobalLists.getHomeArticlesList();
+                                        globalArticles.addAll(articleList);
+                                        GlobalLists.setHomeArticlesList(globalArticles);
+                                    } else {
+                                        GlobalLists.setHomeArticlesList(articleList);
+
                                     }
-                                } else {
-                                    GlobalLists.setHomeArticlesList(articleList);
-                                    if (adapter != null) {
-                                        adapter.notifyDataSetChanged();
-                                    }
+                                    Integer newItemCount = (date==null)?null:articleList.size();
+                                    getGlobalListsInstance().notifyListObservers(HOME,newItemCount);
                                 }
                             }
                         } catch (JSONException e) {
@@ -158,15 +138,20 @@ public class GlobalLists extends Application {
                 volleyError.printStackTrace();
             }
         });
+        stringRequest.setTag(HOME);
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
     }
 
-    public static void fetchCityData(Context context, String selectedCityId, final RecyclerView.Adapter adapter) {
+    private static void fetchCityData(Context context, String selectedCityId, String d) {
+        final String date = d;
+        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(selectedCityId);
+        if(date!=null){
+            url = UrlConstants.getAllArticlesBeforeDate(date);
+        }
 
         final List<Article> articleList = new ArrayList<>();
-        GlobalLists.setCityDataLoaded(false);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getSpecificCategoryOrCityArticlesURL(selectedCityId),
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -184,15 +169,16 @@ public class GlobalLists extends Application {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                    GlobalLists.setCityDataLoaded(true);
-                                }
-                            }
-                            Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
-                            Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
-                            if (GlobalLists.isCityDataLoaded()) {
-                                GlobalLists.setCityArticlesList(articleList);
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
+                                    if (date != null) {
+                                        //having date means that it has to append
+                                        List<Article> globalArticles = GlobalLists.getCityArticlesList();
+                                        globalArticles.addAll(articleList);
+                                        GlobalLists.setCityArticlesList(globalArticles);
+                                    } else {
+                                        GlobalLists.setCityArticlesList(articleList);
+                                    }
+                                    Integer newItemCount= (date==null)?null:articleList.size();
+                                    getGlobalListsInstance().notifyListObservers(CITY,newItemCount);
                                 }
                             }
 
@@ -207,56 +193,20 @@ public class GlobalLists extends Application {
                 volleyError.printStackTrace();
             }
         });
+        stringRequest.setTag(CITY);
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
 
     }
-
-    public static void fetchCategoryData(Context context, RecyclerView.Adapter adapter) {
-//        final List<Article> articleList = new ArrayList<>();
-//        GlobalLists.setCategoryDataLoaded(false);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getAllCategoriesURL(),
-//                            new Response.Listener<String>() {
-//                                @Override
-//                                public void onResponse(String s) {
-//                                    try {
-//                                        Gson gson = new Gson();
-//                                        JSONArray ParentArray = new JSONArray(s);
-//                                        for (int i = 0; i < ParentArray.length(); i++) {
-//                                            JSONObject ParentObject = ParentArray.getJSONObject(i);
-//                                            Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
-//                                            articleModel.setId(ParentObject.getString("id"));
-//                                            articleModel.setDate(ParentObject.getString("date"));
-//                                            articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
-//                                            articleModel.setAuthor(ParentObject.getString("author"));
-//                                            articleModel.setLink(ParentObject.getString("link"));
-//                                            articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
-//                                            Log.d("Article modal", "onResponse:" + articleModel);
-//                                            articleList.add(articleModel);
-//                                            if (articleList.size() == ParentArray.length()) {
-//                                                GlobalLists.setCategoryDataLoaded(true);
-//                                            }
-//                                        }
-//                                        GlobalLists.setCategoriesList(articleList);
-//                                        //// TODO: 21-08-2017 use timestamps to determine which last timestamp data is in the list the after fetching compare
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//
-//                volleyError.printStackTrace();
-//            }
-//        });
-//        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-    }
-   /* public static void fetchAuthorData(Context context, String selectedCityId, final RecyclerView.Adapter adapter) {
+    private static void fetchCategoryData(Context context, String categoryId, String d) {
+        final String date = d;
+        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL("7006");
+        if(date!=null){
+            url = UrlConstants.getAllArticlesBeforeDate(date);
+        }
 
         final List<Article> articleList = new ArrayList<>();
-        GlobalLists.setCityDataLoaded(false);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getAllAuthorsURL(),
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -267,18 +217,23 @@ public class GlobalLists extends Application {
                                 JSONObject ParentObject = ParentArray.getJSONObject(i);
                                 Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
                                 articleModel.setId(ParentObject.getString("id"));
-                                articleModel.setName(ParentObject.getString("name"));
-
+                                articleModel.setDate(ParentObject.getString("date"));
+                                articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
+                                articleModel.setAuthor(ParentObject.getString("author"));
+                                articleModel.setLink(ParentObject.getString("link"));
+                                articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                    GlobalLists.setCityDataLoaded(true);
-                                }
-                            }
-                            Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
-                            if (GlobalLists.isCityDataLoaded()) {
-                                GlobalLists.setCityArticlesList(articleList);
-                                if (adapter != null) {
-                                    adapter.notifyDataSetChanged();
+                                    if (date != null) {
+                                        //having date means that it has to append
+                                        List<Article> globalArticles = GlobalLists.getCategoryArticlesList();
+                                        globalArticles.addAll(articleList);
+                                        GlobalLists.setCategoryArticlesList(globalArticles);
+                                    } else {
+                                        GlobalLists.setCategoryArticlesList(articleList);
+                                    }
+                                    Integer newItemCount= (date==null)?null:articleList.size();
+                                    getGlobalListsInstance().notifyListObservers(CATEGORY,newItemCount);
                                 }
                             }
 
@@ -293,60 +248,99 @@ public class GlobalLists extends Application {
                 volleyError.printStackTrace();
             }
         });
+        stringRequest.setTag(CATEGORY);
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
 
     }
 
-*/
-   public static void fetchSearchData(Context context, String searchString, final RecyclerView.Adapter adapter) {
+    public static void fireRefreshData(Context context, String listType, String date, String id){
+        /*
+            * id :? selectedCityId, authorId, categoryId, etc
+            * listType :? home, city, author, category
+        */
+        RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
+        switch (listType){
+            case HOME:
+                //cancel previous request before starting new one
+                requestQueue.cancelAll(HOME);
+                fetchHomeData(context, date);
+                break;
+            case CITY:
+                //cancel previous request before starting new one
+                requestQueue.cancelAll(CITY);
+                fetchCityData(context, id, date);
+                break;
+            case CATEGORY:
+                //// TODO: 09/09/17
+                requestQueue.cancelAll(CATEGORY);
+                fetchCategoryData(context, id, date);
+                break;
+            case AUTHOR:
+                //// TODO: 09/09/17
+                break;
+        }
 
-       final List<Article> articleList = new ArrayList<>();
-       GlobalLists.setSearchDataLoaded(false);
-       StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getSearchUrl(searchString),
-               new Response.Listener<String>() {
-                   @Override
-                   public void onResponse(String s) {
-                       try {
-                           Gson gson = new Gson();
-                           JSONArray ParentArray = new JSONArray(s);
-                           for (int i = 0; i < ParentArray.length(); i++) {
-                               JSONObject ParentObject = ParentArray.getJSONObject(i);
-                               Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
-                               articleModel.setId(ParentObject.getString("id"));
-                               articleModel.setDate(ParentObject.getString("date"));
-                               articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
-                               articleModel.setAuthor(ParentObject.getString("author"));
-                               articleModel.setLink(ParentObject.getString("link"));
-                               articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
-                               articleList.add(articleModel);
-                               if (articleList.size() == ParentArray.length()) {
-                                   GlobalLists.setCityDataLoaded(true);
-                               }
-                           }
-                           Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
-                           Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
-                           if (GlobalLists.isCityDataLoaded()) {
-                               GlobalLists.setCityArticlesList(articleList);
-                               if (adapter != null) {
-                                   adapter.notifyDataSetChanged();
-                               }
-                           }
+    }
 
-                       } catch (JSONException e) {
-                           e.printStackTrace();
-                       }
-                   }
-               }, new Response.ErrorListener() {
-           @Override
-           public void onErrorResponse(VolleyError volleyError) {
+    @Override
+    public void registerObserver(String listType, ListObserver listObserver) {
+        switch (listType){
+            case "home":
+                homeListObserverList.add(listObserver);
+                break;
+            case "city":
+                cityListObserverList.add(listObserver);
+                break;
+            case "category":
+                categoryListObserverList.add(listObserver);
+                break;
+            default:
+                Log.e("List observers", "registerObserver: incorrect string passed");
+        }
+    }
 
-               volleyError.printStackTrace();
-           }
-       });
-       VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    @Override
+    public void removeObserver(String listType, ListObserver listObserver) {
+        switch (listType){
+            case "home":
+                homeListObserverList.remove(listObserver);
+                break;
+            case "city":
+                cityListObserverList.remove(listObserver);
+                break;
+            case "category":
+                categoryListObserverList.remove(listObserver);
+                break;
 
+            default:
+                Log.e("List observers", "removeObserver: incorrect string passed");
+        }
 
-   }
+    }
 
+    @Override
+    public void notifyListObservers(String listType, Integer newItemCount) {
+        switch (listType){
+            case HOME:
+                for(ListObserver o: homeListObserverList){
+                    o.updateList(homeArticlesList, newItemCount);
+                }
+                break;
+            case CITY:
+                for(ListObserver o: cityListObserverList){
+                    o.updateList(cityArticlesList, newItemCount);
+                }
+                break;
+            case CATEGORY:
+                for(ListObserver o: categoryListObserverList){
+                    o.updateList(categoryArticlesList, newItemCount);
+                }
+                break;
+
+            default:
+                Log.e("List observers", "registerObserver: incorrect string passed");
+        }
+
+    }
 }

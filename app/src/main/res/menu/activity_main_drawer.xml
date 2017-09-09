@@ -34,17 +34,17 @@
                 android:id="@+id/nav_city"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Change City" />
-            <item
-                android:id="@+id/nav_Entertainment"
-                android:title="Entertainment" />
+
+            android:titl <item
+            android:id="@+id/nav_Entertainment"
+            android:title="Entertainment" />
             <item
                 android:id="@+id/KnockKnock"
 
                 android:title="Knock Knock" />
             <item
                 android:id="@+id/News"
-
-                android:title="News" />
+              android:title="News" />
             <item
                 android:id="@+id/Sports"
 

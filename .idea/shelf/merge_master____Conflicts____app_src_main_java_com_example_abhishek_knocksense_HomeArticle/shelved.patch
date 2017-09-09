@@ -1,0 +1,918 @@
+Index: app/src/main/java/com/example/abhishek/knocksense/SelectCityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SelectCityScreen.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/SelectCityScreen.java	(revision )
+@@ -25,7 +25,11 @@
+        selectedCity= CitiesID.getCityId(selectedCity);
+         Log.d("count:",selectedCity);
+ 
++<<<<<<< HEAD
+        GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
++=======
++       //GlobalLists.fetchCityData(getApplicationContext(),selectedCity,null);
++>>>>>>> master
+         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+         SharedPreferences.Editor editor = sharedPref.edit();
+         editor.putString(getString(R.string.shared_preference_saved_city),selectedCity);
+Index: app/src/main/res/layout/article_two_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_two_item_row.xml	(date 1504669893000)
++++ app/src/main/res/layout/article_two_item_row.xml	(revision )
+@@ -12,6 +12,16 @@
+         android:layout_width="0dp"
+         android:layout_height="match_parent"
+         >
++<<<<<<< HEAD
++=======
++        <ImageView
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:id="@+id/two_item_row_image_left"
++            android:layout_alignParentStart="true"
++            android:scaleType="fitXY"/>
++
++>>>>>>> master
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+@@ -24,6 +34,11 @@
+                 android:id="@+id/two_item_row_left_content"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
++<<<<<<< HEAD
++=======
++                android:textColor="@color/white"
++
++>>>>>>> master
+                 android:paddingBottom="5dp"
+                 android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
+                 android:maxLines="3"/>
+@@ -57,6 +72,16 @@
+         android:layout_width="0dp"
+         android:layout_height="match_parent"
+         >
++<<<<<<< HEAD
++=======
++        <ImageView
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:id="@+id/two_item_row_image_right"
++            android:layout_alignParentStart="true"
++            android:scaleType="fitXY"/>
++
++>>>>>>> master
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+@@ -70,6 +95,11 @@
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:paddingBottom="5dp"
++<<<<<<< HEAD
++=======
++                android:textColor="@color/white"
++
++>>>>>>> master
+                 android:text="this is text which will truncate after three lines.....jajajsbhgcsdjcbdsjcsbvjvhsvjchsjhvcsjcbsdcnskjcbksudhcskjcbkscksjcbksbcdasdasdasdadsaiusbdsjchgkjgthve ghgk jrhg hu rhjrh kjrhkj hh kjhrkthkrjh jhjkh krjhk END"
+                 android:maxLines="3"/>
+ 
+\ No newline at end of file
+Index: app/src/main/res/layout/article_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_item_row.xml	(date 1504669893000)
++++ app/src/main/res/layout/article_item_row.xml	(revision )
+@@ -26,6 +26,10 @@
+             android:maxLines="3"
+             android:paddingLeft="7.45dp"
+             android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
++<<<<<<< HEAD
++=======
++            android:textSize="16dp"
++>>>>>>> master
+             android:textStyle="bold" />
+ 
+         <TextView
+@@ -35,6 +39,11 @@
+             android:maxLines="1"
+             android:paddingLeft="7.45dp"
+             android:text="Author name"
++<<<<<<< HEAD
++=======
++
++            android:textSize="12dp"
++>>>>>>> master
+             android:textStyle="bold" />
+ 
+         <TextView
+@@ -42,6 +51,10 @@
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:maxLines="1"
++<<<<<<< HEAD
++=======
++            android:textSize="9dp"
++>>>>>>> master
+             android:paddingLeft="7.45dp"
+             android:textStyle="bold" />
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java	(revision )
+@@ -25,9 +25,15 @@
+             GlobalLists.fetchCityData(getApplicationContext(), CitiesID.getCityId(selectedCity), null);
+         }
+         //// TODO: 27-08-2017 change this
++<<<<<<< HEAD
+         GlobalLists.fetchCityData(getApplicationContext(),"631", null);
+         GlobalLists.fetchHomeData(getApplicationContext(), null);
+ //        GlobalLists.fetchCategoryData(getApplicationContext(), null);
++=======
++        GlobalLists.fetchCityData(getApplicationContext(), "631", null);
++        GlobalLists.fetchHomeData(getApplicationContext(), null, null);
++        GlobalLists.fetchCategoryData(getApplicationContext(), null);
++>>>>>>> master
+        // GlobalLists.fetchAuthorData(GlobalLists.getContext(),null,null);
+ 
+         new Handler().postDelayed(new Runnable() {
+Index: app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java	(revision )
+@@ -87,7 +87,11 @@
+         }
+ 
+         List<String> filteredValues = new ArrayList<String>(mAllValues);
++<<<<<<< HEAD
+         //GlobalLists.fetchSearchData(getContext(),newText,null);
++=======
++        GlobalLists.fetchSearchData(getContext(),newText,null);
++>>>>>>> master
+ 
+ 
+         mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
+Index: app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(revision )
+@@ -3,9 +3,12 @@
+ import android.app.FragmentManager;
+ import android.content.Context;
+ import android.graphics.Bitmap;
++<<<<<<< HEAD
+ import android.support.v4.app.DialogFragment;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentTransaction;
++=======
++>>>>>>> master
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.View;
+@@ -16,8 +19,11 @@
+ 
+ import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++<<<<<<< HEAD
+ import com.example.abhishek.knocksense.components.GlobalLists;
+ import com.example.abhishek.knocksense.components.ListObserver;
++=======
++>>>>>>> master
+ import com.nostra13.universalimageloader.core.ImageLoader;
+ import com.nostra13.universalimageloader.core.assist.FailReason;
+ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+@@ -29,7 +35,11 @@
+  * specified {@link OnListFragmentInteractionListener}.
+  * TODO: Replace the implementation with code for your data type.
+  */
++<<<<<<< HEAD
+ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListObserver {
++=======
++public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
++>>>>>>> master
+ 
+     private List<Article> mValues;
+     private final OnListFragmentInteractionListener mListener;
+@@ -47,17 +57,34 @@
+ 
+     @Override
+     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
++<<<<<<< HEAD
+         if(viewType==1 || viewType==2 ||viewType==3 ||viewType==4  ){
++=======
++        if(viewType==1 || viewType==2 || viewType==3 || viewType==4 ){
++>>>>>>> master
+             View view = LayoutInflater.from(parent.getContext())
+                     .inflate(R.layout.article_item_row, parent, false);
+             return new SingleArticleViewHolder(view);
+         }
++<<<<<<< HEAD
+         if(viewType ==0){
++=======
++       if(viewType ==0){
++>>>>>>> master
+             View view = LayoutInflater.from(parent.getContext())
+                     .inflate(R.layout.article_big_item_row, parent, false);
+             return new BigArticleViewHolder(view);
+         }
++<<<<<<< HEAD
+         if(viewType==-999){
++=======
++       /* if (viewType==5 || viewType==6)
++        {
++            View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.ar,parent,false);
++            return new TwoArticleViewHolder(view);
++        }
++       */ if(viewType==-999){
++>>>>>>> master
+             return null;
+         }
+         return null;
+@@ -66,15 +93,26 @@
+ 
+     @Override
+     public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
++<<<<<<< HEAD
+         DateConverter dateConverter=new DateConverter();
+         if(position%5==1 || position%5==2 || position%5==3 || position%5==4){
+             final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
++=======
++        DateConverter dateConverter = new DateConverter();
++        if (position % 5== 1 || position % 5 == 2 || position % 5 == 3 || position % 5 == 4) {
++
++            SingleArticleViewHolder holder = (SingleArticleViewHolder) h;
++>>>>>>> master
+             holder.mItem = mValues.get(position);
+             holder.title.setText(mValues.get(position).getTitle());
+             holder.author.setText(mValues.get(position).getAuthor());
+             holder.date.setText(mValues.get(position).getDate());
+ 
++<<<<<<< HEAD
+             holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++=======
++            holder.date.setText(dateConverter.getDate(mValues.get(position).getDate()) + " " + dateConverter.getMonth(mValues.get(position).getDate()) + " " + dateConverter.getYear(mValues.get(position).getDate()));
++>>>>>>> master
+ 
+             ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+                 @Override
+@@ -98,6 +136,7 @@
+                 }
+             });
+ 
++<<<<<<< HEAD
+             holder.mView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+@@ -123,7 +162,32 @@
+             holder.title.setText(mValues.get(position).getTitle());
+           //  holder.author.setText(mValues.get(position).getAuthor());
+            // holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++=======
++//            holder.mView.setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    if (null != mListener) {
++//                        // Notify the active callbacks interface (the activity, if the
++//                        // fragment is attached to one) that an item has been selected.
++//                        mListener.onListFragmentInteraction(holder.mItem);
++//                    }
++//                }
++//            });
++//            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    //// TODO: 26-08-2017 save and share functionality
++//                }
++//            });
++        } else if (position % 5 == 0) {
++            BigArticleViewHolder holder = (BigArticleViewHolder) h;
+ 
++            holder.mItem = mValues.get(position);
++            holder.title.setText(mValues.get(position).getTitle());
++            //  holder.author.setText(mValues.get(position).getAuthor());
++            // holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++>>>>>>> master
++
+             ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
+                 @Override
+                 public void onLoadingStarted(String s, View view) {
+@@ -163,11 +227,121 @@
+                     //// TODO: 26-08-2017 save and share functionality
+                 }
+             });*/
++<<<<<<< HEAD
+         }
+ 
+     }
+ 
++=======
++        }/* else if (position % 7 == 5 || position % 7 == 6) {
++
++            TwoArticleViewHolder holder = (TwoArticleViewHolder) h;
++            holder.mItem = mValues.get(position);
++            holder.title_left.setText(mValues.get(position).getTitle());
++
++            // holder.author.setText(mValues.get(position).getAuthor());
++            //holder.date.setText(mValues.get(position).getDate());
++
++            // holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++
++            ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.two_article_row_image_left, new ImageLoadingListener() {
+-    @Override
++                @Override
++                public void onLoadingStarted(String s, View view) {
++                    //finalHolder.progressBar.setVisibility(View.VISIBLE);
++                }
++
++                @Override
++                public void onLoadingFailed(String s, View view, FailReason failReason) {
++
++                }
++
++                @Override
++                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
++                    //  finalHolder.progressBar.setVisibility(View.GONE);
++                }
++
++                @Override
++                public void onLoadingCancelled(String s, View view) {
++
++                }
++            });
++
++//            holder.mView.setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    if (null != mListener) {
++//                        // Notify the active callbacks interface (the activity, if the
++//                        // fragment is attached to one) that an item has been selected.
++//                        mListener.onListFragmentInteraction(holder.mItem);
++//                    }
++//                }
++//            });
++//            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    //// TODO: 26-08-2017 save and share functionality
++//                }
++//            });
++
++
++            //  TwoArticleViewHolder holder=(TwoArticleViewHolder) h;
++
++            holder.mItem = mValues.get(position);
++            holder.title_right.setText(mValues.get(position).getTitle());
++
++            // holder.author.setText(mValues.get(position).getAuthor());
++            //holder.date.setText(mValues.get(position).getDate());
++
++            // holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++
++            ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.two_article_row_image_right, new ImageLoadingListener() {
++                @Override
++                public void onLoadingStarted(String s, View view) {
++                    //finalHolder.progressBar.setVisibility(View.VISIBLE);
++                }
++
++                @Override
++                public void onLoadingFailed(String s, View view, FailReason failReason) {
++
++                }
++
++                @Override
++                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
++                    //  finalHolder.progressBar.setVisibility(View.GONE);
++                }
++
++                @Override
++                public void onLoadingCancelled(String s, View view) {
++
++                }
++            });
++
++//            holder.mView.setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    if (null != mListener) {
++//                        // Notify the active callbacks interface (the activity, if the
++//                        // fragment is attached to one) that an item has been selected.
++//                        mListener.onListFragmentInteraction(holder.mItem);
++//                    }
++//                }
++//            });
++//            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
++//                @Override
++//                public void onClick(View v) {
++//                    //// TODO: 26-08-2017 save and share functionality
++//                }
++//            });
++
++
++        }*/
++
++    }
++
++
++
++>>>>>>> master
++    @Override
+     public int getItemViewType(int position) {
+         return position%5;
+     }
+@@ -177,12 +351,15 @@
+         return mValues.size();
+     }
+ 
++<<<<<<< HEAD
+     @Override
+     public void updateList(List<Article> articleList) {
+         mValues= articleList;
+         this.notifyDataSetChanged();
+     }
+ 
++=======
++>>>>>>> master
+     public class SingleArticleViewHolder extends RecyclerView.ViewHolder {
+         public final View mView;
+         public final TextView title;
+@@ -228,4 +405,35 @@
+             return super.toString() + " '" + author.getText() + "'";
+         }
+    */ }
++<<<<<<< HEAD
++=======
++   /* public class TwoArticleViewHolder extends RecyclerView.ViewHolder {
++        public final View mView;
++        public final TextView title_left;
++        public  final TextView title_right;
++        public final ImageView two_article_row_image_left;
++        public final ImageView two_article_row_image_right;
++
++        // public final TextView author;
++        //public final TextView date;
++        public Article mItem;
++       // public final ImageView big_item_row_image;
++        public TwoArticleViewHolder(View view) {
++            super(view);
++            mView = view;
++            title_left = (TextView) view.findViewById(R.id.two_item_row_left_content);
++            title_right=(TextView)view.findViewById(R.id.two_item_row_right_content) ;
++            //author = (TextView) view.findViewById(R.id.big_item_row_author);
++            //  date = (TextView) view.findViewById(R.id.big_item_row_date);
++            two_article_row_image_left=(ImageView)view.findViewById(R.id.two_item_row_image_left);
++            two_article_row_image_right=(ImageView)view.findViewById(R.id.two_item_row_image_right);
++
++        }
++
++        /*@Override
++        public String toString() {
++            return super.toString() + " '" + author.getText() + "'";
++        }
++   */
++>>>>>>> master
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -13,7 +13,10 @@
+ import android.support.v4.widget.SwipeRefreshLayout;
+ import android.support.v7.app.ActionBarDrawerToggle;
+ import android.support.v7.app.AppCompatActivity;
++<<<<<<< HEAD
+ import android.support.v7.widget.LinearLayoutManager;
++=======
++>>>>>>> master
+ import android.support.v7.widget.RecyclerView;
+ import android.support.v7.widget.Toolbar;
+ import android.text.Editable;
+@@ -37,10 +40,13 @@
+     private TabLayout tabLayout;
+     private Fragment fragment = null;
+     private FragmentManager fragmentManager;
++<<<<<<< HEAD
+     RecyclerView recyclerView;
+     EditText editTextSearch;
+ 
+     CustomAdapter adapter;
++=======
++>>>>>>> master
+ 
+ 
+     @Override
+@@ -74,8 +80,42 @@
+                             public void run() {
+                                 swipeRefreshLayout.setRefreshing(false);
+                             }
++<<<<<<< HEAD
+                         }, 3000);
+                         GlobalLists.fetchHomeData(getApplicationContext(),null);
++=======
++                        }, 5000);
++
++//                        Fragment homeViewFragment = viewPagerAdapter.getItem(0);
++//                        Fragment cityViewFragment = viewPagerAdapter.getItem(1);
++                        Fragment homeViewFragment = getSupportFragmentManager().findFragmentByTag("home_fragment");
++                        Fragment cityViewFragment = getSupportFragmentManager().findFragmentByTag("city_fragment");
++                        Fragment searchViewFragment=getSupportFragmentManager().findFragmentByTag("search_fragment");
++                        //Fragment homeViewFragment=null, cityViewFragment=null;
++                        RecyclerView homeRecyclerView;
++                        RecyclerView cityRecyclerView;
++                        RecyclerView.Adapter homeAdapter=null;
++                        RecyclerView.Adapter cityAdapter=null;
++                        if(homeViewFragment!=null){
++                            homeRecyclerView = (RecyclerView) homeViewFragment.getView().findViewById(R.id.home_fragment_list);
++                            if(homeRecyclerView!=null && homeRecyclerView.getAdapter()!=null){
++                                homeAdapter = homeRecyclerView.getAdapter();
++                            }
++                        }
++                        if(cityViewFragment!=null){
++                            cityRecyclerView = (RecyclerView)cityViewFragment.getView().findViewById(R.id.city_fragment_list);
++                            if(cityRecyclerView!=null && cityRecyclerView.getAdapter()!=null){
++                                homeAdapter = cityRecyclerView.getAdapter();
++                            }
++                        }
++
++                        if(homeAdapter==null){
++                            Toast.makeText(MainActivityScreen.this, "null :(", Toast.LENGTH_SHORT).show();
++                        }
++                        GlobalLists.fetchHomeData(getApplicationContext(), null, homeAdapter);
++                        //// TODO: 27/08/17 change this
++                        GlobalLists.fetchCityData(getApplicationContext(),"630",cityAdapter);
++>>>>>>> master
+                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
+ 
+                     }
+Index: app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java	(revision )
+@@ -20,6 +20,7 @@
+     private static final String articleContentURL = "http://www.knocksense.com/wp-json/wp/v2/posts/<__postID__>?fields=id,content";
+     //private static final String allArticlesAfterDate="http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media&filter[date_query][after]=<__timeStamp__>";
+     //private static String allCitiesURL = "http://www.knocksense.com/wp-json/wp/v2/categories?filter[category_name]=Cities&fields=id,count,link";
++<<<<<<< HEAD
+     private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
+     private static String allArticlesBeforeDateURL="https://www.knocksense.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=asc&after=<__date__>&fields=id,title,date";
+ private static String searchUrl="http://www.knocksense.com/wp-json/wp/v2/posts?search=<__search__>&per_page=25&fields=id,date,title";
+@@ -28,6 +29,16 @@
+        return searchUrl.replace("<__search__>",searchString);
+     }
+ 
++=======
++   // private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
++    //private static String afterDateURL="https://www.knocksense.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=asc&after=2015-08-31T17:00:00&fields=id,title,date";
++private static String searchUrl="http://www.knocksense.com/wp-json/wp/v2/posts?search=<__search__>&per_page=25&fields=id,date,title";
++
++    public static String getSearchUrl(String searchString) {
++        return searchUrl.replace("<__search__>",searchString);
++    }
++
++>>>>>>> master
+     /*public static String getAfterDateURL() {
+ 
+             return afterDateURL;
+@@ -61,7 +72,13 @@
+         return articleContentURL.replace("<__postID__>", articleID);
+     }
+ 
++<<<<<<< HEAD
+    public static String getAllAuthorsURL() {
+         return allAuthorsURL;
+     }
++=======
++   /* public static String getAllAuthorsURL() {
++        return allAuthorsURL;
++    }*/
++>>>>>>> master
+ }
+Index: app/src/main/res/layout/fragment_search.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_search.xml	(date 1504669893000)
++++ app/src/main/res/layout/fragment_search.xml	(revision )
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<<<<<<< HEAD
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:orientation="vertical">
+@@ -18,5 +19,23 @@
+         android:layout_height="wrap_content" />
+ 
+ </android.support.v7.widget.CardView>
++=======
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:orientation="vertical"
++    android:background="#fff">
++
++    <ListView
++        android:id="@android:id/list"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"/>
++
++    <TextView
++        android:id="@android:id/empty"
++        android:text="No results found."
++        android:gravity="center"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent" />
++>>>>>>> master
+ 
+ </LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/menu/activity_main_drawer.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/activity_main_drawer.xml	(date 1504669893000)
++++ app/src/main/res/menu/activity_main_drawer.xml	(revision )
+@@ -34,6 +34,41 @@
+                 android:id="@+id/nav_city"
+                 android:icon="@drawable/ic_menu_send"
+                 android:title="Change City" />
++            <item
++                android:id="@+id/nav_Entertainment"
++                android:title="Entertainment" />
++            <item
++                android:id="@+id/KnockKnock"
++
++                android:title="Knock Knock" />
++            <item
++                android:id="@+id/News"
++
++                android:title="News" />
++            <item
++                android:id="@+id/Sports"
++
++                android:title="Sports" />
++            <item
++                android:id="@+id/YourSpace"
++
++                android:title="YourSpace" />
++            <item
++                android:id="@+id/TechSense"
++
++                android:title="TechSense" />
++            <item
++                android:id="@+id/WeReview"
++
++                android:title="We Review" />
++            <item
++                android:id="@+id/DineSense"
++
++                android:title="Dine Sense" />
++            <item
++                android:id="@+id/ExperienceIndia"
++
++                android:title="Experience India" />
+         </menu>
+     </item>
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java	(date 1504669893000)
++++ app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java	(revision )
+@@ -24,13 +24,34 @@
+  * Created by anuragdwivedi on 21/08/17.
+  */
+ 
++<<<<<<< HEAD
+ public class GlobalLists extends Application implements ListPublisher {
+     private  List<Article> cityArticlesList;
+     private  List<Article> homeArticlesList;
+     private  List<ListObserver> cityListObserverList;
+     private  List<ListObserver> homeListObserverList;
+     private  static GlobalLists instance=null;
++=======
++public class GlobalLists extends Application {
++    private static List<Article> cityArticlesList = new ArrayList<>();
++    private static List<Article> homeArticlesList = new ArrayList<>();
++    private static List<Article> categoriesList = new ArrayList<>();
++    private static List<Article> searchList=new ArrayList<>();
++    private static boolean cityDataLoaded = false;
++    private static boolean homeDataLoaded = false;
++    private static boolean categoryDataLoaded = false;
++    private static boolean searchDataLoaded=false;
+ 
++    public static boolean isSearchDataLoaded() {
++        return searchDataLoaded;
++    }
++
++
++    public static void setSearchDataLoaded(boolean searchDataLoaded) {
++        GlobalLists.searchDataLoaded = searchDataLoaded;
++    }
++>>>>>>> master
++
+     private GlobalLists(){
+         cityArticlesList=new ArrayList<>();
+         homeArticlesList=new ArrayList<>();
+@@ -68,7 +89,23 @@
+         getGlobalListsInstance().homeArticlesList = articles;
+     }
+ 
++<<<<<<< HEAD
+     public static void fetchHomeData(Context context, String d) {
++=======
++    public static List<Article> getCategoriesList() {
++        return GlobalLists.categoriesList;
++    }
++
++    public static void setCategoriesList(List<Article> categoriesList) {
++        GlobalLists.categoriesList = categoriesList;
++    }
++
++    public static List<Article> getSearchList() {
++        return searchList;
++    }
++
++    public static void fetchHomeData(Context context, String d, final RecyclerView.Adapter adapter) {
++>>>>>>> master
+         final String date = d;
+         String url = UrlConstants.getAllArticlesURL();
+         if (date != null) {
+@@ -94,6 +131,7 @@
+                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+ 
+                                 articleList.add(articleModel);
++                                Log.d(articleModel.getFeaturedImage(),"Count");
+                                 if (articleList.size() == ParentArray.length()) {
+                                     if (date != null) {
+                                         //having date means that it has to append
+@@ -149,6 +187,7 @@
+                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+                                 articleList.add(articleModel);
+                                 if (articleList.size() == ParentArray.length()) {
++<<<<<<< HEAD
+                                     if (date != null) {
+                                         //having date means that it has to append
+                                         List<Article> globalArticles = GlobalLists.getCityArticlesList();
+@@ -158,8 +197,19 @@
+                                         GlobalLists.setCityArticlesList(articleList);
+                                     }
+                                     getGlobalListsInstance().notifyListObservers("city");
++=======
++                                    GlobalLists.setCityDataLoaded(true);
+                                 }
+                             }
++                            Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
++                            Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
++                            if (GlobalLists.isCityDataLoaded()) {
++                                GlobalLists.setCityArticlesList(articleList);
++                                if (adapter != null) {
++                                    adapter.notifyDataSetChanged();
++>>>>>>> master
++                                }
++                            }
+ 
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+@@ -208,8 +258,54 @@
+         }
+ 
+     }
++   /* public static void fetchAuthorData(Context context, String selectedCityId, final RecyclerView.Adapter adapter) {
+ 
++        final List<Article> articleList = new ArrayList<>();
++        GlobalLists.setCityDataLoaded(false);
++        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getAllAuthorsURL(),
++                new Response.Listener<String>() {
+-    @Override
++                    @Override
++                    public void onResponse(String s) {
++                        try {
++                            Gson gson = new Gson();
++                            JSONArray ParentArray = new JSONArray(s);
++                            for (int i = 0; i < ParentArray.length(); i++) {
++                                JSONObject ParentObject = ParentArray.getJSONObject(i);
++                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
++                                articleModel.setId(ParentObject.getString("id"));
++                                articleModel.setName(ParentObject.getString("name"));
++
++                                articleList.add(articleModel);
++                                if (articleList.size() == ParentArray.length()) {
++                                    GlobalLists.setCityDataLoaded(true);
++                                }
++                            }
++                            Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
++                            if (GlobalLists.isCityDataLoaded()) {
++                                GlobalLists.setCityArticlesList(articleList);
++                                if (adapter != null) {
++                                    adapter.notifyDataSetChanged();
++                                }
++                            }
++
++                        } catch (JSONException e) {
++                            e.printStackTrace();
++                        }
++                    }
++                }, new Response.ErrorListener() {
++            @Override
++            public void onErrorResponse(VolleyError volleyError) {
++
++                volleyError.printStackTrace();
++            }
++        });
++        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
++
++
++    }
++
++<<<<<<< HEAD
++    @Override
+     public void notifyListObservers(String listType) {
+         switch (listType){
+             case "home":
+@@ -225,6 +321,58 @@
+             default:
+                 Log.e("List observers", "registerObserver: incorrect string passed");
+         }
++=======
++*/
++   public static void fetchSearchData(Context context, String searchString, final RecyclerView.Adapter adapter) {
++
++       final List<Article> articleList = new ArrayList<>();
++       GlobalLists.setSearchDataLoaded(false);
++       StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlConstants.getSearchUrl(searchString),
++               new Response.Listener<String>() {
++                   @Override
++                   public void onResponse(String s) {
++                       try {
++                           Gson gson = new Gson();
++                           JSONArray ParentArray = new JSONArray(s);
++                           for (int i = 0; i < ParentArray.length(); i++) {
++                               JSONObject ParentObject = ParentArray.getJSONObject(i);
++                               Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
++                               articleModel.setId(ParentObject.getString("id"));
++                               articleModel.setDate(ParentObject.getString("date"));
++                               articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
++                               articleModel.setAuthor(ParentObject.getString("author"));
++                               articleModel.setLink(ParentObject.getString("link"));
++                               articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
++                               articleList.add(articleModel);
++                               if (articleList.size() == ParentArray.length()) {
++                                   GlobalLists.setCityDataLoaded(true);
++                               }
++                           }
++                           Log.d("DAAAAAAAAAAAAAAAAAA","ppapapapapaapapapap" + "   "+ articleList);
++                           Log.d("XYZ", "setCityDataLoaded()==>" + GlobalLists.isCityDataLoaded());
++                           if (GlobalLists.isCityDataLoaded()) {
++                               GlobalLists.setCityArticlesList(articleList);
++                               if (adapter != null) {
++                                   adapter.notifyDataSetChanged();
++                               }
++                           }
++
++                       } catch (JSONException e) {
++                           e.printStackTrace();
++                       }
++                   }
++               }, new Response.ErrorListener() {
++           @Override
++           public void onErrorResponse(VolleyError volleyError) {
++
++               volleyError.printStackTrace();
++           }
++       });
++       VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
++
++
++   }
++>>>>>>> master
+ 
+     }
+ }
+\ No newline at end of file
