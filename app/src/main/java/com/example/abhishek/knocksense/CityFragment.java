@@ -95,18 +95,17 @@ public class CityFragment extends Fragment {
                                 Toast.makeText(getContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
                             } else {
                                 //you have reached to the bottom of your recycler view
-                                TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
-                                String date = textView.getText().toString();
-                                //// TODO: 03/09/17 fetch from shared prefrences
-                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, date ,SelectCityScreen.getSelectedCity());
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, true ,null);
                             }
 
                         }
                     }
                 });
             } else {
-                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, null, SelectCityScreen.getSelectedCity());
-                Toast.makeText(getActivity(), "City Data not available. Refreshing!!!", Toast.LENGTH_SHORT).show();
+                //means that city data is not fetched and we have come to city page but the fetch was started
+                //todo wait for 3 seconds before starting new request
+                //GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, false,null);
+                Toast.makeText(getActivity(), "City Data not available. TODO wait Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
         }
         return view;

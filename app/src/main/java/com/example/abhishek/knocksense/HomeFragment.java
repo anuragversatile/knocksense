@@ -97,17 +97,15 @@ public class HomeFragment extends Fragment {
                                 Toast.makeText(getContext(), "last view ITS NULL", Toast.LENGTH_SHORT).show();
                             } else {
                                 //you have reached to the bottom of your recycler view
-                                TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
-                                String date = textView.getText().toString();
                                 Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
-                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, date, null);
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, true, null);
                             }
 
                         }
                     }
                 });
             } else {
-                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, null, null);
+                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, false, null);
                 Toast.makeText(getActivity(), "Home Data not available yet. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
 

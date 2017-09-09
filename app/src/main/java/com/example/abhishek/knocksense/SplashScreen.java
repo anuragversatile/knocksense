@@ -21,16 +21,16 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        selectedCity = sharedPref.getString(getString(R.string.shared_preference_saved_city), NOT_SELECTED);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
+        selectedCity = sharedPreferences.getString(getString(R.string.saved_selected_city),NOT_SELECTED);
         Log.e("SPLASH SCREEN", "selectedCity read="+selectedCity,null);
 
         if (selectedCity != NOT_SELECTED) {
-            GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY, null,  CitiesID.getCityId(selectedCity));
+            GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY, false,  CitiesID.getCityId(selectedCity));
         }
 
 
-        GlobalLists.fireRefreshData(getApplicationContext(),ListNameConstants.HOME, null, null);
+        GlobalLists.fireRefreshData(getApplicationContext(),ListNameConstants.HOME, false, null);
 
         new Handler().postDelayed(new Runnable() {
 

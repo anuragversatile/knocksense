@@ -35,14 +35,13 @@ public class SelectCityScreen extends AppCompatActivity {
        setSelectedCity(CitiesID.getCityId(selectedCity));
 
 
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.shared_preference_saved_city),getSelectedCity());
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.saved_selected_city), getSelectedCity());
         editor.commit();
-        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,null,getSelectedCity());
+        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,false,getSelectedCity());
 
-        selectedCity = sharedPref.getString(getString(R.string.shared_preference_saved_city), "ERROR HERE!!!");
-        Log.e("Select city", "selectedCity="+selectedCity,null);
+
 
         Intent intent = new Intent(this, MainActivityScreen.class);
         startActivity(intent);

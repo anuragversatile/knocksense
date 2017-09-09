@@ -35,6 +35,7 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+    private String selectedCityId;
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
@@ -145,6 +146,14 @@ private List<ListObserver> categoryListObserverList;
 
     private static void fetchCityData(Context context, String selectedCityId, String d) {
         final String date = d;
+
+        if(selectedCityId==null){
+            selectedCityId=getGlobalListsInstance().selectedCityId;
+        }
+        else{
+            //this will be called once from SelectCityScreen
+            getGlobalListsInstance().selectedCityId=selectedCityId;
+        }
         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(selectedCityId);
         if(date!=null){
             url = UrlConstants.getAllArticlesBeforeDate(date);
@@ -254,26 +263,36 @@ private List<ListObserver> categoryListObserverList;
 
     }
 
-    public static void fireRefreshData(Context context, String listType, String date, String id){
+    public static void fireRefreshData(Context context, String listType, boolean fetchByDate, String id){
         /*
             * id :? selectedCityId, authorId, categoryId, etc
             * listType :? home, city, author, category
         */
         RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
+        String date=null;
         switch (listType){
             case HOME:
                 //cancel previous request before starting new one
                 requestQueue.cancelAll(HOME);
+                if(fetchByDate){
+                    date = getHomeArticlesList().get(getHomeArticlesList().size()-1).getDate();
+                }
                 fetchHomeData(context, date);
                 break;
             case CITY:
                 //cancel previous request before starting new one
                 requestQueue.cancelAll(CITY);
+                if(fetchByDate){
+                    date = getCityArticlesList().get(getCityArticlesList().size()-1).getDate();
+                }
                 fetchCityData(context, id, date);
                 break;
             case CATEGORY:
                 //// TODO: 09/09/17
                 requestQueue.cancelAll(CATEGORY);
+                if(fetchByDate){
+                    date = getCategoryArticlesList().get(getCategoryArticlesList().size()-1).getDate();
+                }
                 fetchCategoryData(context, id, date);
                 break;
             case AUTHOR:
