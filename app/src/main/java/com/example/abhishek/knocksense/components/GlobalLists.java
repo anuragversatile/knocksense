@@ -39,7 +39,7 @@ public class GlobalLists extends Application implements ListPublisher {
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
-private List<ListObserver> categoryListObserverList;
+    private List<ListObserver> categoryListObserverList;
     private  static GlobalLists instance=null;
 
 
@@ -113,6 +113,7 @@ private List<ListObserver> categoryListObserverList;
                                 articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
                                 articleModel.setAuthor(ParentObject.getString("author"));
                                 articleModel.setLink(ParentObject.getString("link"));
+                                articleModel.setCategories(gson.fromJson(ParentObject.getJSONArray("categories").toString(),String[].class));
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
 
                                 articleList.add(articleModel);

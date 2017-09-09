@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.ArticleCategory;
 import com.example.abhishek.knocksense.components.BigArticleViewHolder;
 import com.example.abhishek.knocksense.components.CategoryViewHolder;
 import com.example.abhishek.knocksense.components.GlobalLists;
@@ -28,6 +29,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +59,115 @@ private Context context;
         GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.HOME,this);
     }
 
+    private List<ArticleCategory> makeFinalList(List<Article> items) {
+        ArticleCategory obBollywood = new ArticleCategory("BOLLYWOOD", "7006");
+        ArticleCategory obDineSense = new ArticleCategory("DINESENSE", "765");
+        ArticleCategory obEntertainment = new ArticleCategory("ENTERTAINMENT", "5");
+        ArticleCategory obCulture = new ArticleCategory("CULTURE", "3");
+        ArticleCategory obKnock = new ArticleCategory("KNOCK", "9");
+        ArticleCategory obNews = new ArticleCategory("NEWS", "14");
+        ArticleCategory obSports = new ArticleCategory("SPORTS", "16");
+        ArticleCategory obTechSense = new ArticleCategory("TECHSENSE", "17");
+        ArticleCategory obWeReview = new ArticleCategory("WEREVIEW", "19");
+        ArticleCategory obYourSpace = new ArticleCategory("YOURSPACE", "522");
+        ArticleCategory obHindi = new ArticleCategory("HINDI", "7005");
 
+
+        List<ArticleCategory> articleCategoryList = new ArrayList<>();
+        for (Article article : items) {
+            String articleId = article.getId();
+            String[] articleCategories = article.getCategories();
+            String categoryName;
+            for (String category : articleCategories) {
+                categoryName = (CategoryId.getCategoryId(category));
+                switch (categoryName) {
+                    case "BOLLYWOOD":
+                        obBollywood.addArticleToCategory(article);
+                        break;
+                    case "DINESENSE":
+                        obDineSense.addArticleToCategory(article);
+                        break;
+                    case "ENTERTAINMENT":
+                        obEntertainment.addArticleToCategory(article);
+                        break;
+                    case "CULTURE":
+                        obCulture.addArticleToCategory(article);
+                        break;
+                    case "KNOCKKNOCK":
+                        obKnock.addArticleToCategory(article);
+                        break;
+                    case "NEWS":
+                        obNews.addArticleToCategory(article);
+                        break;
+                    case "SPORTS":
+                        obSports.addArticleToCategory(article);
+                        break;
+                    case "TECHSENSE":
+                        obTechSense.addArticleToCategory(article);
+                        break;
+                    case "WEREVIEW":
+                        obWeReview.addArticleToCategory(article);
+                        break;
+                    case "YOURSPACE":
+                        obYourSpace.addArticleToCategory(article);
+                        break;
+                    case "HINDI":
+                        obHindi.addArticleToCategory(article);
+
+                        break;
+
+                }
+
+
+            }
+        }
+        if (obBollywood.getArticleList().size() > 0) {
+            articleCategoryList.add(obBollywood);
+        }
+        if (obDineSense.getArticleList().size() > 0) {
+            articleCategoryList.add(obDineSense);
+
+        }
+        if (obCulture.getArticleList().size() > 0)
+
+        {
+            articleCategoryList.add(obCulture);
+
+        }
+        if(obEntertainment.getArticleList().size()>1)
+        {
+            articleCategoryList.add(obEntertainment);
+        }
+        if (obKnock.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obKnock);
+        }
+        if(obNews.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obNews);
+        }
+        if(obSports.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obSports);
+        }
+        if (obTechSense.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obTechSense);
+        }
+        if (obWeReview.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obWeReview);
+        }
+        if (obYourSpace.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obYourSpace);
+        }
+        if (obHindi.getArticleList().size()>0)
+        {
+            articleCategoryList.add(obHindi);
+        }
+        return articleCategoryList;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -443,8 +553,6 @@ private Context context;
 
 
     }
-
-
 
     @Override
     public int getItemViewType(int position) {

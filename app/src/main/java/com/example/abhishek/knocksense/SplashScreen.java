@@ -1,6 +1,5 @@
 package com.example.abhishek.knocksense;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ public class SplashScreen extends AppCompatActivity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
     private static final String NOT_SELECTED = "not selected";
-    private String selectedCity;
+    private String selectedCityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +22,10 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
-        selectedCity = sharedPreferences.getString(getString(R.string.saved_selected_city),NOT_SELECTED);
-        Log.e("SPLASH SCREEN", "selectedCity read="+selectedCity,null);
+        selectedCityId = sharedPreferences.getString(getString(R.string.saved_selected_city),NOT_SELECTED);
 
-        if (selectedCity != NOT_SELECTED) {
-            GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY, false,  CitiesID.getCityId(selectedCity));
+        if (selectedCityId != NOT_SELECTED) {
+            GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY, false,  selectedCityId);
         }
 
 
@@ -41,7 +39,7 @@ public class SplashScreen extends AppCompatActivity {
                 // This method will be executed once the timer is over
 
                 //if no city is selected goto SelectCityScreen
-                if (NOT_SELECTED.equals(selectedCity)) {
+                if (NOT_SELECTED.equals(selectedCityId)) {
                     i = new Intent(SplashScreen.this, SelectCityScreen.class);
                 }
                 else{

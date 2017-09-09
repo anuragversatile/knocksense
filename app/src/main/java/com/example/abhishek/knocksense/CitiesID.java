@@ -1,5 +1,7 @@
 package com.example.abhishek.knocksense;
 
+import android.util.Log;
+
 /**
  * Created by Abhishek on 27-08-2017.
  */
@@ -13,7 +15,7 @@ public class CitiesID {
 
     public static String getCityId(String cityName) {
         String id;
-        switch (cityName) {
+        switch (cityName.toUpperCase()) {
             case "JAIPUR":
                 id = JAIPUR_ID;
                 break;
@@ -30,6 +32,7 @@ public class CitiesID {
                 id = REST_OF_INDIA_ID;
                 break;
         }
+        Log.e("SWITCH CITY_ID", "getCityId="+id);
         return id;
     }
 }
