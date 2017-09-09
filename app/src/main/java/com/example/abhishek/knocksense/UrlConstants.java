@@ -12,7 +12,7 @@ public class UrlConstants {
 
     //featuredMedia has the id of the media
     //// TODO: 26-08-2017 removed content to make fetch faster. Fetch content on going to the page
-    private static final String allArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts?per_page=100&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
+    private static final String allArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
     private static final String specificCategoryOrCityArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts/?categories=<__categoryID__>&per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
     private static final String specificAuthorArticlesURl = "http://www.knocksense.com/wp-json/wp/v2/posts?author=<__authorID__>&per_page=25&fields=id,date,title,content,author,featured_media,categories,better_featured_image";
     private static final String allCategoriesURL = "http://www.knocksense.com/wp-json/wp/v2/categories?fields=id,count,name";

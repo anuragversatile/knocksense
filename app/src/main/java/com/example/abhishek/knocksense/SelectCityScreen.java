@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 
 public class SelectCityScreen extends AppCompatActivity {
 
     private static String selectedCity;
 
     public static String getSelectedCity() {
-        return selectedCity;
+        return SelectCityScreen.selectedCity;
     }
 
     public static void setSelectedCity(String selectedCity) {
@@ -32,14 +33,17 @@ public class SelectCityScreen extends AppCompatActivity {
         TextView textView = (TextView) view;
         selectedCity = textView.getText().toString();
        setSelectedCity(CitiesID.getCityId(selectedCity));
-        Log.d("count:",selectedCity);
 
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.shared_preference_saved_city),getSelectedCity());
         editor.commit();
-        GlobalLists.fetchCityData(getApplicationContext(),getSelectedCity(),null);
+        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,null,getSelectedCity());
+
+        selectedCity = sharedPref.getString(getString(R.string.shared_preference_saved_city), "ERROR HERE!!!");
+        Log.e("Select city", "selectedCity="+selectedCity,null);
+
         Intent intent = new Intent(this, MainActivityScreen.class);
         startActivity(intent);
 //// TODO: 19-08-2017 cities should be ordered alphabetically

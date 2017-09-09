@@ -18,7 +18,7 @@
             android:onClick="onCitySelected"
             android:clickable="true"
             android:textSize="16dp"
-            android:textStyle="bold"
+
             android:textColor="@color/white"
             android:textAlignment="center"
             android:background="@color/colorPrimary"
@@ -32,7 +32,7 @@
             android:onClick="onCitySelected"
             android:clickable="true"
             android:textSize="32dp"
-            android:textStyle="bold"
+
             android:textColor="@color/white"
             android:textAlignment="center"
             android:background="@mipmap/jaipur"
@@ -46,7 +46,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="32dp"
-            android:textStyle="bold"
+
             android:textColor="@color/white"
             android:background="@mipmap/lucknow"
             android:text="@string/lucknow"/>
@@ -60,7 +60,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="32dp"
-            android:textStyle="bold"
+
             android:textColor="@color/white"
             android:background="@mipmap/mumbai"
             android:text="@string/mumbai"/>
@@ -73,7 +73,7 @@
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="32dp"
-            android:textStyle="bold"
+
             android:textColor="@color/white"
             android:background="@mipmap/delhi"
             android:text="@string/new_delhi"/>
@@ -85,7 +85,6 @@
             android:layout_height="110dp"
             android:textAlignment="center"
             android:textSize="32dp"
-            android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@mipmap/restofindia"

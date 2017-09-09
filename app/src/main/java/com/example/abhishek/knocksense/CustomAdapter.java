@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.abhishek.knocksense.components.Article;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,7 +26,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_search, parent, false);
+                .inflate(R.layout.search_fragment, parent, false);
         return new ViewHolder(v);
     }
 
@@ -48,7 +47,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
 
-            textViewName = (TextView) itemView.findViewById(R.id.textViewName);
+         //   textViewName = (TextView) itemView.findViewById(R.id.textViewName);
         }
     }
     public void filterList(List<Article> filterdNames) {

@@ -7,5 +7,5 @@ import java.util.List;
  */
 
 public interface ListObserver {
-    public void updateList(List<Article> articleList);
+    public void updateList(List<Article> articleList, Integer newItemCount);
 }

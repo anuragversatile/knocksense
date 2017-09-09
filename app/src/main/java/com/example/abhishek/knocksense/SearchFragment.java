@@ -1,10 +1,8 @@
 package com.example.abhishek.knocksense;
 
+import android.app.ListFragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +15,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.abhishek.knocksense.components.GlobalLists;
-import com.google.android.gms.plus.PlusOneButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +31,6 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
         mContext = getActivity();
         setHasOptionsMenu(true);
         populateList();
-
 
     }
 
@@ -54,7 +50,7 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_search, container, false);
+        View layout = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = (ListView) layout.findViewById(android.R.id.list);
         TextView emptyTextView = (TextView) layout.findViewById(android.R.id.empty);
         listView.setEmptyView(emptyTextView);
@@ -87,8 +83,11 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
         }
 
         List<String> filteredValues = new ArrayList<String>(mAllValues);
-        //GlobalLists.fetchSearchData(getContext(),newText,null);
-
+        for (String value : mAllValues) {
+            if (!value.toLowerCase().contains(newText.toLowerCase())) {
+                filteredValues.remove(value);
+            }
+        }
 
         mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
         setListAdapter(mAdapter);
@@ -114,10 +113,14 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
     public interface OnItem1SelectedListener {
         void OnItem1SelectedListener(String item);
     }
-    public void populateList() {
-        mAllValues = new ArrayList<>();
+
+    private void populateList(){
+
+       mAllValues =new ArrayList<>();
+        mAllValues.add(GlobalLists.getHomeArticlesList().get(getSelectedItemPosition()).getTitle());
+
+
         mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, mAllValues);
         setListAdapter(mAdapter);
     }
-    }
-
+}

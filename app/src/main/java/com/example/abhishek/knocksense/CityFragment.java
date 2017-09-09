@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -97,14 +98,15 @@ public class CityFragment extends Fragment {
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
                                 //// TODO: 03/09/17 fetch from shared prefrences
-                                GlobalLists.fetchCityData(getContext(),SelectCityScreen.getSelectedCity(), null);
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, date ,SelectCityScreen.getSelectedCity());
                             }
 
                         }
                     }
                 });
             } else {
-                Toast.makeText(getActivity(), "City Data not available!!!", Toast.LENGTH_SHORT).show();
+                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, null, SelectCityScreen.getSelectedCity());
+                Toast.makeText(getActivity(), "City Data not available. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
         }
         return view;

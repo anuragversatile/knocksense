@@ -34,6 +34,41 @@
                 android:id="@+id/nav_city"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Change City" />
+
+            android:titl <item
+            android:id="@+id/nav_Entertainment"
+            android:title="Entertainment" />
+            <item
+                android:id="@+id/KnockKnock"
+
+                android:title="Knock Knock" />
+            <item
+                android:id="@+id/News"
+              android:title="News" />
+            <item
+                android:id="@+id/Sports"
+
+                android:title="Sports" />
+            <item
+                android:id="@+id/YourSpace"
+
+                android:title="YourSpace" />
+            <item
+                android:id="@+id/TechSense"
+
+                android:title="TechSense" />
+            <item
+                android:id="@+id/WeReview"
+
+                android:title="We Review" />
+            <item
+                android:id="@+id/DineSense"
+
+                android:title="Dine Sense" />
+            <item
+                android:id="@+id/ExperienceIndia"
+
+                android:title="Experience India" />
         </menu>
     </item>
 

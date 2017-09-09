@@ -7,5 +7,5 @@ package com.example.abhishek.knocksense.components;
 public interface ListPublisher {
     public void registerObserver(String listType, ListObserver listObserver);
     public void removeObserver(String listType, ListObserver listObserver);
-    public void notifyListObservers(String listType);
+    public void notifyListObservers(String listType, Integer newItemCount);
 }

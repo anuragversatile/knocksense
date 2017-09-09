@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener));
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener,context));
             if (GlobalLists.getHomeArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
@@ -99,16 +100,15 @@ public class HomeFragment extends Fragment {
                                 TextView textView = (TextView) view.findViewById(R.id.article_item_row_date);
                                 String date = textView.getText().toString();
                                 Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
-                                GlobalLists.fetchHomeData(getContext(), date);
+                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, date, null);
                             }
 
                         }
                     }
                 });
             } else {
-                GlobalLists.fetchHomeData(getContext(),null);
-                //// TODO: 03/09/17 close previous requests for home data
-                Toast.makeText(getActivity(), "Home Data not available!!!", Toast.LENGTH_SHORT).show();
+                GlobalLists.fireRefreshData(getContext(), ListNameConstants.HOME, null, null);
+                Toast.makeText(getActivity(), "Home Data not available yet. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
 
         }

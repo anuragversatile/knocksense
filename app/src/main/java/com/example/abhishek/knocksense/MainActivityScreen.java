@@ -1,12 +1,14 @@
 package com.example.abhishek.knocksense;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -25,11 +27,12 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 
 import java.util.ArrayList;
 
 public class MainActivityScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener,CategoryFragmentFragment.OnListFragmentInteractionListener {
 
     SwipeRefreshLayout swipeRefreshLayout;
     private ViewPager viewPager;
@@ -37,6 +40,7 @@ public class MainActivityScreen extends AppCompatActivity
     private TabLayout tabLayout;
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
+    private int backButtonCount;
     RecyclerView recyclerView;
     EditText editTextSearch;
 
@@ -47,6 +51,7 @@ public class MainActivityScreen extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        backButtonCount=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,7 +80,8 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
-                        GlobalLists.fetchHomeData(getApplicationContext(),null);
+                        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null, null);
+                        //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
                     }
@@ -131,7 +137,18 @@ public class MainActivityScreen extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(backButtonCount >= 1)
+            {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+                backButtonCount++;
+            }
         }
     }
 
@@ -164,7 +181,12 @@ public class MainActivityScreen extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_Entertainment) {
+
+          android.support.v4.app.FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new CategoryFragmentFragment(),"Entertainment");
+            ft.commit();
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -184,10 +206,10 @@ public class MainActivityScreen extends AppCompatActivity
     }
     private void displayView(int position) {
         fragment = null;
-        String fragmentTags = "";
+        String fragmentTags = "Entertainment";
         switch (position) {
             case 0:
-                fragment=new SearchFragment();
+                fragment= new SearchFragment();
                 break;
 
             default:
@@ -196,7 +218,7 @@ public class MainActivityScreen extends AppCompatActivity
 
         if (fragment != null) {
             fragmentManager = getFragmentManager();
-           // fragmentManager.beginTransaction().replace(R.id.content_frame,fragment, fragmentTags).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,fragment, fragmentTags).commit();
         }
     }
 
@@ -206,9 +228,11 @@ public class MainActivityScreen extends AppCompatActivity
         Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, WebViewScreen.class);
         Bundle bundle = new Bundle();
+        bundle.putString("id",item.getId());
         bundle.putString("uri", item.getLink());
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
 
 }

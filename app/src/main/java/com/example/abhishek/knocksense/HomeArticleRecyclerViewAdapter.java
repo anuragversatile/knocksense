@@ -1,20 +1,26 @@
 package com.example.abhishek.knocksense;
 
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhishek.knocksense.HomeFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.BigArticleViewHolder;
 import com.example.abhishek.knocksense.components.CategoryViewHolder;
 import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
 import com.example.abhishek.knocksense.components.SingleArticleViewHolder;
 import com.example.abhishek.knocksense.components.TwoArticlesViewHolder;
@@ -35,7 +41,8 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private int SINGLE_ARTICLE = 2022;
     private int DOUBLE_ARTICLES = 3033;
     private int BIG_ARTICLE = 4044;
-
+private Context context;
+    private Font font;
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -43,10 +50,11 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private FragmentManager fragmentManager;
     private int toReadItemPosition=0;
 
-    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
+    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener,Context context) {
         mValues = items;
         mListener = listener;
-        GlobalLists.getGlobalListsInstance().registerObserver("home",this);
+        this.context=context;
+        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.HOME,this);
     }
 
 
@@ -78,7 +86,7 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder h, final int position) {
         DateConverter dateConverter=new DateConverter();
         int temp=position%16;
 
@@ -111,8 +119,64 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
                 }
             });
-
+            font  = new Font();
+            font.setFont3(context,holder.title);
+            font.setFont2(context,holder.date);
+            font.setFont2(context,holder.author);
             ++toReadItemPosition;
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.options_menu);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.share:
+                                    //handle menu1 click
+                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("text/plain");
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+
+                                    try {
+                                        context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                    } catch (Exception ex) {
+                                        Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                case R.id.save:
+                                    //handle menu2 click
+                                    break;
+
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+
+                }
+
+
+
+
+
+            });
+
 
         }
         else if(temp==8 || temp==12){
@@ -146,6 +210,59 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             });
 
             ++toReadItemPosition;
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.leftViewArticle);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more_left).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_left));
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.options_menu);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.share:
+                                    //handle menu1 click
+                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("text/plain");
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+
+                                    try {
+                                        context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                    } catch (Exception ex) {
+                                        Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                case R.id.save:
+                                    //handle menu2 click
+                                    break;
+
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+
+                }
+
+
+
+
+
+            });
+
 
             Article rightArticle = mValues.get(toReadItemPosition);
             holder.rightViewArticle = rightArticle;
@@ -176,6 +293,59 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             });
 
             ++toReadItemPosition;
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.rightViewArticle);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more_right).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_right));
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.options_menu);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.share:
+                                    //handle menu1 click
+                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("text/plain");
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+
+                                    try {
+                                        context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                    } catch (Exception ex) {
+                                        Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                case R.id.save:
+                                    //handle menu2 click
+                                    break;
+
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+
+                }
+
+
+
+
+
+            });
+
         }
         else if(temp==0 || temp==6 || temp==11){
             final CategoryViewHolder holder=(CategoryViewHolder) h;
@@ -190,6 +360,10 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             holder.author.setText(article.getAuthor());
             holder.date.setText(article.getDate());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
+            font  = new Font();
+            font.setFont(context,holder.title);
+            font.setFont1(context,holder.date);
+            font.setFont1(context,holder.author);
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String s, View view) {
@@ -213,10 +387,64 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             });
 
             ++toReadItemPosition;
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != mListener) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListener.onListFragmentInteraction(holder.mItem);
+                    }
+                }
+            });
+            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //// TODO: 26-08-2017 save and share functionality
+                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.options_menu);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.share:
+                                    //handle menu1 click
+                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("text/plain");
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
 
+                                    try {
+                                        context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                    } catch (Exception ex) {
+                                        Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                case R.id.save:
+                                    //handle menu2 click
+                                    break;
+
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+
+                }
+
+
+
+
+
+            });
         }
 
+
     }
+
+
 
     @Override
     public int getItemViewType(int position) {
@@ -243,15 +471,16 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     @Override
-    public void updateList(List<Article> articleList) {
+    public void updateList(List<Article> articleList, Integer newItemCount) {
+        if(newItemCount==null){
+            this.notifyDataSetChanged();
+        }
+        else{
+            this.notifyItemRangeChanged(mValues.size(),newItemCount);
+        }
+        //change mValues after its old size has been determined
         mValues= articleList;
-        this.notifyDataSetChanged();
     }
-
-
-
-
-
 
 
 }

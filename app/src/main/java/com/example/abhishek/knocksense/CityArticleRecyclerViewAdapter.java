@@ -3,8 +3,10 @@ package com.example.abhishek.knocksense;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.ListObserver;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -24,12 +27,12 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArticleRecyclerViewAdapter.ViewHolder> {
+public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArticleRecyclerViewAdapter.ViewHolder> implements ListObserver {
 
-    private final List<Article> mValues;
+    private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
     private  Context context;
-
+private  Font font;
     public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
@@ -52,6 +55,10 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
         holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
         holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+        font  = new Font();
+        font.setFont(context,holder.title);
+        font.setFont1(context,holder.date);
+        font.setFont1(context,holder.author);
 
         final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
 
@@ -91,26 +98,61 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
             @Override
             public void onClick(View v) {
                 //// TODO: 26-08-2017 save and share functionality
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/html");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
-                context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.share:
+                                //handle menu1 click
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setType("text/plain");
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
 
-                try {
-                    context.startActivity(shareIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
-                }
+                                try {
+                                   context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                } catch (Exception ex) {
+                                    Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                            case R.id.save:
+                                //handle menu2 click
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
             }
-        });
 
+
+
+
+
+        });
     }
 
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public void updateList(List<Article> articleList, Integer newItemCount) {
+        if(newItemCount==null){
+            this.notifyDataSetChanged();
+        }
+        else{
+            this.notifyItemRangeChanged(mValues.size(),newItemCount);
+        }
+        //change mValues after its old size has been determined
+        mValues = articleList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
