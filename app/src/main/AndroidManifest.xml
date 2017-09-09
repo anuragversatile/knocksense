@@ -33,6 +33,7 @@
         <activity android:name=".SelectCityScreen" />
         <activity android:name=".CategoryOrAuthorScreen" />
         <activity android:name=".WebViewScreen" />
+
         <service android:name=".components.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

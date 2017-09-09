@@ -16,14 +16,12 @@
     <string name="new_delhi">NEW DELHI</string>
     <string name="rest_of_india">REST OF INDIA</string>
 
-    <string name="shared_preference_saved_city">KNOCKSENSE_SELECTED_CITY</string>
+    <string name="saved_selected_city">KNOCKSENSE_SELECTED_CITY</string>
+    <string name="selected_city_file_key">SELECTED_CITY_FILE</string>
 
     <string name="tab_home">HOME</string>
     <string name="tab_city">CITY</string>
     <string name="search">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

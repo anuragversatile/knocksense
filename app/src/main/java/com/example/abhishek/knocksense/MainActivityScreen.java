@@ -80,7 +80,9 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
-                        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null, null);
+
+                        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, false, null);
+
                         //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
