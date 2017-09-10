@@ -18,9 +18,9 @@ public class CategoryId {
     public static final String YOURSPACE_ID = "522";
     public static final String HINDI_ID = "7005"; //ZERO POSTS
 
-    public static String getCategoryId(String categoryName) {
+    public static String getCategoryId(String categoryId) {
         String id;
-        switch (categoryName) {
+        switch (categoryId) {
             case BOLLYWOOD_ID:
                 id = "BOLLYWOOD";
                 break;

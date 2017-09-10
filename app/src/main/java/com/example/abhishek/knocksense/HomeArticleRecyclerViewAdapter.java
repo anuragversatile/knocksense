@@ -24,6 +24,7 @@ import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
 import com.example.abhishek.knocksense.components.SingleArticleViewHolder;
+import com.example.abhishek.knocksense.components.TwoArticles;
 import com.example.abhishek.knocksense.components.TwoArticlesViewHolder;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -48,18 +49,44 @@ private Context context;
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager;
-    private int toReadItemPosition=0;
+    private List<Article> finalList;
 
     public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener,Context context) {
         mValues = items;
         mListener = listener;
         this.context=context;
         GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.HOME,this);
+        List<ArticleCategory> articleCategoryList=makeCategoryArticleList(items);
+        finalList = makeFinalList(articleCategoryList);
     }
-
-    private List<ArticleCategory> makeFinalList(List<Article> items) {
+    private List<Article> makeFinalList(List<ArticleCategory> articleCategoryList){
+        List<Article> finalList=new ArrayList<>();
+        int currentPosition=0;
+        for(int i=0;i<articleCategoryList.size();i++){
+            ArticleCategory articleCategory=articleCategoryList.get(i);
+            String id=articleCategory.getCategoryId();
+            String title=articleCategory.getCategoryName();
+            finalList.add(new Article(id, null, null, null, title, null,null, null, null));
+            ++currentPosition;
+            List<Article> articles=articleCategory.getArticleList();
+            for(int j=0;j<5;j++){
+                if(currentPosition%16==8 || currentPosition%16==12){
+                    Article leftArticle = articles.get(j);
+                    Article rightArticle = articles.get(++j);
+                    Article twoArticles = new TwoArticles(null, null, null, null, null, null, null, null, null, leftArticle,rightArticle);
+                    finalList.add(twoArticles);
+                    ++currentPosition;
+                }
+                else{
+                    Article article=articles.get(j);
+                    finalList.add(article);
+                    ++currentPosition;
+                }
+            }
+        }
+        return finalList;
+    }
+    private List<ArticleCategory> makeCategoryArticleList(List<Article> items) {
         ArticleCategory obBollywood = new ArticleCategory("BOLLYWOOD", "7006");
         ArticleCategory obDineSense = new ArticleCategory("DINESENSE", "765");
         ArticleCategory obEntertainment = new ArticleCategory("ENTERTAINMENT", "5");
@@ -78,9 +105,9 @@ private Context context;
             String articleId = article.getId();
             String[] articleCategories = article.getCategories();
             String categoryName;
-            for (String category : articleCategories) {
-                categoryName = (CategoryId.getCategoryId(category));
-                switch (categoryName) {
+            for (String categoryId : articleCategories) {
+                categoryName = (CategoryId.getCategoryId(categoryId));
+                switch (categoryName.toUpperCase()) {
                     case "BOLLYWOOD":
                         obBollywood.addArticleToCategory(article);
                         break;
@@ -113,7 +140,9 @@ private Context context;
                         break;
                     case "HINDI":
                         obHindi.addArticleToCategory(article);
-
+                        break;
+                    default:
+                        //articles of categories which are not hard coded are not considered
                         break;
 
                 }
@@ -121,48 +150,47 @@ private Context context;
 
             }
         }
-        if (obBollywood.getArticleList().size() > 0) {
+        if (obBollywood.getArticleList().size() > 4) {
             articleCategoryList.add(obBollywood);
         }
-        if (obDineSense.getArticleList().size() > 0) {
+        if (obDineSense.getArticleList().size() > 4) {
             articleCategoryList.add(obDineSense);
 
         }
-        if (obCulture.getArticleList().size() > 0)
-
+        if (obCulture.getArticleList().size() > 4)
         {
             articleCategoryList.add(obCulture);
 
         }
-        if(obEntertainment.getArticleList().size()>1)
+        if(obEntertainment.getArticleList().size()>4)
         {
             articleCategoryList.add(obEntertainment);
         }
-        if (obKnock.getArticleList().size()>0)
+        if (obKnock.getArticleList().size()>4)
         {
             articleCategoryList.add(obKnock);
         }
-        if(obNews.getArticleList().size()>0)
+        if(obNews.getArticleList().size()>4)
         {
             articleCategoryList.add(obNews);
         }
-        if(obSports.getArticleList().size()>0)
+        if(obSports.getArticleList().size()>4)
         {
             articleCategoryList.add(obSports);
         }
-        if (obTechSense.getArticleList().size()>0)
+        if (obTechSense.getArticleList().size()>4)
         {
             articleCategoryList.add(obTechSense);
         }
-        if (obWeReview.getArticleList().size()>0)
+        if (obWeReview.getArticleList().size()>4)
         {
             articleCategoryList.add(obWeReview);
         }
-        if (obYourSpace.getArticleList().size()>0)
+        if (obYourSpace.getArticleList().size()>4)
         {
             articleCategoryList.add(obYourSpace);
         }
-        if (obHindi.getArticleList().size()>0)
+        if (obHindi.getArticleList().size()>4)
         {
             articleCategoryList.add(obHindi);
         }
@@ -196,18 +224,18 @@ private Context context;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder h, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
         DateConverter dateConverter=new DateConverter();
         int temp=position%16;
 
         if(temp==1 || temp==7) {
             final BigArticleViewHolder holder=(BigArticleViewHolder) h;
 
-            Article article=mValues.get(toReadItemPosition);
+            final Article article=finalList.get(position);
             holder.mItem = article;
             holder.title.setText(article.getTitle());
             holder.author.setText(article.getAuthor());
-            holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+            holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String s, View view) {
@@ -233,7 +261,6 @@ private Context context;
             font.setFont3(context,holder.title);
             font.setFont2(context,holder.date);
             font.setFont2(context,holder.author);
-            ++toReadItemPosition;
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -260,7 +287,7 @@ private Context context;
                                     //handle menu1 click
                                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                     shareIntent.setType("text/plain");
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
 
                                     try {
                                         context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -291,7 +318,8 @@ private Context context;
         }
         else if(temp==8 || temp==12){
             final TwoArticlesViewHolder holder=(TwoArticlesViewHolder)h;
-            Article leftArticle = mValues.get(toReadItemPosition);
+            final TwoArticles twoArticles = (TwoArticles) finalList.get(position);
+            final Article leftArticle = twoArticles.getLeftArticle();
             holder.leftViewArticle=leftArticle;
             holder.leftViewTitle.setText(leftArticle.getTitle());
             /*holder.leftViewDate.setText(leftArticle.getDate());
@@ -319,7 +347,6 @@ private Context context;
                 }
             });
 
-            ++toReadItemPosition;
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -346,7 +373,7 @@ private Context context;
                                     //handle menu1 click
                                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                     shareIntent.setType("text/plain");
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,leftArticle.getLink());
 
                                     try {
                                         context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -374,7 +401,7 @@ private Context context;
             });
 
 
-            Article rightArticle = mValues.get(toReadItemPosition);
+            final Article rightArticle = twoArticles.getRightArticle();
             holder.rightViewArticle = rightArticle;
             holder.rightViewTitle.setText(rightArticle.getTitle());
           /*  holder.rightViewDate.setText(rightArticle.getDate());
@@ -402,7 +429,6 @@ private Context context;
                 }
             });
 
-            ++toReadItemPosition;
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -429,7 +455,7 @@ private Context context;
                                     //handle menu1 click
                                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                     shareIntent.setType("text/plain");
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,rightArticle.getLink());
 
                                     try {
                                         context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -459,12 +485,13 @@ private Context context;
         }
         else if(temp==0 || temp==6 || temp==11){
             final CategoryViewHolder holder=(CategoryViewHolder) h;
-            holder.category.setText("Category here.");
+            Article category = finalList.get(position);
+            holder.category.setText(category.getTitle());
 
         }
         else if(temp==2 || temp==3 || temp==4 || temp==5 || temp==9 || temp==10 || temp==13 || temp==14 || temp==15){
             final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
-            Article article=mValues.get(toReadItemPosition);
+            final Article article=finalList.get(position);
             holder.mItem = article;
             holder.title.setText(article.getTitle());
             holder.author.setText(article.getAuthor());
@@ -496,7 +523,6 @@ private Context context;
                 }
             });
 
-            ++toReadItemPosition;
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -523,7 +549,7 @@ private Context context;
                                     //handle menu1 click
                                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                     shareIntent.setType("text/plain");
-                                    shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                    shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
 
                                     try {
                                         context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -575,7 +601,7 @@ private Context context;
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return finalList.size();
     }
 
     @Override

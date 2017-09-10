@@ -21,8 +21,6 @@ public class Article {
     private String link;
     private String[] categories;
 
-private String name;
-
     public String[] getCategories() {
         return categories;
     }
@@ -31,11 +29,9 @@ private String name;
         this.categories = categories;
     }
 
-    public Article(String id, String date, String author, String name, String count, String title, String content, String featuredImage, String[] categories, String link) {
+    public Article(String id, String date, String author,  String count, String title, String content, String featuredImage, String[] categories, String link) {
 
         this.id = id;
-        this.name = name;
-
         this.count = count;
         this.date = date;
         this.author = author;
@@ -53,14 +49,6 @@ private String name;
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getCount() {

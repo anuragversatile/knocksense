@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,7 @@ public class HomeFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -84,6 +85,19 @@ public class HomeFragment extends Fragment {
             }
             recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getHomeArticlesList(), mListener,context));
             if (GlobalLists.getHomeArticlesList().size()>0) {
+//                recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+//                    RecyclerView rv=recyclerView;
+//                    @Override
+//                    public boolean onFling(int velocityX, int velocityY) {
+//                        Log.d("FLING HOME_FRAGMENT", "onFling="+velocityX);
+//                        final RecyclerView.LayoutManager lm = rv.getLayoutManager();
+//
+//                            super.smoothScrollToPosition((() getLayoutManager())
+//                                    .getPositionForVelocity(velocityX, velocityY));
+//                            return true;
+//                        return super.fling(velocityX, velocityY);
+//                    }
+//                });
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
