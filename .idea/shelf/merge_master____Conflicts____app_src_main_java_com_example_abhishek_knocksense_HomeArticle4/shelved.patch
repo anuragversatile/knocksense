@@ -1,0 +1,320 @@
+Index: app/src/main/res/layout/content_category_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/content_category_navigation.xml	(revision )
++++ app/src/main/res/layout/content_category_navigation.xml	(revision )
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    app:layout_behavior="@string/appbar_scrolling_view_behavior"
++    tools:context="com.example.abhishek.knocksense.CategoryNavigation"
++    tools:showIn="@layout/activity_category_navigation">
++
++</android.support.constraint.ConstraintLayout>
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(date 1504978195000)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -184,11 +184,22 @@
+         int id = item.getItemId();
+ 
+         if (id == R.id.nav_Entertainment) {
++/*
++Intent intent=new Intent(this,CategoryNavigation.class);
++            Bundle bundle = new Bundle();
++            bundle.putString("id","5");
+ 
+-          android.support.v4.app.FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
+-            ft.replace(R.id.content_frame, new CategoryFragmentFragment(),"Entertainment");
++intent.putExtras(bundle);
++            startActivity(intent);
++            */
++CategoryFragmentFragment fr= new CategoryFragmentFragment();
++FragmentManager fm=getFragmentManager();
++Fragment f=new Fragment();
++            FragmentTransaction ft= getFragmentManager().beginTransaction();
++            ft.replace(R.id.content_frame,fr);
+             ft.commit();
+ 
++
+             // Handle the camera action
+         } else if (id == R.id.nav_gallery) {
+ 
+@@ -208,10 +219,10 @@
+     }
+     private void displayView(int position) {
+         fragment = null;
+-        String fragmentTags = "Entertainment";
++        String fragmentTags = "";
+         switch (position) {
+-            case 0:
+-                fragment= new SearchFragment();
++            case R.id.article_item_row_title:
++               fragment= new CategoryFragmentFragment();
+                 break;
+ 
+             default:
+@@ -220,7 +231,7 @@
+ 
+         if (fragment != null) {
+             fragmentManager = getFragmentManager();
+-            fragmentManager.beginTransaction().replace(R.id.content_frame,fragment, fragmentTags).commit();
++            fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+         }
+     }
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryNavigation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryNavigation.java	(revision )
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryNavigation.java	(revision )
+@@ -0,0 +1,57 @@
++package com.example.abhishek.knocksense;
++
++import android.content.Context;
++import android.os.Bundle;
++import android.support.design.widget.FloatingActionButton;
++import android.support.design.widget.Snackbar;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.GridLayoutManager;
++import android.support.v7.widget.LinearLayoutManager;
++import android.support.v7.widget.RecyclerView;
++import android.support.v7.widget.Toolbar;
++import android.view.LayoutInflater;
++import android.view.View;
++
++import com.example.abhishek.knocksense.components.GlobalLists;
++import com.example.abhishek.knocksense.components.ListNameConstants;
++import com.nostra13.universalimageloader.core.DisplayImageOptions;
++import com.nostra13.universalimageloader.core.ImageLoader;
++import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
++
++import static com.example.abhishek.knocksense.R.id.recyclerView;
++
++public class CategoryNavigation extends AppCompatActivity {
++
++    private int mColumnCount = 1;
++    private Context context;
++    private CategoryFragmentFragment.OnListFragmentInteractionListener listener;
++    private RecyclerView recyclerView;
++    private RecyclerView.Adapter mAdapter;
++    private RecyclerView.LayoutManager mLayoutManager;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++//View view=LayoutInflater(R.layout.article_item_row,context);
++       setContentView(R.layout.article_item_row);
++        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        Bundle extras = getIntent().getExtras();
++        String id = extras.getString("id");
++
++         recyclerView=(RecyclerView)findViewById(R.id.city_fragment_list);
++             DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
++                     .cacheInMemory(true)
++                     .cacheOnDisk(true)
++                     .build();
++             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
++                     .defaultDisplayImageOptions(defaultOptions)
++                     .build();
++             ImageLoader.getInstance().init(config);
++
++             GlobalLists.fireRefreshData(getApplicationContext(),ListNameConstants.CATEGORY,false,id);
++
++             //recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(),listener,context));
++         }
++
++}
+Index: app/src/main/java/com/example/abhishek/knocksense/xyz.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/xyz.java	(revision )
++++ app/src/main/java/com/example/abhishek/knocksense/xyz.java	(revision )
+@@ -0,0 +1,28 @@
++package com.example.abhishek.knocksense;
++
++import android.os.Bundle;
++import android.support.design.widget.FloatingActionButton;
++import android.support.design.widget.Snackbar;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.view.View;
++
++public class xyz extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_xyz);
++        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++
++        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
++        fab.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
++                        .setAction("Action", null).show();
++            }
++        });
++    }
++}
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java	(date 1504978195000)
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java	(revision )
+@@ -40,6 +40,8 @@
+         this.context=context;
+     }
+ 
++
++
+     @Override
+     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+         View view = LayoutInflater.from(parent.getContext())
+Index: app/src/main/res/layout/activity_category_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_category_navigation.xml	(revision )
++++ app/src/main/res/layout/activity_category_navigation.xml	(revision )
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="com.example.abhishek.knocksense.CategoryNavigation">
++
++    <android.support.design.widget.AppBarLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:theme="@style/AppTheme.AppBarOverlay">
++
++        <android.support.v7.widget.Toolbar
++            android:id="@+id/toolbar"
++            android:layout_width="match_parent"
++            android:layout_height="?attr/actionBarSize"
++            android:background="?attr/colorPrimary"
++            app:popupTheme="@style/AppTheme.PopupOverlay" />
++
++    </android.support.design.widget.AppBarLayout>
++
++    <include layout="@layout/content_category_navigation" />
++
++    <android.support.design.widget.FloatingActionButton
++        android:id="@+id/fab"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_gravity="bottom|end"
++        android:layout_margin="@dimen/fab_margin"
++        app:srcCompat="@android:drawable/ic_dialog_email" />
++
++</android.support.design.widget.CoordinatorLayout>
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java	(date 1504978195000)
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java	(revision )
+@@ -1,8 +1,8 @@
+ package com.example.abhishek.knocksense;
+ 
++import android.app.Fragment;
+ import android.content.Context;
+ import android.os.Bundle;
+-import android.support.v4.app.Fragment;
+ import android.support.v7.widget.GridLayoutManager;
+ import android.support.v7.widget.LinearLayoutManager;
+ import android.support.v7.widget.RecyclerView;
+@@ -25,7 +25,7 @@
+  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+  * interface.
+  */
+-public class CategoryFragmentFragment extends Fragment  {
++public class CategoryFragmentFragment extends Fragment {
+ 
+     // TODO: Customize parameter argument names
+     private static final String ARG_COLUMN_COUNT = "column-count";
+@@ -82,7 +82,7 @@
+             } else {
+                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+             }
+-            recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(), listener,context));
++           recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(), listener,context));
+         }
+         return view;
+     }
+Index: app/src/main/res/layout/activity_xyz.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_xyz.xml	(revision )
++++ app/src/main/res/layout/activity_xyz.xml	(revision )
+@@ -0,0 +1,45 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:fitsSystemWindows="true"
++    tools:context="com.example.abhishek.knocksense.xyz">
++
++    <android.support.design.widget.AppBarLayout
++        android:id="@+id/app_bar"
++        android:layout_width="match_parent"
++        android:layout_height="@dimen/app_bar_height"
++        android:fitsSystemWindows="true"
++        android:theme="@style/AppTheme.AppBarOverlay">
++
++        <android.support.design.widget.CollapsingToolbarLayout
++            android:id="@+id/toolbar_layout"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:fitsSystemWindows="true"
++            app:contentScrim="?attr/colorPrimary"
++            app:layout_scrollFlags="scroll|exitUntilCollapsed">
++
++            <android.support.v7.widget.Toolbar
++                android:id="@+id/toolbar"
++                android:layout_width="match_parent"
++                android:layout_height="?attr/actionBarSize"
++                app:layout_collapseMode="pin"
++                app:popupTheme="@style/AppTheme.PopupOverlay" />
++
++        </android.support.design.widget.CollapsingToolbarLayout>
++    </android.support.design.widget.AppBarLayout>
++
++    
++    <android.support.design.widget.FloatingActionButton
++        android:id="@+id/fab"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_margin="@dimen/fab_margin"
++        app:layout_anchor="@id/app_bar"
++        app:layout_anchorGravity="bottom|end"
++        app:srcCompat="@android:drawable/ic_dialog_email" />
++
++</android.support.design.widget.CoordinatorLayout>

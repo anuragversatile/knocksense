@@ -30,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
         GlobalLists.fireRefreshData(getApplicationContext(),ListNameConstants.HOME, false, null);
-
+GlobalLists.fireRefreshData(getApplicationContext(),ListNameConstants.AUTHOR,false,null);
         new Handler().postDelayed(new Runnable() {
 
             @Override

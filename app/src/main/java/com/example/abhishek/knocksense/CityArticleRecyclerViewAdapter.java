@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListObserver;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -51,8 +52,14 @@ private  Font font;
        DateConverter dateConverter=new DateConverter();
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
+        for(Article article:  GlobalLists.getAuthorList()) {
+            String authorId = article.getId();
+            if (mValues.get(position).getAuthor().equals(authorId)) {
+                holder.author.setText(article.getName());
+                break;
+            }
+        }
 
-        holder.author.setText(mValues.get(position).getAuthor());
         holder.date.setText(mValues.get(position).getDate());
         holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
         font  = new Font();

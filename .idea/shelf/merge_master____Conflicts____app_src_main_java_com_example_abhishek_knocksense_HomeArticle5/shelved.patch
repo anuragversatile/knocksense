@@ -1,0 +1,194 @@
+Index: app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(date 1504978195000)
++++ app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(revision )
+@@ -15,6 +15,7 @@
+ 
+ import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++import com.example.abhishek.knocksense.components.GlobalLists;
+ import com.example.abhishek.knocksense.components.ListObserver;
+ import com.nostra13.universalimageloader.core.ImageLoader;
+ import com.nostra13.universalimageloader.core.assist.FailReason;
+@@ -31,6 +32,7 @@
+ 
+     private List<Article> mValues;
+     private final OnListFragmentInteractionListener mListener;
++
+     private  Context context;
+ private  Font font;
+     public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, Context context) {
+@@ -52,91 +54,98 @@
+         holder.mItem = mValues.get(position);
+         holder.title.setText(mValues.get(position).getTitle());
+ 
+-        holder.author.setText(mValues.get(position).getAuthor());
++       for(Article article:  GlobalLists.getAuthorList()) {
++            String authorId = article.getId();
++            if (mValues.get(position).getAuthor().equals(authorId)) {
++                holder.author.setText(article.getName());
++break;
++            }
++        }
++
++
+-        holder.date.setText(mValues.get(position).getDate());
++            holder.date.setText(mValues.get(position).getDate());
+-        holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
++            holder.date.setText(dateConverter.getDate(mValues.get(position).getDate()) + " " + dateConverter.getMonth(mValues.get(position).getDate()) + " " + dateConverter.getYear(mValues.get(position).getDate()));
+-        font  = new Font();
++            font = new Font();
+-        font.setFont(context,holder.title);
++            font.setFont(context, holder.title);
+-        font.setFont1(context,holder.date);
++            font.setFont1(context, holder.date);
+-        font.setFont1(context,holder.author);
++            font.setFont1(context, holder.author);
+ 
+-        final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
++            final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
+ 
+-        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+-            @Override
+-            public void onLoadingStarted(String s, View view) {
+-                //finalHolder.progressBar.setVisibility(View.VISIBLE);
+-            }
++            ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
++                @Override
++                public void onLoadingStarted(String s, View view) {
++                    //finalHolder.progressBar.setVisibility(View.VISIBLE);
++                }
+ 
+-            @Override
+-            public void onLoadingFailed(String s, View view, FailReason failReason) {
++                @Override
++                public void onLoadingFailed(String s, View view, FailReason failReason) {
+ 
+-            }
++                }
+ 
+-            @Override
+-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+-                //  finalHolder.progressBar.setVisibility(View.GONE);
+-            }
++                @Override
++                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
++                    //  finalHolder.progressBar.setVisibility(View.GONE);
++                }
+ 
+-            @Override
+-            public void onLoadingCancelled(String s, View view) {
++                @Override
++                public void onLoadingCancelled(String s, View view) {
+ 
+-            }
+-        });
++                }
++            });
+ 
++
+-        holder.mView.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-                if (null != mListener) {
+-                    // Notify the active callbacks interface (the activity, if the
+-                    // fragment is attached to one) that an item has been selected.
+-                    mListener.onListFragmentInteraction(holder.mItem);
+-                }
+-            }
+-        });
+-        holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-                //// TODO: 26-08-2017 save and share functionality
+-                PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
+-                //inflating menu from xml resource
+-                popup.inflate(R.menu.options_menu);
+-                //adding click listener
+-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+-                    @Override
+-                    public boolean onMenuItemClick(MenuItem item) {
+-                        switch (item.getItemId()) {
+-                            case R.id.share:
+-                                //handle menu1 click
+-                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+-                                shareIntent.setType("text/plain");
++            holder.mView.setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    if (null != mListener) {
++                        // Notify the active callbacks interface (the activity, if the
++                        // fragment is attached to one) that an item has been selected.
++                        mListener.onListFragmentInteraction(holder.mItem);
++                    }
++                }
++            });
++            holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    //// TODO: 26-08-2017 save and share functionality
++                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
++                    //inflating menu from xml resource
++                    popup.inflate(R.menu.options_menu);
++                    //adding click listener
++                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
++                        @Override
++                        public boolean onMenuItemClick(MenuItem item) {
++                            switch (item.getItemId()) {
++                                case R.id.share:
++                                    //handle menu1 click
++                                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
++                                    shareIntent.setType("text/plain");
+-                                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
++                                    shareIntent.putExtra(Intent.EXTRA_TEXT, mValues.get(position).getLink());
+ 
+-                                try {
++                                    try {
+-                                   context.startActivity(Intent.createChooser(shareIntent,"Share via"));
++                                        context.startActivity(Intent.createChooser(shareIntent, "Share via"));
+-                                } catch (Exception ex) {
++                                    } catch (Exception ex) {
+-                                    Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
++                                        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+-                                }
+-                                break;
+-                            case R.id.save:
+-                                //handle menu2 click
+-                                break;
++                                    }
++                                    break;
++                                case R.id.save:
++                                    //handle menu2 click
++                                    break;
+ 
+-                        }
+-                        return false;
+-                    }
+-                });
+-                //displaying the popup
+-                popup.show();
++                            }
++                            return false;
++                        }
++                    });
++                    //displaying the popup
++                    popup.show();
+ 
+-            }
++                }
+ 
+ 
+-
+-
+-
+-        });
+-    }
++            });
++        }
++
+ 
+     @Override
+     public int getItemCount() {

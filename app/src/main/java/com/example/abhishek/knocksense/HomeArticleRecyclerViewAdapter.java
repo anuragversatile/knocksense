@@ -206,7 +206,13 @@ private Context context;
             Article article=mValues.get(toReadItemPosition);
             holder.mItem = article;
             holder.title.setText(article.getTitle());
-            holder.author.setText(article.getAuthor());
+            for(Article arti:  GlobalLists.getAuthorList()) {
+                String authorId = arti.getId();
+                if (article.getAuthor().equals(authorId)) {
+                    holder.author.setText(arti.getName());
+                    break;
+                }
+            }
             holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
                 @Override
@@ -467,7 +473,13 @@ private Context context;
             Article article=mValues.get(toReadItemPosition);
             holder.mItem = article;
             holder.title.setText(article.getTitle());
-            holder.author.setText(article.getAuthor());
+            for(Article arti:  GlobalLists.getAuthorList()) {
+                String authorId = arti.getId();
+                if (article.getAuthor().equals(authorId)) {
+                    holder.author.setText(arti.getName());
+                    break;
+                }
+            }
             holder.date.setText(article.getDate());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
             font  = new Font();
