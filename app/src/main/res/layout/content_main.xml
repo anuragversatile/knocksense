@@ -9,16 +9,15 @@
     tools:context="com.example.abhishek.knocksense.MainActivityScreen"
     tools:showIn="@layout/app_bar_main">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            app:tabMode="fixed">
-
-        </android.support.design.widget.TabLayout>
-
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:tabMode="fixed"
+        >
+    </android.support.design.widget.TabLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
@@ -27,7 +26,9 @@
 
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
     </android.support.v4.view.ViewPager>
     </android.support.v4.widget.SwipeRefreshLayout>

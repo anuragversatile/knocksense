@@ -7,58 +7,58 @@ package com.example.abhishek.knocksense;
 public class CategoryId {
     public static final String BOLLYWOOD_ID = "7006";
     public static final String DINESENSE_ID = "765";
-    public static final String ENTERTAINMENT_ID = "5";
+    public static final String ENTERTAINMENT_ID = "5";// //
     public static final String CULTURE_ID = "3";
-    public static final String REST_OF_INDIA_ID = "629";
-    public static final String KNOCKKNOCK_ID = "9";
+    public static final String REST_OF_INDIA_ID = "629";// //
+    public static final String KNOCKKNOCK_ID = "9";// //
     public static final String NEWS_ID = "14";
     public static final String SPORTS_ID = "16";
-    public static final String TECHSENSE_ID = "17";
+    public static final String TECHSENSE_ID = "17";// //
     public static final String WEREVIEW_ID = "19";
-    public static final String YOURSPACE_ID = "522";
+    public static final String YOURSPACE_ID = "5224";// //
     public static final String HINDI_ID = "7005"; //ZERO POSTS
 
-    public static String getCategoryId(String categoryId) {
-        String id;
+    public static String getCategoryName(String categoryId) {
+        String categoryName;
         switch (categoryId) {
             case BOLLYWOOD_ID:
-                id = "BOLLYWOOD";
+                categoryName = "BOLLYWOOD";
                 break;
             case DINESENSE_ID:
-                id = "DINESENSE";
+                categoryName = "DINESENSE";
                 break;
             case ENTERTAINMENT_ID:
-                id = "ENTERTAINMENT";
+                categoryName = "ENTERTAINMENT";
                 break;
             case CULTURE_ID:
-                id = "CULTURE";
+                categoryName = "CULTURE";
                 break;
             case KNOCKKNOCK_ID:
-                id = "KNOCKKNOCK";
+                categoryName = "KNOCKKNOCK";
                 break;
             case NEWS_ID:
-                id = "NEWS";
+                categoryName = "NEWS";
                 break;
             case SPORTS_ID:
-                id = "SPORTS";
+                categoryName = "SPORTS";
                 break;
             case TECHSENSE_ID:
-                id = "TECHSENSE";
+                categoryName = "TECHSENSE";
                 break;
             case WEREVIEW_ID:
-                id = "WEREVIEW";
+                categoryName = "WEREVIEW";
                 break;
             case YOURSPACE_ID:
-                id = "YOURSPACE";
+                categoryName = "YOURSPACE";
                 break;
 
             case HINDI_ID:
-                id = "HINDI";
+                categoryName = "HINDI";
                 break;
             default:
-                id = REST_OF_INDIA_ID;
+                categoryName = "Experience India";
                 break;
         }
-        return id;
+        return categoryName;
     }
 }

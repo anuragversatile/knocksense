@@ -75,42 +75,15 @@ public class HomeFragment extends Fragment {
                 .build();
         ImageLoader.getInstance().init(config);
         // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.home_fragment_list);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter( mListener,context,this));
-            if (globalListInstance.getHomeArticlesList().size()>0) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
-                        int totalItemCount = layoutManager.getItemCount();
-                        int lastVisible = layoutManager.findLastVisibleItemPosition();
 
-                        if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
-                            View view = layoutManager.findViewByPosition(lastVisible);
-                            if (view == null) {
-                                Toast.makeText(getContext(), "last view ITS NULL", Toast.LENGTH_SHORT).show();
-                            } else {
-                                //you have reached to the bottom of your recycler view
-                                Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
-                                globalListInstance.fireRefreshData(getContext(), ListNameConstants.HOME, null);
-                            }
-
-                        }
-                    }
-                });
-            } else {
-                globalListInstance.fireRefreshData(getContext(), ListNameConstants.HOME,null);
-                Toast.makeText(getActivity(), "Home Data not available yet. Refreshing!!!", Toast.LENGTH_SHORT).show();
-            }
-
-        }
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter( mListener,context,view,this));
         return view;
     }
 

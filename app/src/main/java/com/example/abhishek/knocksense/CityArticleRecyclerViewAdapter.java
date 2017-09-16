@@ -165,7 +165,6 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
             this.progressBar.setVisibility(View.VISIBLE);
         }
         else if(!isLoading && hasLoaded){
-            Log.d("CITY ADAPTER", "updateList: SPINNER GONE");
             this.progressBar.setVisibility(View.GONE);
             mValues=articleList;
             this.notifyDataSetChanged();
