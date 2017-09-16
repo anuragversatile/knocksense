@@ -32,7 +32,7 @@ import com.example.abhishek.knocksense.components.ListNameConstants;
 import java.util.ArrayList;
 
 public class MainActivityScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener,CategoryFragmentFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     private ViewPager viewPager;
@@ -51,6 +51,7 @@ public class MainActivityScreen extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final GlobalLists globalListInstance = (GlobalLists)getApplication();
         backButtonCount=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,57 +82,15 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
-                        GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
+                        globalListInstance.fireRefreshData(getApplicationContext(),ListNameConstants.CITY,null);
+                        globalListInstance.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
                         //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
                     }
                 }
         );
-        /*recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        editTextSearch = (EditText) findViewById(R.id.editTextSearch);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new CustomAdapter(GlobalLists.getHomeArticlesList());
-
-        recyclerView.setAdapter(adapter);
-        editTextSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //after the change calling the method and passing the search input
-                filter(editable.toString());
-            }
-        });
-    }
-    private void filter(String text) {
-        //new array list that will hold the filtered data
-        ArrayList<Article> filterdNames = new ArrayList<>();
-
-        //looping through existing elements
-        for (Article s : GlobalLists.getHomeArticlesList()) {
-            //if the existing elements contains the search input
-            if (s.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                filterdNames.add(s);
-            }
-        }
-
-        //calling a method of the adapter class and passing the filtered list
-        adapter.filterList(filterdNames);
-    */}
+       }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,30 +140,30 @@ public class MainActivityScreen extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        String categotyId=null;
+        String categoryId=null;
         if(id==R.id.nav_Entertainment){
-            categotyId=CategoryId.ENTERTAINMENT_ID;
+            categoryId=CategoryId.ENTERTAINMENT_ID;
         }
         else if(id==R.id.KnockKnock){
-            categotyId=CategoryId.KNOCKKNOCK_ID;
+            categoryId=CategoryId.KNOCKKNOCK_ID;
         }
         else if(id==R.id.News){
-            categotyId=CategoryId.NEWS_ID;
+            categoryId=CategoryId.NEWS_ID;
         }
         else if(id==R.id.Sports){
-            categotyId=CategoryId.SPORTS_ID;
+            categoryId=CategoryId.SPORTS_ID;
         }
         else if(id==R.id.YourSpace){
-            categotyId=CategoryId.YOURSPACE_ID;
+            categoryId=CategoryId.YOURSPACE_ID;
         }
         else if(id==R.id.TechSense){
-            categotyId=CategoryId.TECHSENSE_ID;
+            categoryId=CategoryId.TECHSENSE_ID;
         }
         else if(id==R.id.WeReview){
-            categotyId=CategoryId.WEREVIEW_ID;
+            categoryId=CategoryId.WEREVIEW_ID;
         }
         else if(id==R.id.DineSense){
-            categotyId=CategoryId.DINESENSE_ID;
+            categoryId=CategoryId.DINESENSE_ID;
         }
         else if(id==R.id.ExperienceIndia){
             //// TODO: 10-09-2017
@@ -217,7 +176,7 @@ public class MainActivityScreen extends AppCompatActivity
 
         Intent intent=new Intent(this,CategoryOrAuthorScreen.class);
         Bundle bundle = new Bundle();
-        bundle.putString("ID",categotyId);
+        bundle.putString("ID",categoryId);
         bundle.putString("TYPE",ListNameConstants.CATEGORY);
         intent.putExtras(bundle);
         startActivity(intent);

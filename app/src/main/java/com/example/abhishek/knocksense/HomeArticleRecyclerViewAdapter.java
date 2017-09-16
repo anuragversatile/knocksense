@@ -52,12 +52,13 @@ private Context context;
     private final OnListFragmentInteractionListener mListener;
     private List<Article> finalList;
 
-    public HomeArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener,Context context) {
-        mValues = items;
+    public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context, HomeFragment homeFragment) {
+        GlobalLists globalListInstance = (GlobalLists)homeFragment.getActivity().getApplication();
+        mValues = new ArrayList<>();
         mListener = listener;
         this.context=context;
-        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.HOME,this);
-        List<ArticleCategory> articleCategoryList=makeCategoryArticleList(items);
+        globalListInstance.registerObserver(ListNameConstants.HOME,this);
+        List<ArticleCategory> articleCategoryList=makeCategoryArticleList(new ArrayList<Article>());
         finalList = makeFinalList(articleCategoryList);
     }
     private List<Article> makeFinalList(List<ArticleCategory> articleCategoryList){

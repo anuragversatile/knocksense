@@ -36,7 +36,6 @@ public class CityFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener listener;
-    private List<Article> cityArticles=new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -85,7 +84,7 @@ public class CityFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(listener,context, view));
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(listener,context, view,this));
         return view;
     }
 
