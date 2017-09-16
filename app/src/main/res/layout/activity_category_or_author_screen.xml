@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/category_or_author_list"
-    android:name="com.example.abhishek.knocksense.CategoryOrAuthorScreen"
-    android:tag="category_activity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/category_or_author_relative_layout"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.abhishek.knocksense.CategoryOrAuthorScreen"
-    tools:listitem="@layout/article_item_row" />
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.abhishek.knocksense.CategoryOrAuthorScreen">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/category_or_author_list"
+        android:name="com.example.abhishek.knocksense.CategoryOrAuthorScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/article_item_row"
+        />
+    <ProgressBar
+        android:id="@+id/category_or_author_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

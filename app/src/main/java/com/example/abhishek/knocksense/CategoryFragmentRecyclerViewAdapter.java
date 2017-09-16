@@ -10,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.abhishek.knocksense.CategoryFragmentFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,19 +27,45 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Article} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link com.example.abhishek.knocksense.CategoryOrAuthorScreen.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class CategoryFragmentRecyclerViewAdapter extends RecyclerView.Adapter<CategoryFragmentRecyclerViewAdapter.ViewHolder> implements ListObserver {
 
     private  List<Article> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+
+    private final CategoryOrAuthorScreen.OnListFragmentInteractionListener mListener;
 private  final Context context;
     private  Font font;
-    public CategoryFragmentRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener,Context context) {
-        mValues = items;
+    public CategoryFragmentRecyclerViewAdapter(CategoryOrAuthorScreen.OnListFragmentInteractionListener listener, Context context, View view, CategoryOrAuthorScreen categoryOrAuthorScreen, String type, String id) {
+        GlobalLists globalListInstance=(GlobalLists) categoryOrAuthorScreen.getApplication();
+        globalListInstance.registerObserver(ListNameConstants.CATEGORY,this);
+        mValues = globalListInstance.getCategoryArticlesList();
         mListener = listener;
         this.context=context;
+
+        this.progressBar =(ProgressBar)view.findViewById(R.id.category_or_author_progress_bar);
+        this.recyclerView = (RecyclerView)view.findViewById(R.id.category_or_author_list);
+        if(globalListInstance.getLastCategoryOrAuthorId()==null){
+            globalListInstance.setLastCategoryOrAuthorId(id);
+        }
+        if(globalListInstance.getLastCategoryOrAuthorId().equals(id) && mValues!=null && mValues.size()>0){
+            progressBar.setVisibility(View.GONE);
+        }
+        else{
+            recyclerView.setVisibility(View.GONE);
+            globalListInstance.setLastCategoryOrAuthorId(id);
+            progressBar.setVisibility(View.VISIBLE);
+            switch (type){
+                case ListNameConstants.CATEGORY:
+                    globalListInstance.fireRefreshData(context,ListNameConstants.CATEGORY,id);
+                    break;
+                case ListNameConstants.AUTHOR:
+                    break;
+            }
+        }
     }
 
     @Override
@@ -62,7 +90,6 @@ private  final Context context;
         font.setFont1(context,holder.date);
         font.setFont1(context,holder.author);
 
-        final CategoryFragmentRecyclerViewAdapter.ViewHolder finalHolder = holder;
 
         ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
             @Override
@@ -147,7 +174,16 @@ private  final Context context;
 
     @Override
     public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
-        //// TODO: 16-09-2017
+        if(isLoading){
+            this.progressBar.setVisibility(View.VISIBLE);
+        }
+        else if(!isLoading && hasLoaded){
+            mValues=articleList;
+            this.notifyDataSetChanged();
+            this.progressBar.setVisibility(View.GONE);
+            this.recyclerView.setVisibility(View.VISIBLE);
+
+        }
 
     }
 

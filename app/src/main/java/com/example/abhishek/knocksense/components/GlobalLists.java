@@ -40,6 +40,15 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
     private String selectedCityId;
+    private String lastCategoryOrAuthorId=null;
+
+    public String getLastCategoryOrAuthorId() {
+        return lastCategoryOrAuthorId;
+    }
+
+    public void setLastCategoryOrAuthorId(String lastCategoryOrAuthorId) {
+        this.lastCategoryOrAuthorId = lastCategoryOrAuthorId;
+    }
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
@@ -178,7 +187,7 @@ public class GlobalLists extends Application implements ListPublisher {
     }
     private void fetchCategoryData(Context context, String categoryId) {
         final GlobalLists globalListInstance=this;
-        this.notifyListObservers(CITY, null, false, true);
+        this.notifyListObservers(CATEGORY, null, false, true);
         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(categoryId);
 
         final List<Article> articleList = new ArrayList<>();
@@ -201,7 +210,7 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
                                     globalListInstance.setCategoryArticlesList(articleList);
-                                    globalListInstance.notifyListObservers(CITY,articleList,true,false);
+                                    globalListInstance.notifyListObservers(CATEGORY,articleList,true,false);
                                 }
                             }
 
@@ -261,6 +270,8 @@ public class GlobalLists extends Application implements ListPublisher {
             case CITY:
                 cityListObserverList.add(listObserver);
                 break;
+            case CATEGORY:
+                categoryListObserverList.add(listObserver);
         }
     }
 
@@ -273,6 +284,8 @@ public class GlobalLists extends Application implements ListPublisher {
             case CITY:
                 cityListObserverList.remove(listObserver);
                 break;
+            case CATEGORY:
+                categoryListObserverList.remove(listObserver);
         }
     }
 
@@ -286,6 +299,11 @@ public class GlobalLists extends Application implements ListPublisher {
                 break;
             case CITY:
                 for(ListObserver listObserver: cityListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
+                }
+                break;
+            case CATEGORY:
+                for(ListObserver listObserver: categoryListObserverList){
                     listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;

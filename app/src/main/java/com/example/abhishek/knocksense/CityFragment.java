@@ -36,7 +36,6 @@ public class CityFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener listener;
-    private List<Article> cityArticles=new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
