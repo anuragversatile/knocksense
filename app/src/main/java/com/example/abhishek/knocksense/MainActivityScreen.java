@@ -80,7 +80,7 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
-                        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, false, null);
+                        GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
                         //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
@@ -180,25 +180,46 @@ public class MainActivityScreen extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_Entertainment) {
-
-          android.support.v4.app.FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new CategoryFragmentFragment(),"Entertainment");
-            ft.commit();
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        String categotyId=null;
+        if(id==R.id.nav_Entertainment){
+            categotyId=CategoryId.ENTERTAINMENT_ID;
         }
+        else if(id==R.id.KnockKnock){
+            categotyId=CategoryId.KNOCKKNOCK_ID;
+        }
+        else if(id==R.id.News){
+            categotyId=CategoryId.NEWS_ID;
+        }
+        else if(id==R.id.Sports){
+            categotyId=CategoryId.SPORTS_ID;
+        }
+        else if(id==R.id.YourSpace){
+            categotyId=CategoryId.YOURSPACE_ID;
+        }
+        else if(id==R.id.TechSense){
+            categotyId=CategoryId.TECHSENSE_ID;
+        }
+        else if(id==R.id.WeReview){
+            categotyId=CategoryId.WEREVIEW_ID;
+        }
+        else if(id==R.id.DineSense){
+            categotyId=CategoryId.DINESENSE_ID;
+        }
+        else if(id==R.id.ExperienceIndia){
+            //// TODO: 10-09-2017
+        }
+        else if(id==R.id.nav_city)
+        {
+            Intent intent =new Intent(this,SelectCityScreen.class);
+            startActivity(intent);
+        }
+
+        Intent intent=new Intent(this,CategoryOrAuthorScreen.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("ID",categotyId);
+        bundle.putString("TYPE",ListNameConstants.CATEGORY);
+        intent.putExtras(bundle);
+        startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

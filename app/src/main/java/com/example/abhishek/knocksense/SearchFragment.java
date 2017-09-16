@@ -117,7 +117,7 @@ public class SearchFragment extends ListFragment implements SearchView.OnQueryTe
     private void populateList(){
 
        mAllValues =new ArrayList<>();
-        mAllValues.add(GlobalLists.getHomeArticlesList().get(getSelectedItemPosition()).getTitle());
+        mAllValues.add(GlobalLists.getGlobalListsInstance().getHomeArticlesList().get(getSelectedItemPosition()).getTitle());
 
 
         mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, mAllValues);

@@ -1,5 +1,6 @@
 package com.example.abhishek.knocksense;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,11 +35,19 @@ public class SelectCityScreen extends AppCompatActivity {
        setSelectedCityId(CitiesID.getCityId(selectedCity));
 
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(
+                getString(R.string.selected_city_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.saved_selected_city), getSelectedCityId());
-        editor.commit();
-        GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CITY,false, getSelectedCityId());
+        editor.apply();
+
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(
+                getString(R.string.selected_city_file_key), Context.MODE_PRIVATE);
+        Log.d("AFTER_SAVE", "CITY_ID "+sharedPref.getString(getString(R.string.saved_selected_city), "SHOULD NOT GO HERE!!!!!!!!"));
+
+
+        GlobalLists.getGlobalListsInstance().fireRefreshData(this, ListNameConstants.CITY, getSelectedCityId());
 
 
 

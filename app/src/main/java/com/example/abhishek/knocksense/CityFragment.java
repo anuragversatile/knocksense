@@ -15,9 +15,13 @@ import android.widget.Toast;
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
+import com.example.abhishek.knocksense.components.ListObserver;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -32,6 +36,7 @@ public class CityFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener listener;
+    private List<Article> cityArticles=new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -72,42 +77,15 @@ public class CityFragment extends Fragment {
                 .build();
         ImageLoader.getInstance().init(config);
         // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.city_fragment_list);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(GlobalLists.getCityArticlesList(), listener,context));
-            if (GlobalLists.getCityArticlesList().size()>0) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
-                        int totalItemCount = layoutManager.getItemCount();
-                        int lastVisible = layoutManager.findLastVisibleItemPosition();
 
-                        if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
-                            View view = layoutManager.findViewByPosition(lastVisible);
-                            if (view == null) {
-                                Toast.makeText(getContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
-                            } else {
-                                //you have reached to the bottom of your recycler view
-                                GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, true ,null);
-                            }
-
-                        }
-                    }
-                });
-            } else {
-                //means that city data is not fetched and we have come to city page but the fetch was started
-                //todo wait for 3 seconds before starting new request
-                //GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, false,null);
-                Toast.makeText(getActivity(), "City Data not available. TODO wait Refreshing!!!", Toast.LENGTH_SHORT).show();
-            }
-        }
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(listener,context, view));
         return view;
     }
 

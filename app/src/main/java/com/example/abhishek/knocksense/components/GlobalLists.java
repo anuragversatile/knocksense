@@ -2,6 +2,7 @@ package com.example.abhishek.knocksense.components;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.abhishek.knocksense.R;
+import com.example.abhishek.knocksense.SelectCityScreen;
 import com.example.abhishek.knocksense.UrlConstants;
 import com.google.gson.Gson;
 
@@ -25,6 +28,7 @@ import static com.example.abhishek.knocksense.components.ListNameConstants.AUTHO
 import static com.example.abhishek.knocksense.components.ListNameConstants.CATEGORY;
 import static com.example.abhishek.knocksense.components.ListNameConstants.CITY;
 import static com.example.abhishek.knocksense.components.ListNameConstants.HOME;
+
 
 /**
  * Created by anuragdwivedi on 21/08/17.
@@ -59,41 +63,34 @@ public class GlobalLists extends Application implements ListPublisher {
         return instance;
     }
 
-    public static Context getContext() {
-        return getContext();
+    public List<Article> getCategoryArticlesList() {
+        return this.categoryArticlesList;
     }
 
-    public static List<Article> getCategoryArticlesList() {
-        return getGlobalListsInstance().categoryArticlesList;
+    public void setCategoryArticlesList(List<Article> categoryArticlesList) {
+        this.categoryArticlesList = categoryArticlesList;
     }
 
-    public static void setCategoryArticlesList(List<Article> categoryArticlesList) {
-        getGlobalListsInstance().categoryArticlesList = categoryArticlesList;
+    public List<Article> getCityArticlesList() {
+        return this.cityArticlesList;
     }
 
-    public static List<Article> getCityArticlesList() {
-        return getGlobalListsInstance().cityArticlesList;
-    }
-
-    private static void setCityArticlesList(List<Article> cityArticlesList) {
-        getGlobalListsInstance().cityArticlesList = cityArticlesList;
+    private void setCityArticlesList(List<Article> cityArticlesList) {
+        this.cityArticlesList = cityArticlesList;
     }
 
 
-    public static List<Article> getHomeArticlesList() {
-        return getGlobalListsInstance().homeArticlesList;
+    public  List<Article> getHomeArticlesList() {
+        return this.homeArticlesList;
     }
 
-    private static void setHomeArticlesList(List<Article> articles) {
-        getGlobalListsInstance().homeArticlesList = articles;
+    private void setHomeArticlesList(List<Article> articles) {
+        this.homeArticlesList = articles;
     }
+void fetchHomeData(Context context) {
 
-    private static void fetchHomeData(Context context, String d) {
-        final String date = d;
+        this.notifyListObservers(HOME,null,false,true);
         String url = UrlConstants.getAllArticlesURL();
-        if (date != null) {
-            url = UrlConstants.getAllArticlesBeforeDate(date);
-        }
 
         final List<Article> articleList = new ArrayList<>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -116,17 +113,9 @@ public class GlobalLists extends Application implements ListPublisher {
 
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                    if (date != null) {
-                                        //having date means that it has to append
-                                        List<Article> globalArticles = GlobalLists.getHomeArticlesList();
-                                        globalArticles.addAll(articleList);
-                                        GlobalLists.setHomeArticlesList(globalArticles);
-                                    } else {
-                                        GlobalLists.setHomeArticlesList(articleList);
+                                        GlobalLists.getGlobalListsInstance().setHomeArticlesList(articleList);
+                                        GlobalLists.getGlobalListsInstance().notifyListObservers(HOME,articleList,true,false);
 
-                                    }
-                                    Integer newItemCount = (date==null)?null:articleList.size();
-                                    getGlobalListsInstance().notifyListObservers(HOME,newItemCount);
                                 }
                             }
                         } catch (JSONException e) {
@@ -145,20 +134,16 @@ public class GlobalLists extends Application implements ListPublisher {
 
     }
 
-    private static void fetchCityData(Context context, String selectedCityId, String d) {
-        final String date = d;
-
-        if(selectedCityId==null){
-            selectedCityId=getGlobalListsInstance().selectedCityId;
+    private void fetchCityData(Context context, String selectedCityId) {
+        this.notifyListObservers(CITY, null, false, true);
+        if (selectedCityId == null) {
+            this.selectedCityId= SelectCityScreen.getSelectedCityId();
+            Log.d("SELECTED_ID_GLOBAL", "fetchCityData: "+this.selectedCityId);
         }
         else{
-            //this will be called once from SelectCityScreen
-            getGlobalListsInstance().selectedCityId=selectedCityId;
+            this.selectedCityId=selectedCityId;
         }
-        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(selectedCityId);
-        if(date!=null){
-            url = UrlConstants.getAllArticlesBeforeDate(date);
-        }
+        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(this.selectedCityId);
 
         final List<Article> articleList = new ArrayList<>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -179,16 +164,8 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                    if (date != null) {
-                                        //having date means that it has to append
-                                        List<Article> globalArticles = GlobalLists.getCityArticlesList();
-                                        globalArticles.addAll(articleList);
-                                        GlobalLists.setCityArticlesList(globalArticles);
-                                    } else {
-                                        GlobalLists.setCityArticlesList(articleList);
-                                    }
-                                    Integer newItemCount= (date==null)?null:articleList.size();
-                                    getGlobalListsInstance().notifyListObservers(CITY,newItemCount);
+                                        GlobalLists.getGlobalListsInstance().setCityArticlesList(articleList);
+                                    GlobalLists.getGlobalListsInstance().notifyListObservers(CITY,articleList,true,false);
                                 }
                             }
 
@@ -208,12 +185,9 @@ public class GlobalLists extends Application implements ListPublisher {
 
 
     }
-    private static void fetchCategoryData(Context context, String categoryId, String d) {
-        final String date = d;
-        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL("7006");
-        if(date!=null){
-            url = UrlConstants.getAllArticlesBeforeDate(date);
-        }
+    private void fetchCategoryData(Context context, String categoryId) {
+        this.notifyListObservers(CITY, null, false, true);
+        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(categoryId);
 
         final List<Article> articleList = new ArrayList<>();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -234,16 +208,8 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                    if (date != null) {
-                                        //having date means that it has to append
-                                        List<Article> globalArticles = GlobalLists.getCategoryArticlesList();
-                                        globalArticles.addAll(articleList);
-                                        GlobalLists.setCategoryArticlesList(globalArticles);
-                                    } else {
-                                        GlobalLists.setCategoryArticlesList(articleList);
-                                    }
-                                    Integer newItemCount= (date==null)?null:articleList.size();
-                                    getGlobalListsInstance().notifyListObservers(CATEGORY,newItemCount);
+                                        GlobalLists.getGlobalListsInstance().setCategoryArticlesList(articleList);
+                                    GlobalLists.getGlobalListsInstance().notifyListObservers(CITY,articleList,true,false);
                                 }
                             }
 
@@ -264,37 +230,28 @@ public class GlobalLists extends Application implements ListPublisher {
 
     }
 
-    public static void fireRefreshData(Context context, String listType, boolean fetchByDate, String id){
+    public void fireRefreshData(Context context, String listType, String id){
         /*
             * id :? selectedCityId, authorId, categoryId, etc
             * listType :? home, city, author, category
         */
         RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
-        String date=null;
         switch (listType){
             case HOME:
                 //cancel previous request before starting new one
-                requestQueue.cancelAll(HOME);
-                if(fetchByDate){
-                    date = getHomeArticlesList().get(getHomeArticlesList().size()-1).getDate();
-                }
-                fetchHomeData(context, date);
+//                requestQueue.cancelAll(HOME);
+
+                fetchHomeData(context);
                 break;
             case CITY:
                 //cancel previous request before starting new one
                 requestQueue.cancelAll(CITY);
-                if(fetchByDate){
-                    date = getCityArticlesList().get(getCityArticlesList().size()-1).getDate();
-                }
-                fetchCityData(context, id, date);
+                fetchCityData(context, id);
                 break;
             case CATEGORY:
                 //// TODO: 09/09/17
-                requestQueue.cancelAll(CATEGORY);
-                if(fetchByDate){
-                    date = getCategoryArticlesList().get(getCategoryArticlesList().size()-1).getDate();
-                }
-                fetchCategoryData(context, id, date);
+//                requestQueue.cancelAll(CATEGORY);
+                fetchCategoryData(context, id);
                 break;
             case AUTHOR:
                 //// TODO: 09/09/17
@@ -306,61 +263,40 @@ public class GlobalLists extends Application implements ListPublisher {
     @Override
     public void registerObserver(String listType, ListObserver listObserver) {
         switch (listType){
-            case "home":
+            case HOME:
                 homeListObserverList.add(listObserver);
                 break;
-            case "city":
+            case CITY:
                 cityListObserverList.add(listObserver);
                 break;
-            case "category":
-                categoryListObserverList.add(listObserver);
-                break;
-            default:
-                Log.e("List observers", "registerObserver: incorrect string passed");
         }
     }
 
     @Override
     public void removeObserver(String listType, ListObserver listObserver) {
         switch (listType){
-            case "home":
+            case HOME:
                 homeListObserverList.remove(listObserver);
                 break;
-            case "city":
+            case CITY:
                 cityListObserverList.remove(listObserver);
                 break;
-            case "category":
-                categoryListObserverList.remove(listObserver);
-                break;
-
-            default:
-                Log.e("List observers", "removeObserver: incorrect string passed");
         }
-
     }
 
     @Override
-    public void notifyListObservers(String listType, Integer newItemCount) {
+    public void notifyListObservers(String listType, List<Article> articles, boolean hasLoaded, boolean isLoading) {
         switch (listType){
             case HOME:
-                for(ListObserver o: homeListObserverList){
-                    o.updateList(homeArticlesList, newItemCount);
+                for(ListObserver listObserver: homeListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;
             case CITY:
-                for(ListObserver o: cityListObserverList){
-                    o.updateList(cityArticlesList, newItemCount);
+                for(ListObserver listObserver: cityListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;
-            case CATEGORY:
-                for(ListObserver o: categoryListObserverList){
-                    o.updateList(categoryArticlesList, newItemCount);
-                }
-                break;
-
-            default:
-                Log.e("List observers", "registerObserver: incorrect string passed");
         }
-
     }
 }

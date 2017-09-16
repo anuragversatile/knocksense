@@ -50,12 +50,13 @@ private  final Context context;
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         DateConverter dateConverter=new DateConverter();
-        holder.mItem = mValues.get(position);
-        holder.title.setText(mValues.get(position).getTitle());
+        final Article article=mValues.get(position);
+        holder.mItem =article;
+        holder.title.setText(article.getTitle());
 
-        holder.author.setText(mValues.get(position).getAuthor());
-        holder.date.setText(mValues.get(position).getDate());
-        holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+        holder.author.setText(article.getAuthor());
+        holder.date.setText(article.getDate());
+        holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
         font.setFont(context,holder.title);
         font.setFont1(context,holder.date);
@@ -63,7 +64,7 @@ private  final Context context;
 
         final CategoryFragmentRecyclerViewAdapter.ViewHolder finalHolder = holder;
 
-        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
                 //finalHolder.progressBar.setVisibility(View.VISIBLE);
@@ -111,7 +112,7 @@ private  final Context context;
                                 //handle menu1 click
                                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                 shareIntent.setType("text/plain");
-                                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
 
                                 try {
                                     context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -145,15 +146,9 @@ private  final Context context;
     }
 
     @Override
-    public void updateList(List<Article> articleList, Integer newItemCount) {
-        if(newItemCount==null){
-            this.notifyDataSetChanged();
-        }
-        else{
-            this.notifyItemRangeChanged(mValues.size(),newItemCount);
-        }
-        //change mValues after its old size has been determined
-        mValues = articleList;
+    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
+        //// TODO: 16-09-2017
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -173,9 +168,5 @@ private  final Context context;
             featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + author.getText() + "'";
-        }
     }
 }

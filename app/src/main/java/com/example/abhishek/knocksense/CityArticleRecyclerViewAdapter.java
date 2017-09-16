@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
+import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -32,11 +36,22 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
     private  Context context;
-private  Font font;
-    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, Context context) {
-        mValues = items;
+    private ProgressBar progressBar;
+    private  Font font;
+    public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view) {
+        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.CITY,this);
+        mValues = GlobalLists.getGlobalListsInstance().getCityArticlesList();
         mListener = listener;
         this.context=context;
+        this.progressBar = (ProgressBar)view.findViewById(R.id.city_progress_bar);
+        if(mValues!=null && mValues.size()>0){
+            progressBar.setVisibility(View.GONE);
+        }
+        else{
+            GlobalLists.getGlobalListsInstance().fireRefreshData(context,ListNameConstants.CITY,null);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -47,22 +62,22 @@ private  Font font;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
        DateConverter dateConverter=new DateConverter();
-        holder.mItem = mValues.get(position);
-        holder.title.setText(mValues.get(position).getTitle());
+        final Article article=mValues.get(position);
+        holder.mItem = article;
+        holder.title.setText(article.getTitle());
 
-        holder.author.setText(mValues.get(position).getAuthor());
-        holder.date.setText(mValues.get(position).getDate());
-        holder.date.setText(dateConverter.getDate(mValues.get(position).getDate())+" "+ dateConverter.getMonth(mValues.get(position).getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+        holder.author.setText(article.getAuthor());
+        holder.date.setText(article.getDate());
+        holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
         font.setFont(context,holder.title);
         font.setFont1(context,holder.date);
         font.setFont1(context,holder.author);
 
-        final CityArticleRecyclerViewAdapter.ViewHolder finalHolder = holder;
 
-        ImageLoader.getInstance().displayImage(mValues.get(position).getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
                 //finalHolder.progressBar.setVisibility(View.VISIBLE);
@@ -110,7 +125,7 @@ private  Font font;
                                 //handle menu1 click
                                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                 shareIntent.setType("text/plain");
-                                shareIntent.putExtra(Intent.EXTRA_TEXT,mValues.get(position).getLink());
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
 
                                 try {
                                    context.startActivity(Intent.createChooser(shareIntent,"Share via"));
@@ -144,15 +159,16 @@ private  Font font;
     }
 
     @Override
-    public void updateList(List<Article> articleList, Integer newItemCount) {
-        if(newItemCount==null){
+    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
+        if(isLoading){
+            this.progressBar.setVisibility(View.VISIBLE);
+        }
+        else if(!isLoading && hasLoaded){
+            Log.d("CITY ADAPTER", "updateList: SPINNER GONE");
+            this.progressBar.setVisibility(View.GONE);
+            mValues=articleList;
             this.notifyDataSetChanged();
         }
-        else{
-            this.notifyItemRangeChanged(mValues.size(),newItemCount);
-        }
-        //change mValues after its old size has been determined
-        mValues = articleList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -160,7 +176,7 @@ private  Font font;
         public final TextView title;
         public final TextView author;
         public final TextView date;
-public  final ImageView featuredImage;
+        public  final ImageView featuredImage;
         public Article mItem;
 
         public ViewHolder(View view) {
@@ -172,9 +188,5 @@ public  final ImageView featuredImage;
             featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + author.getText() + "'";
-        }
     }
 }

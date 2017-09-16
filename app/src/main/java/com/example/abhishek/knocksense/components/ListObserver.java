@@ -7,5 +7,5 @@ import java.util.List;
  */
 
 public interface ListObserver {
-    public void updateList(List<Article> articleList, Integer newItemCount);
+    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading);
 }

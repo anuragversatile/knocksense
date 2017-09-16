@@ -81,7 +81,7 @@ public class CategoryFragmentFragment extends Fragment  {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(), listener,context));
+            recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getGlobalListsInstance().getCategoryArticlesList(), listener,context));
         }
         return view;
     }

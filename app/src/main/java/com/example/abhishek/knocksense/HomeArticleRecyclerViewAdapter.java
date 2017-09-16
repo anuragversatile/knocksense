@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -605,15 +606,8 @@ private Context context;
     }
 
     @Override
-    public void updateList(List<Article> articleList, Integer newItemCount) {
-        if(newItemCount==null){
-            this.notifyDataSetChanged();
-        }
-        else{
-            this.notifyItemRangeChanged(mValues.size(),newItemCount);
-        }
-        //change mValues after its old size has been determined
-        mValues= articleList;
+    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
+        //// TODO: 16-09-2017
     }
 
 
