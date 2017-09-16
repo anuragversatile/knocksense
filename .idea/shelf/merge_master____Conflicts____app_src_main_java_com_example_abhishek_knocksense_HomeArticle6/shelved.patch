@@ -1,0 +1,910 @@
+Index: app/src/main/java/com/example/abhishek/knocksense/components/ListObserver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/ListObserver.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/components/ListObserver.java	(revision )
+@@ -7,5 +7,5 @@
+  */
+ 
+ public interface ListObserver {
+-    public void updateList(List<Article> articleList, Integer newItemCount);
++    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading);
+ }
+Index: app/src/main/java/com/example/abhishek/knocksense/components/Article.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/Article.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/components/Article.java	(revision )
+@@ -18,9 +18,19 @@
+ 
+     @SerializedName("better_featured_image.source_url")
+     private String featuredImage;
++@SerializedName("avatar_urls.96")
++private String authorImage;
+     private String link;
+     private String[] categories;
+     private  String name;
++
++    public String getAuthorImage() {
++        return authorImage;
++    }
++
++    public void setAuthorImage(String authorImage) {
++        this.authorImage = authorImage;
++    }
+ 
+     public String getName() {
+         return name;
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/CityArticleRecyclerViewAdapter.java	(revision )
+@@ -10,13 +10,18 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.ImageView;
++import android.widget.ProgressBar;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
+ import com.example.abhishek.knocksense.components.GlobalLists;
++import com.example.abhishek.knocksense.components.ListNameConstants;
+ import com.example.abhishek.knocksense.components.ListObserver;
++import com.google.android.gms.ads.AdRequest;
++import com.google.android.gms.ads.AdView;
++import com.google.android.gms.ads.MobileAds;
+ import com.nostra13.universalimageloader.core.ImageLoader;
+ import com.nostra13.universalimageloader.core.assist.FailReason;
+ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+@@ -30,26 +35,46 @@
+  */
+ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArticleRecyclerViewAdapter.ViewHolder> implements ListObserver {
+ 
++    private ProgressBar progressBar;
+     private List<Article> mValues;
+     private final OnListFragmentInteractionListener mListener;
+-    private  Context context;
++    public  Context context;
+ private  Font font;
+-    public CityArticleRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener, Context context) {
+-        mValues = items;
++    public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, ProgressBar progressBar) {
++        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.CITY,this);
++        mValues = GlobalLists.getCityArticlesList();
+         mListener = listener;
+         this.context=context;
++        this.progressBar=progressBar;
++        if(mValues!=null && mValues.size()>0){
++            this.progressBar.setVisibility(View.GONE);
+-    }
++        }
++        else{
++            this.progressBar.setVisibility(View.VISIBLE);
++            GlobalLists.fireRefreshData(context,ListNameConstants.CITY,null);
++        }
++    }
+ 
+     @Override
+     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
++        if(viewType==0 ||viewType==1 || viewType==2 || viewType==3 ) {
+-        View view = LayoutInflater.from(parent.getContext())
+-                .inflate(R.layout.article_item_row, parent, false);
+-        return new ViewHolder(view);
+-    }
++            View view = LayoutInflater.from(parent.getContext())
++                    .inflate(R.layout.article_item_row, parent, false);
++            return new ViewHolder(view);
++        }
++        else if(viewType==4)
++        {
++            View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.admob_list,parent,false);
++            return new ViewHolder(view);
+ 
++        }
++        return null;
++    }
++
+     @Override
+     public void onBindViewHolder(final ViewHolder holder, final int position) {
+-       DateConverter dateConverter=new DateConverter();
++        if(position%5==0 || position%5==1 ||position%5==2 ||position%5==3)
++        {DateConverter dateConverter=new DateConverter();
+         holder.mItem = mValues.get(position);
+         holder.title.setText(mValues.get(position).getTitle());
+         for(Article article:  GlobalLists.getAuthorList()) {
+@@ -143,24 +168,31 @@
+ 
+ 
+         });
+-    }
++        }
+ 
++        else if(position%5==4)
++        {
++            }
++    }
+     @Override
++    public int getItemViewType(int position) {
++
++
++        return position%5;
++    }
++
++
++    @Override
+     public int getItemCount() {
+         return mValues.size();
+     }
+ 
+     @Override
+-    public void updateList(List<Article> articleList, Integer newItemCount) {
+-        if(newItemCount==null){
+-            this.notifyDataSetChanged();
++    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
++        if(isLoading){
++
+         }
+-        else{
+-            this.notifyItemRangeChanged(mValues.size(),newItemCount);
+-        }
++    }
+-        //change mValues after its old size has been determined
+-        mValues = articleList;
+-    }
+ 
+     public class ViewHolder extends RecyclerView.ViewHolder {
+         public final View mView;
+@@ -179,9 +211,30 @@
+             featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
+         }
+ 
++
+         @Override
+         public String toString() {
+             return super.toString() + " '" + author.getText() + "'";
+         }
+     }
++    public AdView mAdView;
++    public  class ViewHolderAdMob extends RecyclerView.ViewHolder {
++
++        public ViewHolderAdMob(View view) {
++            super(view);
++
++            MobileAds.initialize(context, "ca-app-pub-1676352533151251/9815080117");
++            AdRequest adRequest = new AdRequest.Builder()
++                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
++                    .build();
++
++            mAdView.loadAd(adRequest);
++
++            mAdView = (AdView) view.findViewById(R.id.adView);
++
++
++
++        }
++    }
++
+ }
+Index: app/src/main/java/com/example/abhishek/knocksense/components/ListPublisher.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/ListPublisher.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/components/ListPublisher.java	(revision )
+@@ -7,5 +7,5 @@
+ public interface ListPublisher {
+     public void registerObserver(String listType, ListObserver listObserver);
+     public void removeObserver(String listType, ListObserver listObserver);
+-    public void notifyListObservers(String listType, Integer newItemCount);
++    public void notifyListObservers(String listType, boolean hasLoaded, boolean isLoading);
+ }
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -28,9 +28,14 @@
+ import com.example.abhishek.knocksense.components.Article;
+ import com.example.abhishek.knocksense.components.GlobalLists;
+ import com.example.abhishek.knocksense.components.ListNameConstants;
++import com.google.android.gms.ads.AdRequest;
++import com.google.android.gms.ads.AdView;
++import com.google.android.gms.ads.MobileAds;
+ 
+ import java.util.ArrayList;
+ 
++import static com.example.abhishek.knocksense.R.layout.fragment_categoryfragment;
++
+ public class MainActivityScreen extends AppCompatActivity
+         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener,CategoryFragmentFragment.OnListFragmentInteractionListener {
+ 
+@@ -41,6 +46,7 @@
+     private Fragment fragment = null;
+     private FragmentManager fragmentManager;
+     private int backButtonCount;
++    private AdView mAdView;
+     RecyclerView recyclerView;
+     EditText editTextSearch;
+ 
+@@ -132,7 +138,15 @@
+ 
+         //calling a method of the adapter class and passing the filtered list
+         adapter.filterList(filterdNames);
+-    */}
++    */
++
++
++
++
++    }
++
++
++
+     @Override
+     public void onBackPressed() {
+         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+@@ -185,13 +199,18 @@
+ 
+         if (id == R.id.nav_Entertainment) {
+ 
+-          android.support.v4.app.FragmentTransaction ft= getSupportFragmentManager().beginTransaction();
+-            ft.replace(R.id.content_frame, new CategoryFragmentFragment(),"Entertainment");
+-            ft.commit();
++          Fragment fragment=new CategoryFragmentFragment();
++            FragmentManager fragmentManager=getFragmentManager();
++            fragmentManager.beginTransaction().replace(R.id.article_item_row_author,fragment).commit();
++         /*   Intent intent = new Intent(this,CategoryOrAuthorScreen.class);
++            startActivity(intent);*/
+ 
+             // Handle the camera action
+-        } else if (id == R.id.nav_gallery) {
++        } else if (id == R.id.nav_city) {
++            Intent intent = new Intent(this,SelectCityScreen.class);
++startActivity(intent);
+ 
++
+         } else if (id == R.id.nav_slideshow) {
+ 
+         } else if (id == R.id.nav_manage) {
+@@ -232,6 +251,11 @@
+         Bundle bundle = new Bundle();
+         bundle.putString("id",item.getId());
+         bundle.putString("uri", item.getLink());
++        bundle.putString("featured",item.getFeaturedImage());
++
++        bundle.putString("author",item.getAuthor());
++        bundle.putString("date",item.getDate());
++        bundle.putString("title",item.getTitle());
+         intent.putExtras(bundle);
+         startActivity(intent);
+     }
+Index: app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java	(revision )
+@@ -12,7 +12,7 @@
+ 
+     //featuredMedia has the id of the media
+     //// TODO: 26-08-2017 removed content to make fetch faster. Fetch content on going to the page
+-    private static final String allArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
++    private static final String allArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts?per_page=100&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
+     private static final String specificCategoryOrCityArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts/?categories=<__categoryID__>&per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
+     private static final String specificAuthorArticlesURl = "http://www.knocksense.com/wp-json/wp/v2/posts?author=<__authorID__>&per_page=25&fields=id,date,title,content,author,featured_media,categories,better_featured_image";
+     private static final String allCategoriesURL = "http://www.knocksense.com/wp-json/wp/v2/categories?fields=id,count,name";
+@@ -20,7 +20,7 @@
+     private static final String articleContentURL = "http://www.knocksense.com/wp-json/wp/v2/posts/<__postID__>?fields=id,content";
+     //private static final String allArticlesAfterDate="http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media&filter[date_query][after]=<__timeStamp__>";
+     //private static String allCitiesURL = "http://www.knocksense.com/wp-json/wp/v2/categories?filter[category_name]=Cities&fields=id,count,link";
+-    private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
++    private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name,avatar_urls";
+     private static String allArticlesBeforeDateURL="https://www.knocksense.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=asc&after=<__date__>&fields=id,title,date";
+ private static String searchUrl="http://www.knocksense.com/wp-json/wp/v2/posts?search=<__search__>&per_page=25&fields=id,date,title";
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentRecyclerViewAdapter.java	(revision )
+@@ -10,11 +10,14 @@
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.ImageView;
++import android.widget.ProgressBar;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import com.example.abhishek.knocksense.CategoryFragmentFragment.OnListFragmentInteractionListener;
+ import com.example.abhishek.knocksense.components.Article;
++import com.example.abhishek.knocksense.components.GlobalLists;
++import com.example.abhishek.knocksense.components.ListNameConstants;
+ import com.example.abhishek.knocksense.components.ListObserver;
+ 
+ import com.nostra13.universalimageloader.core.ImageLoader;
+@@ -30,15 +33,28 @@
+  */
+ public class CategoryFragmentRecyclerViewAdapter extends RecyclerView.Adapter<CategoryFragmentRecyclerViewAdapter.ViewHolder> implements ListObserver {
+ 
++    private ProgressBar progressBar;
+     private  List<Article> mValues;
+     private final OnListFragmentInteractionListener mListener;
+ private  final Context context;
+     private  Font font;
+-    public CategoryFragmentRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener,Context context) {
+-        mValues = items;
++    public CategoryFragmentRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context, ProgressBar progressBar) {
++        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.CATEGORY,this);
++        mValues = GlobalLists.getCategoryArticlesList();
++        this.progressBar=progressBar;
+         mListener = listener;
+         this.context=context;
++        if(mValues!=null && mValues.size()>0){
++            //hide spinner
++            this.progressBar.setVisibility(View.GONE);
+-    }
++        }
++        else{
++            //show spinner
++            //fetch data again
++            this.progressBar.setVisibility(View.VISIBLE);
++            GlobalLists.fireRefreshData(context,ListNameConstants.CATEGORY,null);
++        }
++    }
+ 
+     @Override
+     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+@@ -145,15 +161,17 @@
+     }
+ 
+     @Override
+-    public void updateList(List<Article> articleList, Integer newItemCount) {
+-        if(newItemCount==null){
+-            this.notifyDataSetChanged();
++    public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
++        if(isLoading){
++            //// TODO: 16/09/17 display spinner
++            //this.progressBar.setVisibility(View.VISIBLE);
+         }
+-        else{
+-            this.notifyItemRangeChanged(mValues.size(),newItemCount);
+-        }
+-        //change mValues after its old size has been determined
++        else if(!isLoading && hasLoaded){
++            //// TODO: 16/09/17 hide spinner
++            //this.progressBar.setVisibility(View.GONE);
+-        mValues = articleList;
++            mValues=articleList;
++            this.notifyDataSetChanged();
++        }
+     }
+ 
+     public class ViewHolder extends RecyclerView.ViewHolder {
+Index: app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java	(revision )
+@@ -102,12 +102,9 @@
+         getGlobalListsInstance().authorList = authorList;
+     }
+ 
+-    private static void fetchHomeData(Context context, String d) {
+-        final String date = d;
++    private static void fetchHomeData(Context context) {
++        getGlobalListsInstance().notifyListObservers(HOME,false,true);
+         String url = UrlConstants.getAllArticlesURL();
+-        if (date != null) {
+-            url = UrlConstants.getAllArticlesBeforeDate(date);
+-        }
+ 
+         final List<Article> articleList = new ArrayList<>();
+         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+@@ -130,19 +127,12 @@
+ 
+                                 articleList.add(articleModel);
+                                 if (articleList.size() == ParentArray.length()) {
+-                                    if (date != null) {
+-                                        //having date means that it has to append
+-                                        List<Article> globalArticles = GlobalLists.getHomeArticlesList();
+-                                        globalArticles.addAll(articleList);
+-                                        GlobalLists.setHomeArticlesList(globalArticles);
+-                                    } else {
++
+                                         GlobalLists.setHomeArticlesList(articleList);
+ 
++                                    getGlobalListsInstance().notifyListObservers(HOME,true,false);
+-                                    }
++                                }
+-                                    Integer newItemCount = (date==null)?null:articleList.size();
+-                                    getGlobalListsInstance().notifyListObservers(HOME,newItemCount);
+-                                }
++                            }
+-                            }
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+                         }
+@@ -159,9 +149,8 @@
+ 
+     }
+ 
+-    private static void fetchCityData(Context context, String selectedCityId, String d) {
+-        final String date = d;
+-
++    private static void fetchCityData(Context context, String selectedCityId) {
++        getGlobalListsInstance().notifyListObservers(CITY,false,true);
+         if(selectedCityId==null){
+             selectedCityId=getGlobalListsInstance().selectedCityId;
+         }
+@@ -170,10 +159,8 @@
+             getGlobalListsInstance().selectedCityId=selectedCityId;
+         }
+         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(selectedCityId);
+-        if(date!=null){
+-            url = UrlConstants.getAllArticlesBeforeDate(date);
+-        }
+ 
++
+         final List<Article> articleList = new ArrayList<>();
+         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                 new Response.Listener<String>() {
+@@ -193,18 +180,12 @@
+                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+                                 articleList.add(articleModel);
+                                 if (articleList.size() == ParentArray.length()) {
+-                                    if (date != null) {
+-                                        //having date means that it has to append
+-                                        List<Article> globalArticles = GlobalLists.getCityArticlesList();
+-                                        globalArticles.addAll(articleList);
+-                                        GlobalLists.setCityArticlesList(globalArticles);
+-                                    } else {
++
+                                         GlobalLists.setCityArticlesList(articleList);
++
++                                    getGlobalListsInstance().notifyListObservers(CITY,true,false);
+-                                    }
++                                }
+-                                    Integer newItemCount= (date==null)?null:articleList.size();
+-                                    getGlobalListsInstance().notifyListObservers(CITY,newItemCount);
+-                                }
++                            }
+-                            }
+ 
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+@@ -222,13 +203,9 @@
+ 
+ 
+     }
+-    private static void fetchCategoryData(Context context, String categoryId, String d) {
+-        final String date = d;
+-        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL("7006");
+-        if(date!=null){
+-            url = UrlConstants.getAllArticlesBeforeDate(date);
+-        }
+-
++    private static void fetchCategoryData(Context context, String categoryId) {
++        getGlobalListsInstance().notifyListObservers(CATEGORY,false,true);
++        String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(categoryId);
+         final List<Article> articleList = new ArrayList<>();
+         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                 new Response.Listener<String>() {
+@@ -248,17 +225,11 @@
+                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+                                 articleList.add(articleModel);
+                                 if (articleList.size() == ParentArray.length()) {
+-                                    if (date != null) {
+-                                        //having date means that it has to append
+-                                        List<Article> globalArticles = GlobalLists.getCategoryArticlesList();
+-                                        globalArticles.addAll(articleList);
+-                                        GlobalLists.setCategoryArticlesList(globalArticles);
+-                                    } else {
++
+                                         GlobalLists.setCategoryArticlesList(articleList);
+-                                    }
+-                                    Integer newItemCount= (date==null)?null:articleList.size();
+-                                    getGlobalListsInstance().notifyListObservers(CATEGORY,newItemCount);
+ 
++                                    getGlobalListsInstance().notifyListObservers(CATEGORY,true,false);
++
+                                 }
+                             }
+ 
+@@ -280,13 +251,11 @@
+     }
+ 
+ 
+-    private static void fetchAuthorData(Context context, String d) {
+-        final String date = d;
++    private static void fetchAuthorData(Context context,String id) {
++        getGlobalListsInstance().notifyListObservers(AUTHOR,false,true);
+         String url = UrlConstants.getAllAuthorsURL();
+-        if (date != null) {
+-            //url = UrlConstants.getAllArticlesBeforeDate(date);
+-        }
+ 
++
+         final List<Article> articleList = new ArrayList<>();
+         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                 new Response.Listener<String>() {
+@@ -300,22 +269,18 @@
+                                 Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                 articleModel.setId(ParentObject.getString("id"));
+                                 articleModel.setName(ParentObject.getString("name"));
+-Log.e("newsdsd","newidcii"+articleModel.getName());
++                                articleModel.setAuthorImage(ParentObject.getJSONObject("avatar_urls").getString("96"));
++
++                                Log.e("newsdsd","newidcii"+articleModel.getAuthorImage());
+                                 articleList.add(articleModel);
+                                 if (articleList.size() == ParentArray.length()) {
+-                                    if (date != null) {
+-                                        //having date means that it has to append
+-                                        List<Article> globalArticles = GlobalLists.getAuthorList();
+-                                        globalArticles.addAll(articleList);
+-                                        GlobalLists.setAuthorList(globalArticles);
+-                                    } else {
++
+                                         GlobalLists.setAuthorList(articleList);
+ 
++
++                                    getGlobalListsInstance().notifyListObservers(AUTHOR,true,false);
+-                                    }
++                                }
+-                                    Integer newItemCount = (date==null)?null:articleList.size();
+-                                    getGlobalListsInstance().notifyListObservers(AUTHOR,newItemCount);
+-                                }
++                            }
+-                            }
+                         } catch (JSONException e) {
+                             e.printStackTrace();
+                         }
+@@ -332,45 +297,35 @@
+ 
+     }
+ 
+-    public static void fireRefreshData(Context context, String listType, boolean fetchByDate, String id){
++
++    public static void fireRefreshData(Context context, String listType, String id){
+         /*
+             * id :? selectedCityId, authorId, categoryId, etc
+             * listType :? home, city, author, category
+         */
+         RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
+ 
+-        String date=null;
+         switch (listType){
+             case HOME:
+                 //cancel previous request before starting new one
+                 requestQueue.cancelAll(HOME);
+-                if(fetchByDate){
+-                    date = getHomeArticlesList().get(getHomeArticlesList().size()-1).getDate();
+-                }
+-                fetchHomeData(context, date);
++                fetchHomeData(context);
+                 break;
+             case CITY:
+                 //cancel previous request before starting new one
+                 requestQueue.cancelAll(CITY);
+-                if(fetchByDate){
+-                    date = getCityArticlesList().get(getCityArticlesList().size()-1).getDate();
+-                }
+-                fetchCityData(context, id, date);
++
++                fetchCityData(context, id);
+                 break;
+             case CATEGORY:
+                 //// TODO: 09/09/17
+                 requestQueue.cancelAll(CATEGORY);
+-                if(fetchByDate){
+-                    date = getCategoryArticlesList().get(getCategoryArticlesList().size()-1).getDate();
+-                }
+-                fetchCategoryData(context, id, date);
++
++                fetchCategoryData(context, id);
+                 break;
+             case AUTHOR:
+                 requestQueue.cancelAll(AUTHOR);
+-                if(fetchByDate){
+-                    date = getAuthorList().get(getAuthorList().size()-1).getDate();
+-                }
+-                fetchAuthorData(context,null);
++                fetchAuthorData(context,id);
+                 break;
+ 
+ 
+@@ -422,26 +377,26 @@
+     }
+ 
+     @Override
+-    public void notifyListObservers(String listType, Integer newItemCount) {
++    public void notifyListObservers(String listType, boolean hasLoaded, boolean isLoading) {
+         switch (listType){
+             case HOME:
+                 for(ListObserver o: homeListObserverList){
+-                    o.updateList(homeArticlesList, newItemCount);
++                    o.updateList(homeArticlesList, hasLoaded, isLoading);
+                 }
+                 break;
+             case CITY:
+                 for(ListObserver o: cityListObserverList){
+-                    o.updateList(cityArticlesList, newItemCount);
++                    o.updateList(cityArticlesList, hasLoaded, isLoading);
+                 }
+                 break;
+             case CATEGORY:
+                 for(ListObserver o: categoryListObserverList){
+-                    o.updateList(categoryArticlesList, newItemCount);
++                    o.updateList(categoryArticlesList, hasLoaded, isLoading);
+                 }
+                 break;
+             case AUTHOR:
+                 for(ListObserver o: authorListObserverList){
+-                    o.updateList(authorList, newItemCount);
++                    o.updateList(authorList, hasLoaded, isLoading);
+                 }
+                 break;
+ 
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryOrAuthorScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryOrAuthorScreen.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryOrAuthorScreen.java	(revision )
+@@ -1,13 +1,96 @@
+ package com.example.abhishek.knocksense;
+ 
++import android.content.Context;
++import android.support.design.widget.BottomNavigationView;
++import android.support.design.widget.NavigationView;
+ import android.support.v7.app.AppCompatActivity;
+ import android.os.Bundle;
++import android.support.v7.widget.GridLayoutManager;
++import android.support.v7.widget.LinearLayoutManager;
++import android.support.v7.widget.RecyclerView;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.Toast;
+ 
++import com.example.abhishek.knocksense.components.GlobalLists;
++import com.example.abhishek.knocksense.components.ListNameConstants;
++import com.nostra13.universalimageloader.core.DisplayImageOptions;
++import com.nostra13.universalimageloader.core.ImageLoader;
++import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
++
+ public class CategoryOrAuthorScreen extends AppCompatActivity {
++    private static final String ARG_COLUMN_COUNT = "column-count";
++    // TODO: Customize parameters
++    private int mColumnCount = 1;
++private View.OnClickListener listener;
++    LayoutInflater inflater = null;
++    ViewGroup container=null;
+ 
++    public CategoryOrAuthorScreen() {
++    }
++
++    public CategoryOrAuthorScreen(LayoutInflater inflater, ViewGroup container) {
++
++        this.inflater = inflater;
++        this.container = container;
++    }
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_category_or_author_screen);
++
++    DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
++            .cacheInMemory(true)
++            .cacheOnDisk(true)
++            .build();
++    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
++            .defaultDisplayImageOptions(defaultOptions)
++            .build();
++        ImageLoader.getInstance().init(config);
++
++View view=inflater.inflate(R.layout.article_item_row,container,false);
++    // Set the adapter
++        if (view instanceof RecyclerView) {
++        Context context = view.getContext();
++        RecyclerView recyclerView = (RecyclerView) view;
++        if (mColumnCount <= 1) {
++            recyclerView.setLayoutManager(new LinearLayoutManager(context));
++        } else {
++            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+-    }
++        }
++      //  recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(), listener,context));
++        if (GlobalLists.getCategoryArticlesList().size()>0) {
++            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
++                @Override
++                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
++                    LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
++                    int totalItemCount = layoutManager.getItemCount();
++                    int lastVisible = layoutManager.findLastVisibleItemPosition();
++
++                    if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
++                        View view = layoutManager.findViewByPosition(lastVisible);
++                        if (view == null) {
++                            Toast.makeText(getApplicationContext(), "ITS NULL", Toast.LENGTH_SHORT).show();
++                        } else {
++                            //you have reached to the bottom of your recycler view
++                            GlobalLists.fireRefreshData(getApplicationContext(), ListNameConstants.CATEGORY, true ,null);
++                        }
++
++                    }
++                }
++            });
++        } else {
++
++            //means that city data is not fetched and we have come to city page but the fetch was started
++            //todo wait for 3 seconds before starting new request
++            //GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, false,null);
++            Toast.makeText(getApplicationContext(), "City Data not available. TODO wait Refreshing!!!", Toast.LENGTH_SHORT).show();
++        }
++    }
++
++}
++
++
+ }
+Index: app/src/main/java/com/example/abhishek/knocksense/CityFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CityFragment.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/CityFragment.java	(revision )
+@@ -72,9 +72,8 @@
+                 .build();
+         ImageLoader.getInstance().init(config);
+         // Set the adapter
+-        if (view instanceof RecyclerView) {
+             Context context = view.getContext();
+-            RecyclerView recyclerView = (RecyclerView) view;
++            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.city_fragment_list);
+             if (mColumnCount <= 1) {
+                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
+             } else {
+@@ -108,7 +107,7 @@
+                 //GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, false,null);
+                 Toast.makeText(getActivity(), "City Data not available. TODO wait Refreshing!!!", Toast.LENGTH_SHORT).show();
+             }
+-        }
++
+         return view;
+     }
+ 
+Index: app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java	(date 1505040042000)
++++ app/src/main/java/com/example/abhishek/knocksense/CategoryFragmentFragment.java	(revision )
+@@ -2,17 +2,19 @@
+ 
+ import android.content.Context;
+ import android.os.Bundle;
+-import android.support.v4.app.Fragment;
++import android.app.Fragment;
+ import android.support.v7.widget.GridLayoutManager;
+ import android.support.v7.widget.LinearLayoutManager;
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.Toast;
+ 
+ import com.example.abhishek.knocksense.components.Article;
+ import com.example.abhishek.knocksense.components.GlobalLists;
+ 
++import com.example.abhishek.knocksense.components.ListNameConstants;
+ import com.nostra13.universalimageloader.core.DisplayImageOptions;
+ import com.nostra13.universalimageloader.core.ImageLoader;
+ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+@@ -83,6 +85,33 @@
+                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+             }
+             recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getCategoryArticlesList(), listener,context));
++            if (GlobalLists.getCategoryArticlesList().size()>0) {
++                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
++                    @Override
++                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
++                        LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
++                        int totalItemCount = layoutManager.getItemCount();
++                        int lastVisible = layoutManager.findLastVisibleItemPosition();
++
++                        if (totalItemCount > 0 && (lastVisible == (totalItemCount - 1))) {
++                            View view = layoutManager.findViewByPosition(lastVisible);
++                            if (view == null) {
++                                Toast.makeText(getActivity(), "ITS NULL", Toast.LENGTH_SHORT).show();
++                            } else {
++                                //you have reached to the bottom of your recycler view
++                                GlobalLists.fireRefreshData(getActivity(), ListNameConstants.CATEGORY, true ,null);
++                            }
++
++                        }
++                    }
++                });
++            } else {
++
++                //means that city data is not fetched and we have come to city page but the fetch was started
++                //todo wait for 3 seconds before starting new request
++                //GlobalLists.fireRefreshData(getContext(), ListNameConstants.CITY, false,null);
++                Toast.makeText(getActivity(), "City Data not available. TODO wait Refreshing!!!", Toast.LENGTH_SHORT).show();
++            }
+         }
+         return view;
+     }
+Index: app/src/main/res/layout/fragment_city.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_city.xml	(date 1505040042000)
++++ app/src/main/res/layout/fragment_city.xml	(revision )
+@@ -1,14 +1,29 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
++
++<RelativeLayout
++xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
++xmlns:tools="http://schemas.android.com/tools"
++xmlns:app="http://schemas.android.com/apk/res-auto"
++android:layout_width="match_parent"
++android:layout_height="match_parent"
++app:layout_behavior="@string/appbar_scrolling_view_behavior"
++tools:context="com.example.abhishek.knocksense.CityFragment">
++
++    <android.support.v7.widget.RecyclerView
+-    android:id="@+id/city_fragment_list"
+-    android:name="com.example.abhishek.knocksense.CityFragment"
+-    android:tag="city_fragment"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:layout_marginLeft="16dp"
+-    android:layout_marginRight="16dp"
+-    app:layoutManager="LinearLayoutManager"
++        android:id="@+id/city_fragment_list"
++        android:name="com.example.abhishek.knocksense.CityFragment"
++        android:tag="city_fragment"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:layout_marginLeft="16dp"
++        android:layout_marginRight="16dp"
++        app:layoutManager="LinearLayoutManager"
+-    tools:context="com.example.abhishek.knocksense.CityFragment"
+-    tools:listitem="@layout/article_item_row" />
++        tools:listitem="@layout/article_item_row"
++        />
++    <ProgressBar
++        android:id="@+id/city_progress_bar"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_centerVertical="true"
++        android:layout_centerHorizontal="true"/>
++</RelativeLayout>
+\ No newline at end of file

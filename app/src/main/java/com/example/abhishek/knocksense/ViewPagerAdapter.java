@@ -1,5 +1,6 @@
 package com.example.abhishek.knocksense;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,13 +17,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        if (position == 0)
-        {
+        if (position == 0) {
             fragment = HomeFragment.newInstance(1);
         }
         else if (position == 1)
         {
             fragment = CityFragment.newInstance(1);
+
         }
         return fragment;
     }
