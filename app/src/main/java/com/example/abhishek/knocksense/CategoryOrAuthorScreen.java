@@ -16,14 +16,15 @@ public class CategoryOrAuthorScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_or_author_screen);
+        GlobalLists globalListInstance=(GlobalLists)getApplication();
         Bundle bundle = getIntent().getExtras();
         String id=bundle.getString("ID");
         String type=bundle.getString("TYPE");
 
-        GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(), type, id);
+        globalListInstance.fireRefreshData(getApplicationContext(), type, id);
 
         recyclerView = (RecyclerView) findViewById(R.id.category_or_author_list);
 
-        mAdapter = new CategoryFragmentRecyclerViewAdapter(GlobalLists.getGlobalListsInstance().getCategoryArticlesList(),null,getApplicationContext());
+        mAdapter = new CategoryFragmentRecyclerViewAdapter(globalListInstance.getCategoryArticlesList(),null,getApplicationContext());
     }
 }

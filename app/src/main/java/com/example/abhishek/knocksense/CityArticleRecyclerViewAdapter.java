@@ -38,9 +38,10 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
     private  Context context;
     private ProgressBar progressBar;
     private  Font font;
-    public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view) {
-        GlobalLists.getGlobalListsInstance().registerObserver(ListNameConstants.CITY,this);
-        mValues = GlobalLists.getGlobalListsInstance().getCityArticlesList();
+    public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view,CityFragment cityFragment) {
+        GlobalLists globalListInstance=(GlobalLists) cityFragment.getActivity().getApplication();
+        globalListInstance.registerObserver(ListNameConstants.CITY,this);
+        mValues = globalListInstance.getCityArticlesList();
         mListener = listener;
         this.context=context;
         this.progressBar = (ProgressBar)view.findViewById(R.id.city_progress_bar);
@@ -48,7 +49,7 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
             progressBar.setVisibility(View.GONE);
         }
         else{
-            GlobalLists.getGlobalListsInstance().fireRefreshData(context,ListNameConstants.CITY,null);
+            globalListInstance.fireRefreshData(context,ListNameConstants.CITY,null);
             progressBar.setVisibility(View.VISIBLE);
         }
 

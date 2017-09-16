@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_article_list, container, false);
-
+        final GlobalLists globalListInstance = (GlobalLists)getActivity().getApplication();
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -83,8 +83,8 @@ public class HomeFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter(GlobalLists.getGlobalListsInstance().getHomeArticlesList(), mListener,context));
-            if (GlobalLists.getGlobalListsInstance().getGlobalListsInstance().getHomeArticlesList().size()>0) {
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter( mListener,context,this));
+            if (globalListInstance.getHomeArticlesList().size()>0) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -99,14 +99,14 @@ public class HomeFragment extends Fragment {
                             } else {
                                 //you have reached to the bottom of your recycler view
                                 Toast.makeText(getContext(), "end of view", Toast.LENGTH_SHORT).show();
-                                GlobalLists.getGlobalListsInstance().fireRefreshData(getContext(), ListNameConstants.HOME, null);
+                                globalListInstance.fireRefreshData(getContext(), ListNameConstants.HOME, null);
                             }
 
                         }
                     }
                 });
             } else {
-                GlobalLists.getGlobalListsInstance().fireRefreshData(getContext(), ListNameConstants.HOME,null);
+                globalListInstance.fireRefreshData(getContext(), ListNameConstants.HOME,null);
                 Toast.makeText(getActivity(), "Home Data not available yet. Refreshing!!!", Toast.LENGTH_SHORT).show();
             }
 

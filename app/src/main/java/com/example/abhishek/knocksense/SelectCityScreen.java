@@ -30,6 +30,7 @@ public class SelectCityScreen extends AppCompatActivity {
         setContentView(R.layout.activity_select_city_screen);
     }
     public void onCitySelected(View view){
+        GlobalLists globalListInstance = (GlobalLists)getApplication();
         TextView textView = (TextView) view;
         String selectedCity = textView.getText().toString().toUpperCase();
        setSelectedCityId(CitiesID.getCityId(selectedCity));
@@ -47,7 +48,7 @@ public class SelectCityScreen extends AppCompatActivity {
         Log.d("AFTER_SAVE", "CITY_ID "+sharedPref.getString(getString(R.string.saved_selected_city), "SHOULD NOT GO HERE!!!!!!!!"));
 
 
-        GlobalLists.getGlobalListsInstance().fireRefreshData(this, ListNameConstants.CITY, getSelectedCityId());
+        globalListInstance.fireRefreshData(this, ListNameConstants.CITY, getSelectedCityId());
 
 
 
@@ -55,4 +56,5 @@ public class SelectCityScreen extends AppCompatActivity {
         startActivity(intent);
 //// TODO: 19-08-2017 cities should be ordered alphabetically
     }
+
 }

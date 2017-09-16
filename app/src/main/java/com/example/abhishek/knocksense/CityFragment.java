@@ -85,7 +85,7 @@ public class CityFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(listener,context, view));
+            recyclerView.setAdapter(new CityArticleRecyclerViewAdapter(listener,context, view,this));
         return view;
     }
 

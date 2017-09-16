@@ -51,6 +51,7 @@ public class MainActivityScreen extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final GlobalLists globalListInstance = (GlobalLists)getApplication();
         backButtonCount=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,57 +81,15 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
-                        GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
+                        globalListInstance.fireRefreshData(getApplicationContext(),ListNameConstants.CITY,null);
+                        globalListInstance.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
                         //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished
                         Toast.makeText(MainActivityScreen.this, "refreshed!!!", Toast.LENGTH_SHORT).show();
 
                     }
                 }
         );
-        /*recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        editTextSearch = (EditText) findViewById(R.id.editTextSearch);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new CustomAdapter(GlobalLists.getHomeArticlesList());
-
-        recyclerView.setAdapter(adapter);
-        editTextSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //after the change calling the method and passing the search input
-                filter(editable.toString());
-            }
-        });
-    }
-    private void filter(String text) {
-        //new array list that will hold the filtered data
-        ArrayList<Article> filterdNames = new ArrayList<>();
-
-        //looping through existing elements
-        for (Article s : GlobalLists.getHomeArticlesList()) {
-            //if the existing elements contains the search input
-            if (s.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                filterdNames.add(s);
-            }
-        }
-
-        //calling a method of the adapter class and passing the filtered list
-        adapter.filterList(filterdNames);
-    */}
+       }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

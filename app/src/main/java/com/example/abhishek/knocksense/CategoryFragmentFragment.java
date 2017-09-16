@@ -63,6 +63,7 @@ public class CategoryFragmentFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categoryfragment_list, container, false);
+        GlobalLists globalListInstance=(GlobalLists)getActivity().getApplication();
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -73,7 +74,6 @@ public class CategoryFragmentFragment extends Fragment  {
         ImageLoader.getInstance().init(config);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -81,8 +81,8 @@ public class CategoryFragmentFragment extends Fragment  {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(GlobalLists.getGlobalListsInstance().getCategoryArticlesList(), listener,context));
-        }
+            recyclerView.setAdapter(new CategoryFragmentRecyclerViewAdapter(globalListInstance.getCategoryArticlesList(), listener,context));
+
         return view;
     }
 

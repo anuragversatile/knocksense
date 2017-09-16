@@ -44,23 +44,15 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
     private List<ListObserver> categoryListObserverList;
-    private  static GlobalLists instance=null;
 
 
-    private GlobalLists(){
+    public GlobalLists(){
         cityArticlesList=new ArrayList<>();
         homeArticlesList=new ArrayList<>();
         categoryArticlesList=new ArrayList<>();
         cityListObserverList=new ArrayList<>();
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
-    }
-
-    public static GlobalLists getGlobalListsInstance(){
-        if(instance==null){
-            instance = new GlobalLists();
-        }
-        return instance;
     }
 
     public List<Article> getCategoryArticlesList() {
@@ -87,8 +79,8 @@ public class GlobalLists extends Application implements ListPublisher {
     private void setHomeArticlesList(List<Article> articles) {
         this.homeArticlesList = articles;
     }
-void fetchHomeData(Context context) {
-
+    void fetchHomeData(Context context) {
+        final GlobalLists globalListInstance=this;
         this.notifyListObservers(HOME,null,false,true);
         String url = UrlConstants.getAllArticlesURL();
 
@@ -113,8 +105,8 @@ void fetchHomeData(Context context) {
 
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                        GlobalLists.getGlobalListsInstance().setHomeArticlesList(articleList);
-                                        GlobalLists.getGlobalListsInstance().notifyListObservers(HOME,articleList,true,false);
+                                    globalListInstance.setHomeArticlesList(articleList);
+                                    globalListInstance.notifyListObservers(HOME,articleList,true,false);
 
                                 }
                             }
@@ -135,13 +127,12 @@ void fetchHomeData(Context context) {
     }
 
     private void fetchCityData(Context context, String selectedCityId) {
+        final GlobalLists globalListInstance=this;
         this.notifyListObservers(CITY, null, false, true);
-        if (selectedCityId == null) {
-            this.selectedCityId= SelectCityScreen.getSelectedCityId();
+        if (selectedCityId != null) {
+            this.selectedCityId= selectedCityId;
+
             Log.d("SELECTED_ID_GLOBAL", "fetchCityData: "+this.selectedCityId);
-        }
-        else{
-            this.selectedCityId=selectedCityId;
         }
         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(this.selectedCityId);
 
@@ -164,8 +155,8 @@ void fetchHomeData(Context context) {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                        GlobalLists.getGlobalListsInstance().setCityArticlesList(articleList);
-                                    GlobalLists.getGlobalListsInstance().notifyListObservers(CITY,articleList,true,false);
+                                        globalListInstance.setCityArticlesList(articleList);
+                                    globalListInstance.notifyListObservers(CITY,articleList,true,false);
                                 }
                             }
 
@@ -186,6 +177,7 @@ void fetchHomeData(Context context) {
 
     }
     private void fetchCategoryData(Context context, String categoryId) {
+        final GlobalLists globalListInstance=this;
         this.notifyListObservers(CITY, null, false, true);
         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(categoryId);
 
@@ -208,8 +200,8 @@ void fetchHomeData(Context context) {
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
-                                        GlobalLists.getGlobalListsInstance().setCategoryArticlesList(articleList);
-                                    GlobalLists.getGlobalListsInstance().notifyListObservers(CITY,articleList,true,false);
+                                    globalListInstance.setCategoryArticlesList(articleList);
+                                    globalListInstance.notifyListObservers(CITY,articleList,true,false);
                                 }
                             }
 
