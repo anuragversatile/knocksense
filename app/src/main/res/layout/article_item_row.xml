@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:paddingLeft="7.45dp"
-            android:text="Author name"
+            android:text="KnockSense"
             android:textStyle="bold"
 
             android:textColor="@color/black_overlay"/>

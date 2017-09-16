@@ -39,21 +39,25 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+    private static List<Article>authorList;
     private String selectedCityId;
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
     private List<ListObserver> categoryListObserverList;
+    private List<ListObserver> authorListObserverList;
     private  static GlobalLists instance=null;
 
 
     private GlobalLists(){
         cityArticlesList=new ArrayList<>();
         homeArticlesList=new ArrayList<>();
+        authorList=new ArrayList<>();
         categoryArticlesList=new ArrayList<>();
         cityListObserverList=new ArrayList<>();
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
+        authorListObserverList=new ArrayList<>();
     }
 
     public static GlobalLists getGlobalListsInstance(){
@@ -69,6 +73,22 @@ public class GlobalLists extends Application implements ListPublisher {
 
     public void setCategoryArticlesList(List<Article> categoryArticlesList) {
         this.categoryArticlesList = categoryArticlesList;
+    }
+
+    public static List<Article> getAuthorList() {
+        return GlobalLists.authorList;
+    }
+
+    public static void setAuthorList(List<Article> authorList) {
+        GlobalLists.authorList = authorList;
+    }
+
+    public List<ListObserver> getAuthorListObserverList() {
+        return authorListObserverList;
+    }
+
+    public void setAuthorListObserverList(List<ListObserver> authorListObserverList) {
+        this.authorListObserverList = authorListObserverList;
     }
 
     public List<Article> getCityArticlesList() {
@@ -134,6 +154,8 @@ void fetchHomeData(Context context) {
 
     }
 
+
+
     private void fetchCityData(Context context, String selectedCityId) {
         this.notifyListObservers(CITY, null, false, true);
         if (selectedCityId == null) {
@@ -181,6 +203,50 @@ void fetchHomeData(Context context) {
             }
         });
         stringRequest.setTag(CITY);
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+
+    }
+
+    private void fetchAuthorData(Context context) {
+        this.notifyListObservers(AUTHOR, null, false, true);
+
+        String url = UrlConstants.getAllAuthorsURL();
+
+        final List<Article> articleList = new ArrayList<>();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONArray ParentArray = new JSONArray(s);
+                            for (int i = 0; i < ParentArray.length(); i++) {
+                                JSONObject ParentObject = ParentArray.getJSONObject(i);
+                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                articleModel.setId(ParentObject.getString("id"));
+                                articleModel.setName(ParentObject.getString("name"));
+                                articleModel.setAuthorImage(ParentObject.getJSONObject("avatar_urls").getString("96"));
+
+                                articleList.add(articleModel);
+                                if (articleList.size() == ParentArray.length()) {
+                                    GlobalLists.getGlobalListsInstance().setAuthorList(articleList);
+                                    GlobalLists.getGlobalListsInstance().notifyListObservers(AUTHOR,articleList,true,false);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                volleyError.printStackTrace();
+            }
+        });
+        stringRequest.setTag(AUTHOR);
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
 
@@ -255,6 +321,7 @@ void fetchHomeData(Context context) {
                 break;
             case AUTHOR:
                 //// TODO: 09/09/17
+                fetchAuthorData(context);
                 break;
         }
 
@@ -269,6 +336,8 @@ void fetchHomeData(Context context) {
             case CITY:
                 cityListObserverList.add(listObserver);
                 break;
+            case AUTHOR:
+                authorListObserverList.add(listObserver);
         }
     }
 
@@ -281,6 +350,8 @@ void fetchHomeData(Context context) {
             case CITY:
                 cityListObserverList.remove(listObserver);
                 break;
+            case AUTHOR:
+                authorListObserverList.remove(listObserver);
         }
     }
 
@@ -294,6 +365,11 @@ void fetchHomeData(Context context) {
                 break;
             case CITY:
                 for(ListObserver listObserver: cityListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
+                }
+                break;
+            case AUTHOR:
+                for(ListObserver listObserver: authorListObserverList){
                     listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;

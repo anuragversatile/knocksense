@@ -67,9 +67,14 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
         final Article article=mValues.get(position);
         holder.mItem = article;
         holder.title.setText(article.getTitle());
-
-        holder.author.setText(article.getAuthor());
-        holder.date.setText(article.getDate());
+        for(Article arti:  GlobalLists.getAuthorList()) {
+            String authorId = arti.getId();
+            if (mValues.get(position).getAuthor().equals(authorId)) {
+                holder.author.setText(arti.getName());
+                break;
+            }
+        }
+    holder.date.setText(article.getDate());
         holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
         font.setFont(context,holder.title);

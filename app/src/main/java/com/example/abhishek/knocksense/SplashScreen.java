@@ -31,6 +31,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
         GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(),ListNameConstants.HOME,  null);
+        GlobalLists.getGlobalListsInstance().fireRefreshData(getApplicationContext(),ListNameConstants.AUTHOR,null);
 
         new Handler().postDelayed(new Runnable() {
 

@@ -10,7 +10,7 @@ public class UrlConstants {
     private static final String allArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts?per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
     private static String specificCategoryOrCityArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts/?categories=<__categoryID__>&per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
 
-  private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name";
+  private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name,avatar_urls";
 
     public static String getAllAuthorsURL() {
         return allAuthorsURL;
