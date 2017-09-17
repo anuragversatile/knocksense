@@ -1,9 +1,12 @@
 package com.example.abhishek.knocksense;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -12,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
@@ -25,7 +29,7 @@ public class WebViewScreen extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         DateConverter dc=new DateConverter();
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         String uri = extras.getString("uri");
         final String post = "post-"+extras.getString("id");
         final WebView webView = (WebView) findViewById(R.id.web_view);
@@ -56,8 +60,48 @@ Picasso.with(this).load(feature).into(iv);
             }
         }
 
+        /*ImageView is=(ImageView)findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 26-08-2017 save and share functionality
+                PopupMenu popup = new PopupMenu(getApplicationContext(), findViewById(R.id.article_item_row_more));
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String as = extras.getString("uri");
+                        switch (item.getItemId()) {
+                            case R.id.share:
+                                //handle menu1 click
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setType("text/plain");
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, ex);
+
+                                try {
+                                    getApplicationContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+                                } catch (Exception ex) {
+                                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                            case R.id.save:
+                                //handle menu2 click
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
 
 
+        });
+
+*/
 
 
 
