@@ -211,6 +211,11 @@ public class MainActivityScreen extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString("id",item.getId());
         bundle.putString("uri", item.getLink());
+       bundle.putString("date",item.getDate());
+        bundle.putString("author",item.getAuthor());
+        bundle.putString("feature",item.getFeaturedImage());
+        bundle.putString("title",item.getTitle());
+
         intent.putExtras(bundle);
         startActivity(intent);
     }

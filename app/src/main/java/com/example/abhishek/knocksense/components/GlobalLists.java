@@ -185,6 +185,7 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
                                 articleModel.setAuthor(ParentObject.getString("author"));
                                 articleModel.setLink(ParentObject.getString("link"));
+
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {

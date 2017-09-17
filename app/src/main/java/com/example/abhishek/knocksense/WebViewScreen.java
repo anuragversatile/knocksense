@@ -1,13 +1,21 @@
 package com.example.abhishek.knocksense;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
+import com.squareup.picasso.Picasso;
 
 public class WebViewScreen extends AppCompatActivity {
 
@@ -15,10 +23,51 @@ public class WebViewScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+
+        DateConverter dc=new DateConverter();
         Bundle extras = getIntent().getExtras();
         String uri = extras.getString("uri");
         final String post = "post-"+extras.getString("id");
         final WebView webView = (WebView) findViewById(R.id.web_view);
+
+
+
+
+        ImageView iv=(ImageView)findViewById(R.id.featured);
+        String feature=extras.getString("feature");
+Picasso.with(this).load(feature).into(iv);
+        ImageView im=(ImageView)findViewById(R.id.avatar);
+        TextView tx=(TextView)findViewById(R.id.title);
+        tx.setText(extras.getString("title"));
+        TextView tx1=(TextView)findViewById(R.id.date);
+        TextView tx2=(TextView)findViewById(R.id.author);
+        String dt=extras.getString("date");
+        Log.e("thdhfjfdjfjdhfjfh","fudytsdffjtdyt"+extras.getString("feature"));
+
+        tx1.setText(dc.getDate(dt)+" "+ dc.getMonth(dt)+ " "+dc.getYear(dt));
+
+        for(Article arti:  GlobalLists.getAuthorList()) {
+            String authorId = arti.getId();
+            if (extras.getString("author").equals(authorId)) {
+                tx2.setText(arti.getName());
+                Log.e("thdhfjfdjfjdhfjfh","fudytsdffjtdyt"+arti.getAuthorImage());
+                Picasso.with(this).load(arti.getAuthorImage()).into(im);
+                break;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
