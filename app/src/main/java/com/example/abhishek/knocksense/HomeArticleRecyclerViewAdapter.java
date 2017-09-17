@@ -119,7 +119,17 @@ private Context context;
 
             final Article article=mValues.get(position);
             holder.mItem = article;
-            holder.title.setText(article.getTitle());
+            if(article.getTitle().contains("&#8217;")) {
+                String title = article.getTitle().replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+            else if(article.getTitle().contains("&#038;")) {
+                String title = article.getTitle().replace("&#038;", "&");
+                holder.title.setText(title);
+            }
+            else {
+                holder.title.setText(article.getTitle());
+            }
             holder.author.setText(article.getAuthor());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
@@ -207,7 +217,17 @@ private Context context;
             final TwoArticles twoArticles = (TwoArticles) mValues.get(position);
             final Article leftArticle = twoArticles.getLeftArticle();
             holder.leftViewArticle=leftArticle;
-            holder.leftViewTitle.setText(leftArticle.getTitle());
+            if(leftArticle.getTitle().contains("&#8217;")) {
+                String title = leftArticle.getTitle().replace("&#8217;", "'");
+                holder.leftViewTitle.setText(title);
+            }
+            else if(leftArticle.getTitle().contains("&#038;")) {
+                String title = leftArticle.getTitle().replace("&#038;", "&");
+                holder.leftViewTitle.setText(title);
+            }
+            else {
+                holder.leftViewTitle.setText(leftArticle.getTitle());
+            }
             /*holder.leftViewDate.setText(leftArticle.getDate());
             holder.leftViewAuthor.setText(leftArticle.getAuthor());
             */
@@ -289,7 +309,17 @@ private Context context;
 
             final Article rightArticle = twoArticles.getRightArticle();
             holder.rightViewArticle = rightArticle;
-            holder.rightViewTitle.setText(rightArticle.getTitle());
+            if(rightArticle.getTitle().contains("&#8217;")) {
+                String title = rightArticle.getTitle().replace("&#8217;", "'");
+                holder.rightViewTitle.setText(title);
+            }
+            else if(rightArticle.getTitle().contains("&#038;")) {
+                String title = rightArticle.getTitle().replace("&#038;", "&");
+                holder.rightViewTitle.setText(title);
+            }
+            else {
+                holder.rightViewTitle.setText(rightArticle.getTitle());
+            }
           /*  holder.rightViewDate.setText(rightArticle.getDate());
             holder.rightViewAuthor.setText(rightArticle.getAuthor());
           */
@@ -373,13 +403,25 @@ private Context context;
             final CategoryViewHolder holder=(CategoryViewHolder) h;
             Article category = mValues.get(position);
             holder.category.setText(category.getTitle());
+            font  = new Font();
+            font.setFont(context,holder.category);
 
         }
         else if(temp==2 || temp==3 || temp==4 || temp==5 || temp==9 || temp==10 || temp==13 || temp==14 || temp==15){
             final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
             final Article article=mValues.get(position);
             holder.mItem = article;
-            holder.title.setText(article.getTitle());
+            if(article.getTitle().contains("&#8217;")) {
+                String title = article.getTitle().replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+            else if(article.getTitle().contains("&#038;")) {
+                String title = article.getTitle().replace("&#038;", "&");
+                holder.title.setText(title);
+            }
+            else {
+                holder.title.setText(article.getTitle());
+            }
             holder.author.setText(article.getAuthor());
             holder.date.setText(article.getDate());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));

@@ -67,8 +67,17 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArt
        DateConverter dateConverter=new DateConverter();
         final Article article=mValues.get(position);
         holder.mItem = article;
-        holder.title.setText(article.getTitle());
-
+        if(article.getTitle().contains("&#8217;")) {
+            String title = article.getTitle().replace("&#8217;s", "'");
+            holder.title.setText(title);
+        }
+        else if(article.getTitle().contains("&#038;")) {
+            String title = article.getTitle().replace("&#038;", "&");
+            holder.title.setText(title);
+        }
+        else {
+            holder.title.setText(article.getTitle());
+        }
         holder.author.setText(article.getAuthor());
         holder.date.setText(article.getDate());
         holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
