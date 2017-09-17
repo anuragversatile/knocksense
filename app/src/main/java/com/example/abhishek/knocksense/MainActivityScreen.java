@@ -2,6 +2,8 @@ package com.example.abhishek.knocksense;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,8 +17,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -105,7 +109,18 @@ public class MainActivityScreen extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+
         return true;
     }
 
@@ -114,13 +129,13 @@ public class MainActivityScreen extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-
-            return true;
-        }
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.search) {
+//
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -130,69 +145,42 @@ public class MainActivityScreen extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        String categoryId=null;
-        if(id==R.id.nav_Entertainment){
-            categoryId=CategoryId.ENTERTAINMENT_ID;
-        }
-        else if(id==R.id.KnockKnock){
-            categoryId=CategoryId.KNOCKKNOCK_ID;
-        }
-        else if(id==R.id.News){
-            categoryId=CategoryId.NEWS_ID;
-        }
-        else if(id==R.id.Sports){
-            categoryId=CategoryId.SPORTS_ID;
-        }
-        else if(id==R.id.YourSpace){
-            categoryId=CategoryId.YOURSPACE_ID;
-        }
-        else if(id==R.id.TechSense){
-            categoryId=CategoryId.TECHSENSE_ID;
-        }
-        else if(id==R.id.WeReview){
-            categoryId=CategoryId.WEREVIEW_ID;
-        }
-        else if(id==R.id.DineSense){
-            categoryId=CategoryId.DINESENSE_ID;
-        }
-        else if(id==R.id.nav_home){
+        String categoryId = null;
+        if (id == R.id.nav_Entertainment) {
+            categoryId = CategoryId.ENTERTAINMENT_ID;
+        } else if (id == R.id.KnockKnock) {
+            categoryId = CategoryId.KNOCKKNOCK_ID;
+        } else if (id == R.id.News) {
+            categoryId = CategoryId.NEWS_ID;
+        } else if (id == R.id.Sports) {
+            categoryId = CategoryId.SPORTS_ID;
+        } else if (id == R.id.YourSpace) {
+            categoryId = CategoryId.YOURSPACE_ID;
+        } else if (id == R.id.TechSense) {
+            categoryId = CategoryId.TECHSENSE_ID;
+        } else if (id == R.id.WeReview) {
+            categoryId = CategoryId.WEREVIEW_ID;
+        } else if (id == R.id.DineSense) {
+            categoryId = CategoryId.DINESENSE_ID;
+        } else if (id == R.id.nav_home) {
             //// TODO: 10-09-2017
-            Intent intent =new Intent(this,MainActivityScreen.class);
+            Intent intent = new Intent(this, MainActivityScreen.class);
             startActivity(intent);
-        }
-        else if(id==R.id.nav_city)
-        {
-            Intent intent =new Intent(this,SelectCityScreen.class);
+        } else if (id == R.id.nav_city) {
+            Intent intent = new Intent(this, SelectCityScreen.class);
             startActivity(intent);
         }
 
-        Intent intent=new Intent(this,CategoryOrAuthorScreen.class);
+        Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
         Bundle bundle = new Bundle();
-        bundle.putString("ID",categoryId);
-        bundle.putString("TYPE",ListNameConstants.CATEGORY);
+        bundle.putString("ID", categoryId);
+        bundle.putString("TYPE", ListNameConstants.CATEGORY);
         intent.putExtras(bundle);
         startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-    private void displayView(int position) {
-        fragment = null;
-        String fragmentTags = "Entertainment";
-        switch (position) {
-            case 0:
-                fragment= new SearchFragment();
-                break;
-
-            default:
-                break;
-        }
-
-        if (fragment != null) {
-            fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame,fragment, fragmentTags).commit();
-        }
     }
 
 

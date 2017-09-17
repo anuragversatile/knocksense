@@ -22,7 +22,8 @@
     <string name="tab_home">HOME</string>
     <string name="tab_city">CITY</string>
     <string name="search">Search</string>
-
+    <string name="search_hint">Enter text to search</string>
+    <string name="search_title">Search</string>
 
 
 </resources>
