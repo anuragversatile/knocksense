@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     package="com.example.abhishek.knocksense">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,7 +35,9 @@
         </activity>
         <activity android:name=".components.ArticleListView" />
         <activity android:name=".SelectCityScreen" />
-        <activity android:name=".CategoryOrAuthorScreen" />
+        <activity android:name=".CategoryOrAuthorScreen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivityScreen"/>
         <activity android:name=".WebViewScreen" />
         <service android:name=".MyFirebaseInstanceIdService">
             <intent-filter>

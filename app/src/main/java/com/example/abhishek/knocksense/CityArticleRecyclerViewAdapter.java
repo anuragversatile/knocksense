@@ -83,6 +83,7 @@ private static int normal=1;
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         DateConverter dateConverter = new DateConverter();
         switch (holder.getItemViewType()) {
 
@@ -93,7 +94,17 @@ private static int normal=1;
  default: {
      final Article article = mValues.get(position);
      holder.mItem = article;
-     holder.title.setText(article.getTitle());
+                if(article.getTitle().contains("&#8217;")) {
+                    String title = article.getTitle().replace("&#8217;s", "'");
+                    holder.title.setText(title);
+                }
+                else if(article.getTitle().contains("&#038;")) {
+                    String title = article.getTitle().replace("&#038;", "&");
+                    holder.title.setText(title);
+                }
+                else {
+                    holder.title.setText(article.getTitle());
+                }
      for (Article arti : GlobalLists.getAuthorList()) {
          String authorId = arti.getId();
          if (mValues.get(position).getAuthor().equals(authorId)) {
@@ -206,7 +217,6 @@ private static int normal=1;
             this.progressBar.setVisibility(View.VISIBLE);
         }
         else if(!isLoading && hasLoaded){
-            Log.d("CITY ADAPTER", "updateList: SPINNER GONE");
             this.progressBar.setVisibility(View.GONE);
             mValues=articleList;
             this.notifyDataSetChanged();

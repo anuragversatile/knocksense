@@ -12,6 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.abhishek.knocksense.CategoryId;
 import com.example.abhishek.knocksense.R;
 import com.example.abhishek.knocksense.SelectCityScreen;
 import com.example.abhishek.knocksense.UrlConstants;
@@ -24,6 +25,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.abhishek.knocksense.CategoryId.ENTERTAINMENT_ID;
+import static com.example.abhishek.knocksense.CategoryId.KNOCKKNOCK_ID;
+import static com.example.abhishek.knocksense.CategoryId.REST_OF_INDIA_ID;
+import static com.example.abhishek.knocksense.CategoryId.TECHSENSE_ID;
+import static com.example.abhishek.knocksense.CategoryId.YOURSPACE_ID;
 import static com.example.abhishek.knocksense.components.ListNameConstants.AUTHOR;
 import static com.example.abhishek.knocksense.components.ListNameConstants.CATEGORY;
 import static com.example.abhishek.knocksense.components.ListNameConstants.CITY;
@@ -111,19 +117,25 @@ public class GlobalLists extends Application implements ListPublisher {
         this.homeArticlesList = articles;
     }
     void fetchHomeData(Context context) {
-        final GlobalLists globalListInstance=this;
-        this.notifyListObservers(HOME,null,false,true);
-        String url = UrlConstants.getAllArticlesURL();
 
+        final String[] categoriesToFetch = {ENTERTAINMENT_ID, KNOCKKNOCK_ID, YOURSPACE_ID, TECHSENSE_ID, REST_OF_INDIA_ID};
+
+        final GlobalLists globalListInstance = this;
+        this.notifyListObservers(HOME, null, false, true);
         final List<Article> articleList = new ArrayList<>();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        for (int k = 0; k < categoriesToFetch.length; k++) {
+            final String categoryId = categoriesToFetch[k];
+            final String categoryName = CategoryId.getCategoryName(categoryId);
+            String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(categoryId,5);
+            final List<Article> specificCategoryList=new ArrayList<>(1+5);//category label + articles
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         try {
                             Gson gson = new Gson();
                             JSONArray ParentArray = new JSONArray(s);
-                            for (int i = 0; i < ParentArray.length(); i++) {
+                            for (int i = 0; i < 5; i++) {
                                 JSONObject ParentObject = ParentArray.getJSONObject(i);
                                 Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
                                 articleModel.setId(ParentObject.getString("id"));
@@ -131,14 +143,18 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
                                 articleModel.setAuthor(ParentObject.getString("author"));
                                 articleModel.setLink(ParentObject.getString("link"));
-                                articleModel.setCategories(gson.fromJson(ParentObject.getJSONArray("categories").toString(),String[].class));
+                                articleModel.setCategories(gson.fromJson(ParentObject.getJSONArray("categories").toString(), String[].class));
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
 
-                                articleList.add(articleModel);
-                                if (articleList.size() == ParentArray.length()) {
-                                    globalListInstance.setHomeArticlesList(articleList);
-                                    globalListInstance.notifyListObservers(HOME,articleList,true,false);
+                                specificCategoryList.add(articleModel);
+                                if (specificCategoryList.size() == 5) {
+                                    specificCategoryList.add(0,new Article(categoryId, null, null,  null, categoryName, null, null, null, null));
+                                    articleList.addAll(specificCategoryList);
 
+                                    if(i==categoriesToFetch.length-1){
+                                        globalListInstance.setHomeArticlesList(articleList);
+                                        globalListInstance.notifyListObservers(HOME,articleList,true,false);
+                                    }
                                 }
                             }
                         } catch (JSONException e) {
@@ -155,6 +171,7 @@ public class GlobalLists extends Application implements ListPublisher {
         stringRequest.setTag(HOME);
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
+    }
     }
 
 
@@ -310,8 +327,8 @@ public class GlobalLists extends Application implements ListPublisher {
         RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
         switch (listType){
             case HOME:
-                //cancel previous request before starting new one
-//                requestQueue.cancelAll(HOME);
+//                cancel previous request before starting new one
+                requestQueue.cancelAll(HOME);
 
                 fetchHomeData(context);
                 break;
@@ -322,7 +339,7 @@ public class GlobalLists extends Application implements ListPublisher {
                 break;
             case CATEGORY:
                 //// TODO: 09/09/17
-//                requestQueue.cancelAll(CATEGORY);
+                requestQueue.cancelAll(CATEGORY);
                 fetchCategoryData(context, id);
                 break;
             case AUTHOR:

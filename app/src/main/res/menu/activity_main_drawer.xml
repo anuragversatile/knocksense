@@ -3,21 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Hot" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Trending" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Latest" />
+             android:title="Home" />
+
     </group>
 
     <item android:title="Communicate">
@@ -65,10 +54,7 @@
                 android:id="@+id/DineSense"
 
                 android:title="Dine Sense" />
-            <item
-                android:id="@+id/ExperienceIndia"
 
-                android:title="Experience India" />
         </menu>
     </item>
 

@@ -2,7 +2,6 @@ package com.example.abhishek.knocksense;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,11 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -112,6 +108,7 @@ public class MainActivityScreen extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -165,8 +162,10 @@ public class MainActivityScreen extends AppCompatActivity
         else if(id==R.id.DineSense){
             categoryId=CategoryId.DINESENSE_ID;
         }
-        else if(id==R.id.ExperienceIndia){
+        else if(id==R.id.nav_home){
             //// TODO: 10-09-2017
+            Intent intent =new Intent(this,MainActivityScreen.class);
+            startActivity(intent);
         }
         else if(id==R.id.nav_city)
         {
