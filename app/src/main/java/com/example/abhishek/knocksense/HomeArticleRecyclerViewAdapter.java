@@ -119,7 +119,11 @@ private Context context;
 
             final Article article=mValues.get(position);
             holder.mItem = article;
-            if(article.getTitle().contains("&#8217;")) {
+            if(article.getTitle().contains("&#8216;")) {
+                String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+           else if(article.getTitle().contains("&#8217;")) {
                 String title = article.getTitle().replace("&#8217;", "'");
                 holder.title.setText(title);
             }
@@ -223,7 +227,11 @@ private Context context;
             final TwoArticles twoArticles = (TwoArticles) mValues.get(position);
             final Article leftArticle = twoArticles.getLeftArticle();
             holder.leftViewArticle=leftArticle;
-            if(leftArticle.getTitle().contains("&#8217;")) {
+            if(leftArticle.getTitle().contains("&#8216;")) {
+                String title = leftArticle.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.leftViewTitle.setText(title);
+            }
+           else if(leftArticle.getTitle().contains("&#8217;")) {
                 String title = leftArticle.getTitle().replace("&#8217;", "'");
                 holder.leftViewTitle.setText(title);
             }
@@ -315,7 +323,11 @@ private Context context;
 
             final Article rightArticle = twoArticles.getRightArticle();
             holder.rightViewArticle = rightArticle;
-            if(rightArticle.getTitle().contains("&#8217;")) {
+            if(rightArticle.getTitle().contains("&#8216;")) {
+                String title = rightArticle.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.rightViewTitle.setText(title);
+            }
+           else if(rightArticle.getTitle().contains("&#8217;")) {
                 String title = rightArticle.getTitle().replace("&#8217;", "'");
                 holder.rightViewTitle.setText(title);
             }
@@ -417,7 +429,11 @@ private Context context;
             final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
             final Article article=mValues.get(position);
             holder.mItem = article;
-            if(article.getTitle().contains("&#8217;")) {
+            if(article.getTitle().contains("&#8216;") ) {
+                String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+            else if(article.getTitle().contains("&#8217;")) {
                 String title = article.getTitle().replace("&#8217;", "'");
                 holder.title.setText(title);
             }

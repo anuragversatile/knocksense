@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.CategoryViewHolder;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
@@ -27,23 +28,24 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Article} and makes a call to the
- * specified {@link com.example.abhishek.knocksense.CategoryOrAuthorScreen.OnListFragmentInteractionListener}.
+ * specified {@link com.example.abhishek.knocksense.OnCategoryListItemClickedListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class CategoryFragmentRecyclerViewAdapter extends RecyclerView.Adapter<CategoryFragmentRecyclerViewAdapter.ViewHolder> implements ListObserver {
+public class CategoryOrAuthorRecyclerViewAdapter extends RecyclerView.Adapter<CategoryOrAuthorRecyclerViewAdapter.ViewHolder> implements ListObserver {
 
     private  List<Article> mValues;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
 
-   // private final CategoryOrAuthorScreen.OnListFragmentInteractionListener mListener;
+
+    private final OnCategoryListItemClickedListener mListener;
 private  final Context context;
     private  Font font;
-    public CategoryFragmentRecyclerViewAdapter(Context context, View view, CategoryOrAuthorScreen categoryOrAuthorScreen, String type, String id) {
+    public CategoryOrAuthorRecyclerViewAdapter(OnCategoryListItemClickedListener listener, Context context, View view, CategoryOrAuthorScreen categoryOrAuthorScreen, String type, String id) {
         GlobalLists globalListInstance=(GlobalLists) categoryOrAuthorScreen.getApplication();
         globalListInstance.registerObserver(ListNameConstants.CATEGORY,this);
         mValues = globalListInstance.getCategoryArticlesList();
-
+mListener=listener;
         this.context=context;
 
         this.progressBar =(ProgressBar)view.findViewById(R.id.category_or_author_progress_bar);
@@ -80,10 +82,15 @@ private  final Context context;
         DateConverter dateConverter=new DateConverter();
         final Article article=mValues.get(position);
         holder.mItem =article;
-        if(article.getTitle().contains("&#8217;")) {
+        if(article.getTitle().contains("&#8216;")) {
+            String title = article.getTitle().replace("&#8216;", "'");
+            holder.title.setText(title);
+        }
+        else if(article.getTitle().contains("&#8217;")) {
             String title = article.getTitle().replace("&#8217;", "'");
             holder.title.setText(title);
         }
+
         else if(article.getTitle().contains("&#038;")) {
             String title = article.getTitle().replace("&#038;", "&");
             holder.title.setText(title);
@@ -91,7 +98,13 @@ private  final Context context;
         else {
             holder.title.setText(article.getTitle());
         }
-        holder.author.setText(article.getAuthor());
+        for (Article arti : GlobalLists.getAuthorList()) {
+            String authorId = arti.getId();
+            if (mValues.get(position).getAuthor().equals(authorId)) {
+                holder.author.setText(arti.getName());
+                break;
+            }
+        }
         holder.date.setText(article.getDate());
         holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
@@ -122,50 +135,20 @@ private  final Context context;
             }
         });
 
-       /* holder.mView.setOnClickListener(new View.OnClickListener() {
+       holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onItemClicked(holder.mItem,"list", null);
                 }
             }
-        });*/
+        });
         holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //// TODO: 26-08-2017 save and share functionality
-                PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
-                //inflating menu from xml resource
-                popup.inflate(R.menu.options_menu);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.share:
-                                //handle menu1 click
-                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                                shareIntent.setType("text/plain");
-                                shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
-
-                                try {
-                                    context.startActivity(Intent.createChooser(shareIntent,"Share via"));
-                                } catch (Exception ex) {
-                                    Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
-                                }
-                                break;
-                            case R.id.save:
-                                //handle menu2 click
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-                //displaying the popup
-                popup.show();
+                mListener.onItemClicked(holder.mItem,"more", holder);
 
             }
 
@@ -215,3 +198,6 @@ private  final Context context;
 
     }
 }
+interface OnCategoryListItemClickedListener{
+        public void onItemClicked(Article item, String what, CategoryOrAuthorRecyclerViewAdapter.ViewHolder holder);
+        }

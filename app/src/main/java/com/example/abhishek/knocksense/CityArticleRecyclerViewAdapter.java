@@ -94,7 +94,11 @@ private static int normal=1;
  default: {
      final Article article = mValues.get(position);
      holder.mItem = article;
-                if(article.getTitle().contains("&#8217;")) {
+     if(article.getTitle().contains("&#8216;")) {
+         String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+         holder.title.setText(title);
+     }
+             else   if(article.getTitle().contains("&#8217;")) {
                     String title = article.getTitle().replace("&#8217;s", "'");
                     holder.title.setText(title);
                 }

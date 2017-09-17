@@ -3,6 +3,7 @@ package com.example.abhishek.knocksense;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -18,14 +19,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
-
-import java.util.ArrayList;
 
 public class MainActivityScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener{
@@ -37,10 +37,6 @@ public class MainActivityScreen extends AppCompatActivity
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
     private int backButtonCount;
-    RecyclerView recyclerView;
-    EditText editTextSearch;
-
-    CustomAdapter adapter;
 
 
     @Override
@@ -51,7 +47,9 @@ public class MainActivityScreen extends AppCompatActivity
         backButtonCount=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -164,25 +162,35 @@ public class MainActivityScreen extends AppCompatActivity
         }
         else if(id==R.id.nav_home){
             //// TODO: 10-09-2017
-            Intent intent =new Intent(this,MainActivityScreen.class);
-            startActivity(intent);
+            categoryId="0";
+
         }
         else if(id==R.id.nav_city)
-        {
-            Intent intent =new Intent(this,SelectCityScreen.class);
-            startActivity(intent);
+        { categoryId="00";
+
         }
+if(categoryId.equals("0"))
+{
+    Intent intent =new Intent(this,MainActivityScreen.class);
+    startActivity(intent);
+}
+else if(categoryId.equals("00"))
+{
+    Intent intent =new Intent(this,SelectCityScreen.class);
+    startActivity(intent);
+}
+else {
+    Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
+    Bundle bundle = new Bundle();
+    bundle.putString("ID", categoryId);
+    bundle.putString("TYPE", ListNameConstants.CATEGORY);
+    intent.putExtras(bundle);
+    startActivity(intent);
+}
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
 
-        Intent intent=new Intent(this,CategoryOrAuthorScreen.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("ID",categoryId);
-        bundle.putString("TYPE",ListNameConstants.CATEGORY);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
     private void displayView(int position) {
         fragment = null;
@@ -205,8 +213,7 @@ public class MainActivityScreen extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Article item) {
-        Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, WebViewScreen.class);
+        Intent intent = new Intent(this, WebView.class);
         Bundle bundle = new Bundle();
         bundle.putString("id",item.getId());
         bundle.putString("uri", item.getLink());

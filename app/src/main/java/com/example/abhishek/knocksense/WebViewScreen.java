@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ public class WebViewScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
+
         DateConverter dc=new DateConverter();
         final Bundle extras = getIntent().getExtras();
         String uri = extras.getString("uri");
@@ -42,7 +44,23 @@ public class WebViewScreen extends AppCompatActivity {
 Picasso.with(this).load(feature).into(iv);
         ImageView im=(ImageView)findViewById(R.id.avatar);
         TextView tx=(TextView)findViewById(R.id.title);
-        tx.setText(extras.getString("title"));
+        String titles=extras.getString("title");
+        if(titles.contains("&#8216;")) {
+            String title = titles.replace("&#8216;", "'");
+            tx.setText(title);
+        }
+        else if(titles.contains("&#8217;")) {
+            String title = titles.replace("&#8217;", "'");
+            tx.setText(title);
+        }
+
+        else if(titles.contains("&#038;")) {
+            String title = titles.replace("&#038;", "&");
+            tx.setText(title);
+        }
+        else {
+           tx.setText(titles);
+        }
         TextView tx1=(TextView)findViewById(R.id.date);
         TextView tx2=(TextView)findViewById(R.id.author);
         String dt=extras.getString("date");
@@ -118,7 +136,12 @@ Picasso.with(this).load(feature).into(iv);
             public void onProgressChanged(WebView view, int progress)
             {
                 //Make the bar disappear after URL is loaded, and changes string to Loading...
-                setTitle("Loading...");
+                Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+                setSupportActionBar(toolbar);
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
                 setProgress(progress * 100); //Make the bar disappear after URL is loaded
 
                 // Return the app name after finish loading
