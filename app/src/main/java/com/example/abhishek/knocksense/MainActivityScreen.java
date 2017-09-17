@@ -25,8 +25,6 @@ import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 
-import java.util.ArrayList;
-
 public class MainActivityScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener{
 
@@ -37,10 +35,6 @@ public class MainActivityScreen extends AppCompatActivity
     private Fragment fragment = null;
     private FragmentManager fragmentManager;
     private int backButtonCount;
-    RecyclerView recyclerView;
-    EditText editTextSearch;
-
-    CustomAdapter adapter;
 
 
     @Override
@@ -204,7 +198,6 @@ public class MainActivityScreen extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Article item) {
-        Toast.makeText(this, item.getTitle() + " selected", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, WebViewScreen.class);
         Bundle bundle = new Bundle();
         bundle.putString("id",item.getId());
