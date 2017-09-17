@@ -156,10 +156,13 @@ Picasso.with(this).load(feature).into(iv);
                 super.onPageFinished(view, url);
                 webView.loadUrl(
                         "javascript:(function() { " +
-                                "var saved = document.getElementById('"+post+"');" +
+                                "var saved = document.querySelector('div.g1-content-narrow');" +
                                 "var elms = document.body.childNodes;" +
+
+
                                 "while (elms.length) document.body.removeChild(elms[0]);" +
                                 "document.body.appendChild(saved);" +
+
                                 "})()");
                 //// TODO: 07/09/17 set alpha from js
                 webView.setAlpha(1);

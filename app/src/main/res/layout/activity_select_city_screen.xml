@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5"
     tools:context="com.example.abhishek.knocksense.SelectCityScreen">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -25,17 +28,13 @@
             android:gravity="center"
             android:onClick="onCitySelected"
             android:clickable="true"
-            android:textSize="16dp"
+            android:textSize="16dp"/>
 
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:background="@color/colorPrimary"
-            android:text="@string/select_city"
-            />
         <TextView
+            android:layout_weight="1"
             android:id="@+id/city_jaipur"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="130dp"
             android:gravity="center"
             android:onClick="onCitySelected"
             android:clickable="true"
@@ -46,6 +45,7 @@
             android:background="@mipmap/jaipur"
             android:text="@string/jaipur"/>
         <TextView
+            android:layout_weight="1"
             android:id="@+id/city_lucknow"
             android:layout_width="match_parent"
             android:onClick="onCitySelected"
@@ -58,8 +58,8 @@
             android:textColor="@color/white"
             android:background="@mipmap/lucknow"
             android:text="@string/lucknow"/>
-
         <TextView
+            android:layout_weight="1"
             android:id="@+id/city_mumbai"
             android:layout_width="match_parent"
             android:onClick="onCitySelected"
@@ -73,6 +73,7 @@
             android:background="@mipmap/mumbai"
             android:text="@string/mumbai"/>
         <TextView
+            android:layout_weight="1"
             android:id="@+id/city_new_delhi"
             android:layout_width="match_parent"
             android:onClick="onCitySelected"
@@ -86,6 +87,7 @@
             android:background="@mipmap/delhi"
             android:text="@string/new_delhi"/>
         <TextView
+            android:layout_weight="1"
             android:id="@+id/city_india"
             android:layout_width="match_parent"
             android:onClick="onCitySelected"
@@ -97,8 +99,7 @@
             android:gravity="center"
             android:background="@mipmap/restofindia"
             android:text="@string/rest_of_india"/>
-
-
+    </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+

@@ -22,13 +22,15 @@
             android:id="@+id/article_item_row_more_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="130dp"
-            android:paddingTop="5dp"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
             android:src="@drawable/ic_more_vert_white_24dp" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/view_type_left"
+            android:paddingRight="32dp"
             android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,13 +96,15 @@
             android:id="@+id/article_item_row_more_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="130dp"
-            android:paddingTop="5dp"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
             android:src="@drawable/ic_more_vert_white_24dp" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/view_type"
+            android:paddingRight="32dp"
             android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
