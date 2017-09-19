@@ -13,7 +13,7 @@ import com.example.abhishek.knocksense.R;
 public class CategoryViewHolder extends RecyclerView.ViewHolder{
     public final View mView;
     public final TextView category;
-
+    public Article mItem;
     public CategoryViewHolder(View view){
         super(view);
         mView=view;

@@ -32,14 +32,15 @@ public class SelectCityScreen extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
     public void onCitySelected(View view){
         GlobalLists globalListInstance = (GlobalLists)getApplication();
         TextView textView = (TextView) view;
         String selectedCity = textView.getText().toString().toUpperCase();
+
        setSelectedCityId(CitiesID.getCityId(selectedCity));
 
 
@@ -47,6 +48,7 @@ public class SelectCityScreen extends AppCompatActivity {
                 getString(R.string.selected_city_file_key), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(getString(R.string.saved_selected_city), getSelectedCityId());
+        editor.putString("KNOCKSENSE_CITY_NAME",selectedCity);
         editor.apply();
 
 
@@ -54,7 +56,7 @@ public class SelectCityScreen extends AppCompatActivity {
                 getString(R.string.selected_city_file_key), Context.MODE_PRIVATE);
         Log.d("AFTER_SAVE", "CITY_ID "+sharedPref.getString(getString(R.string.saved_selected_city), "SHOULD NOT GO HERE!!!!!!!!"));
 
-
+        ViewPagerAdapter.getCity(selectedCity);
         globalListInstance.fireRefreshData(this, ListNameConstants.CITY, getSelectedCityId());
 
 

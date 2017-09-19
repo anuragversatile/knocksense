@@ -14,7 +14,9 @@ public class SplashScreen extends AppCompatActivity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
     private static final String NOT_SELECTED = "not selected";
+    private static final String NO_CITY="not selected";
     private String selectedCityId;
+    private String selectCityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,13 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.selected_city_file_key), MODE_PRIVATE);
         this.selectedCityId = sharedPreferences.getString(getString(R.string.saved_selected_city),NOT_SELECTED);
+        this.selectCityName=sharedPreferences.getString("KNOCKSENSE_CITY_NAME",NOT_SELECTED);
+
 
         Log.d("SELECTED_CIT_ID", "onCreate: "+this.selectedCityId+"   NOT SLECTED="+NOT_SELECTED);
         if (!this.selectedCityId.equals(NOT_SELECTED)) {
             Log.d("SELECTED_CITY_ID", "gya!!! ");
+            ViewPagerAdapter.getCity(selectCityName);
             globalListInstance.fireRefreshData(this, ListNameConstants.CITY,  this.selectedCityId);
         }
 

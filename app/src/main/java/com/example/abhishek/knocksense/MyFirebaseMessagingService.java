@@ -22,7 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.setContentTitle(getResources().getString(R.string.app_name));
         notificationBuilder.setContentText(remoteMessage.getNotification().getBody());
         notificationBuilder.setAutoCancel(true);
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationBuilder.setSmallIcon(R.mipmap.knocksenseapp);
         notificationBuilder.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

@@ -47,12 +47,14 @@ private Context context;
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private OnCategoryClickListener onCategoryClickListener;
 
-    public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context,View view, HomeFragment homeFragment) {
+    public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context,View view, HomeFragment homeFragment, OnCategoryClickListener onCategoryClickListener) {
         GlobalLists globalListInstance = (GlobalLists)homeFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.HOME,this);
         mValues=makeFinalList(globalListInstance.getHomeArticlesList());
         mListener = listener;
+        this.onCategoryClickListener=onCategoryClickListener;
         this.context=context;
         this.progressBar=(ProgressBar)view.findViewById(R.id.home_progress_bar);
         globalListInstance.registerObserver(ListNameConstants.HOME,this);
@@ -165,8 +167,8 @@ private Context context;
             });
             font  = new Font();
             font.setFont3(context,holder.title);
-            font.setFont2(context,holder.date);
-            font.setFont2(context,holder.author);
+            font.setFont3(context,holder.date);
+            font.setFont3(context,holder.author);
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -419,10 +421,17 @@ private Context context;
         }
         else if(temp==0 || temp==6 || temp==11){
             final CategoryViewHolder holder=(CategoryViewHolder) h;
-            Article category = mValues.get(position);
+            final Article category = mValues.get(position);
             holder.category.setText(category.getTitle());
+            holder.mItem= category;
             font  = new Font();
             font.setFont(context,holder.category);
+            holder.mView.findViewById(R.id.category_article_textView).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCategoryClickListener.onCategoryViewPressed(category.getId());
+                }
+            });
 
         }
         else if(temp==2 || temp==3 || temp==4 || temp==5 || temp==9 || temp==10 || temp==13 || temp==14 || temp==15){
@@ -573,4 +582,7 @@ private Context context;
     }
 
 
+}
+interface OnCategoryClickListener{
+    public void onCategoryViewPressed(String categoryId);
 }

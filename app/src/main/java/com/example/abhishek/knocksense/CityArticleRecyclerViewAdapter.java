@@ -99,7 +99,7 @@ private static int normal=1;
          holder.title.setText(title);
      }
              else   if(article.getTitle().contains("&#8217;")) {
-                    String title = article.getTitle().replace("&#8217;s", "'");
+                    String title = article.getTitle().replace("&#8217;", "'");
                     holder.title.setText(title);
                 }
                 else if(article.getTitle().contains("&#038;")) {

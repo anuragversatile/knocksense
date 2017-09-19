@@ -43,7 +43,11 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:maxLines="3"
-            android:paddingLeft="7.45dp"/>
+            android:paddingLeft="7.45dp"
+            android:shadowColor="#000000"
+            android:shadowDx="6"
+            android:shadowDy="6"
+            android:shadowRadius="6"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,7 +63,11 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:text="author name"
-                android:paddingLeft="7.45dp"/>
+                android:paddingLeft="7.45dp"
+                android:shadowColor="#000000"
+                android:shadowDx="6"
+                android:shadowDy="6"
+                android:shadowRadius="6"/>
 
             <TextView
                 android:id="@+id/big_item_row_date"
@@ -71,7 +79,11 @@
                 android:textColor="@color/white"
 
                 android:text="12/08/2017"
-                android:paddingLeft="7.45dp"/>
+                android:paddingLeft="7.45dp"
+                android:shadowColor="#000000"
+                android:shadowDx="6"
+                android:shadowDy="6"
+                android:shadowRadius="6"/>
         </LinearLayout>
 
     </LinearLayout>

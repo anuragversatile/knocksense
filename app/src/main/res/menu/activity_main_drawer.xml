@@ -1,52 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_send"
-             android:title="Home" />
 
-    </group>
 
-    <item android:title="Communicate">
+
+
+    <item android:title="">
         <menu>
+            <item
+                android:id="@+id/nav_home"
+
+                android:title="Home" />
 
             <item
                 android:id="@+id/nav_city"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Change City" />
+
+                android:title="Change City"
+                android:textColor="@color/white"/>
 
             android:titl <item
             android:id="@+id/nav_Entertainment"
-            android:title="Entertainment" />
+            android:title="Entertainment"
+            android:textColor="@color/white"/>
             <item
                 android:id="@+id/KnockKnock"
 
-                android:title="Knock Knock" />
+                android:title="Knock Knock"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/News"
-              android:title="News" />
+              android:title="News"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/Sports"
 
-                android:title="Sports" />
+                android:title="Sports"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/YourSpace"
 
-                android:title="YourSpace" />
+                android:title="YourSpace"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/TechSense"
 
-                android:title="TechSense" />
+                android:title="TechSense"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/WeReview"
 
-                android:title="We Review" />
+                android:title="We Review"
+                android:textColor="@color/white"/>
             <item
                 android:id="@+id/DineSense"
 
-                android:title="Dine Sense" />
+                android:title="Dine Sense"
+                android:textColor="@color/white"/>
 
         </menu>
     </item>

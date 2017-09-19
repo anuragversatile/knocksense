@@ -136,12 +136,7 @@ Picasso.with(this).load(feature).into(iv);
             public void onProgressChanged(WebView view, int progress)
             {
                 //Make the bar disappear after URL is loaded, and changes string to Loading...
-                Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-                setSupportActionBar(toolbar);
-                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
+
                 setProgress(progress * 100); //Make the bar disappear after URL is loaded
 
                 // Return the app name after finish loading

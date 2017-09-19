@@ -34,7 +34,7 @@ public class CategoryId {
                 categoryName = "CULTURE";
                 break;
             case KNOCKKNOCK_ID:
-                categoryName = "KNOCKKNOCK";
+                categoryName = "KNOCK KNOCK";
                 break;
             case NEWS_ID:
                 categoryName = "NEWS";

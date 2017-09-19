@@ -32,7 +32,7 @@ import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 
 public class MainActivityScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener, OnCategoryClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     private ViewPager viewPager;
@@ -205,7 +205,7 @@ else {
 
     @Override
     public void onListFragmentInteraction(Article item) {
-        Intent intent = new Intent(this, WebViewScreen.class);
+        Intent intent = new Intent(this, Post.class);
         Bundle bundle = new Bundle();
         bundle.putString("id",item.getId());
         bundle.putString("uri", item.getLink());
@@ -219,4 +219,13 @@ else {
     }
 
 
+    @Override
+    public void onCategoryViewPressed(String categoryId) {
+        Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("ID", categoryId);
+        bundle.putString("TYPE", ListNameConstants.CATEGORY);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }
