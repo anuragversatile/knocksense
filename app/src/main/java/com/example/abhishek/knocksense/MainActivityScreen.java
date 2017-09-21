@@ -52,7 +52,8 @@ public class MainActivityScreen extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
+
+
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -168,16 +169,50 @@ public class MainActivityScreen extends AppCompatActivity
         } else if (id == R.id.DineSense) {
             categoryId = CategoryId.DINESENSE_ID;
         } else if (id == R.id.nav_home) {
-            //// TODO: 10-09-2017
-
             categoryId="0";
-
         }
         else if(id==R.id.nav_city)
         { categoryId="00";
 
         }
-if(categoryId.equals("0"))
+
+        else if (id == R.id.Bangalore) {
+            categoryId = CategoryId.BANGALORE_ID;
+        }
+        else if (id == R.id.Bhopal) {
+            categoryId = CategoryId.BHOPAL_ID;
+        }
+        else if (id == R.id.Chandigarh) {
+            categoryId = CategoryId.CHANDIGARH_ID;
+        }
+        else if (id == R.id.Chennai) {
+            categoryId = CategoryId.CHENNAI_ID;
+        }
+        else if (id == R.id.Goa) {
+            categoryId = CategoryId.GOA_ID;
+        }
+        else if (id == R.id.Gujarat) {
+            categoryId = CategoryId.GUJARAT_ID;
+        }
+        else if (id == R.id.Hyderabad) {
+            categoryId = CategoryId.HYDERABAD_ID;
+        }
+        else if (id == R.id.Ludhiana) {
+            categoryId = CategoryId.LUDHIANA_ID;
+        }
+        else if (id == R.id.Kolkata) {
+            categoryId = CategoryId.KOLKATA_ID;
+        }
+        else if (id == R.id.Varanasi) {
+            categoryId = CategoryId.VARANASI_ID;
+        }
+        else if (id == R.id.AboutUs) {
+            categoryId ="234";
+        }
+        else if (id == R.id.ContactUs) {
+            categoryId = "357";
+        }
+            if(categoryId.equals("0"))
 {
     Intent intent =new Intent(this,MainActivityScreen.class);
     startActivity(intent);
@@ -187,7 +222,32 @@ else if(categoryId.equals("00"))
     Intent intent =new Intent(this,SelectCityScreen.class);
     startActivity(intent);
 }
-else {
+else if(categoryId.equals("234"))
+            {
+
+                Intent intent = new Intent(this, WebViewPage.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id","234");
+                bundle.putString("title","About Us");
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+            else if(categoryId.equals("357"))
+            {
+
+                Intent intent = new Intent(this, WebViewPage.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id","357");
+                bundle.putString("title","Contact Us");
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+
+            else {
     Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
     Bundle bundle = new Bundle();
     bundle.putString("ID", categoryId);

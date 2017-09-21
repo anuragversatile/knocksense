@@ -11,25 +11,61 @@
         android:orientation="vertical"
 
         >
-
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/article_big_item_row_relative_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="7.5dp">
         <ImageView
             android:id="@+id/featured"
             android:layout_width="match_parent"
             android:layout_height="1.5in"
             android:scaleType="fitXY"
-            />
-        <ImageView
-            android:id="@+id/article_item_row_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="32dp"
-            android:src="@drawable/ic_more_vert_white_24dp" />
-        <TextView
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:id="@+id/facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+
+                android:paddingRight="60dp"
+                android:src="@drawable/ic_home_black_24dp" />
+
+            <ImageView
+                android:id="@+id/whatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+
+                android:paddingRight="35dp"
+                android:src="@drawable/ic_phone_black_24dp" />
+
+            <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/view_type"
             android:paddingRight="32dp"
             android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/article_item_row_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+
+                android:paddingRight="10dp"
+                android:src="@drawable/ic_menu_share" />
+
+
+
+        </RelativeLayout>
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +75,7 @@
             <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="100dp"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:scaleType="fitXY"
                 />
 
@@ -58,7 +94,7 @@
                     android:paddingLeft="7.45dp"
                     android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
                     android:textStyle="bold"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
 
 
                     android:textColor="@color/black_overlay"
@@ -71,8 +107,7 @@
                     android:maxLines="1"
                     android:paddingLeft="7.45dp"
                     android:text="KnockSense"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
+                    android:textSize="11dp"
 
                     android:textColor="@color/black_overlay"/>
 
@@ -82,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:paddingLeft="7.45dp"
-                    android:textStyle="bold"
+
                     android:textSize="10dp"
 
                     android:textColor="@color/black_overlay"/>

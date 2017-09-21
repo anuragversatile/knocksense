@@ -18,7 +18,7 @@
                 android:title="Change City"
                 android:textColor="@color/white"/>
 
-            android:titl <item
+             <item
             android:id="@+id/nav_Entertainment"
             android:title="Entertainment"
             android:textColor="@color/white"/>
@@ -57,7 +57,32 @@
                 android:title="Dine Sense"
                 android:textColor="@color/white"/>
 
+                    <item android:id="@+id/Bangalore"
+                        android:title="Bangalore" />
+                    <item android:id="@+id/Bhopal"
+                        android:title="Bhopal" />
+            <item android:id="@+id/Chandigarh"
+                android:title="Chandigarh" />
+            <item android:id="@+id/Chennai"
+                android:title="Chennai" />
+            <item android:id="@+id/Goa"
+                android:title="Goa" />
+            <item android:id="@+id/Gujarat"
+                android:title="Gujarat" />
+            <item android:id="@+id/Hyderabad"
+                android:title="Hyderabad" />
+            <item android:id="@+id/Kolkata"
+                android:title="Kolkata" />
+            <item android:id="@+id/Ludhiana"
+                android:title="Ludhiana" />
+            <item android:id="@+id/Varanasi"
+                android:title="Varanasi" />
+            <item android:id="@+id/AboutUs"
+                android:title="About Us" />
+            <item android:id="@+id/ContactUs"
+                android:title="Contact Us" />
+
+
         </menu>
     </item>
-
-</menu>
+    </menu>

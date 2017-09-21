@@ -297,7 +297,7 @@ private static int normal=1;
                     .build();*/
             //You can add the following code if you are testing in an emulator
             AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).setRequestAgent("android:ad_template")
                 .build();
             mNativeAd.loadAd(adRequest);
         }

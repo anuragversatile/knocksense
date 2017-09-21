@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+
+                <TextView
+                    android:id="@+id/titlePage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:paddingLeft="7.45dp"
+                    android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
+                    android:textStyle="bold"
+                    android:textSize="36dp"
+                    android:textAlignment="center"
+
+
+                    android:textColor="@color/black_overlay"
+                    />
+
+
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/contentPage" />
+
+    </LinearLayout>
+</ScrollView>

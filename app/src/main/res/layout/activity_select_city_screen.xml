@@ -15,14 +15,21 @@
         android:layout_gravity="fill"
         >
         <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
+            android:id="@+id/my_toolbar1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:layout_weight="1"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:paddingRight="0.125in"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/knocksenselogo"/>
+        </android.support.v7.widget.Toolbar>
 
         <TextView
             android:layout_weight="1"

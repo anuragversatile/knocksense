@@ -133,6 +133,7 @@ public class GlobalLists extends Application implements ListPublisher {
                     @Override
                     public void onResponse(String s) {
                         try {
+
                             Gson gson = new Gson();
                             JSONArray ParentArray = new JSONArray(s);
                             for (int i = 0; i < 5; i++) {
@@ -411,5 +412,6 @@ break;
                 }
                 break;
         }
+
     }
 }

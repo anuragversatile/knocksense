@@ -31,7 +31,7 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
+
 
 
 

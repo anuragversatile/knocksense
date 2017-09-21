@@ -1,13 +1,23 @@
 package com.example.abhishek.knocksense;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Display;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +32,8 @@ import com.example.abhishek.knocksense.components.GlobalLists;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Post extends AppCompatActivity {
@@ -43,7 +55,7 @@ public class Post extends AppCompatActivity {
 
 
 
-
+Font font=new Font();
         ImageView iv=(ImageView)findViewById(R.id.featured);
         String feature=extras.getString("feature");
         Picasso.with(this).load(feature).into(iv);
@@ -52,7 +64,8 @@ public class Post extends AppCompatActivity {
         String titles=extras.getString("title");
         if(titles.contains("&#8216;")) {
             String title = titles.replace("&#8216;", "'");
-            tx.setText(title);
+
+          tx.setText(title);
         }
         else if(titles.contains("&#8217;")) {
             String title = titles.replace("&#8217;", "'");
@@ -82,6 +95,68 @@ public class Post extends AppCompatActivity {
                 break;
             }
         }
+        ImageView sharingButton = (ImageView)findViewById(R.id.article_item_row_more);
+
+        final String links=extras.getString("uri");
+
+      sharingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 26-08-2017 save and share functionality
+                                //handle menu1 click
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setType("text/plain");
+                                shareIntent.putExtra(Intent.EXTRA_TEXT,links );
+
+                                try {
+                                    getApplicationContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+                                } catch (Exception ex) {
+                                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+
+            }
+
+
+        });
+        ImageView sharing = (ImageView)findViewById(R.id.facebook);
+        sharing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Intent> targetedShareIntents = new ArrayList<Intent>();
+
+                Intent facebookIntent = getShareIntent("facebook",  links);
+                if(facebookIntent != null)
+                    targetedShareIntents.add(facebookIntent);
+
+
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "Facebook");
+
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+
+                startActivity(chooser);
+            }
+        });
+        ImageView sharing1 = (ImageView)findViewById(R.id.whatsapp);
+        sharing1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Intent> targetedShareIntents = new ArrayList<Intent>();
+
+                Intent whatsAppIntent = getShareIntent("com.whatsapp",  links);
+                if(whatsAppIntent != null)
+                    targetedShareIntents.add(whatsAppIntent);
+
+
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "WhatsApp");
+
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+
+                startActivity(chooser);
+            }
+        });
+
+
+
 
         final String id = getIntent().getExtras().getString("id");
 
@@ -106,11 +181,11 @@ String test=mapContent.get("rendered").toString();
 
                 WebSettings settings = content.getSettings();
                 settings.setJavaScriptEnabled(true);
-                settings.setLoadWithOverviewMode(true);
-                settings.setUseWideViewPort(true);
+           //     settings.setLoadWithOverviewMode(true);
+             //   settings.setUseWideViewPort(true);
                 settings.setBuiltInZoomControls(false);
                 settings.setDisplayZoomControls(false);
-                settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+           //     settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
 
                 content.setWebChromeClient(new WebChromeClient());
                 String changeFontHtml =    changedHeaderHtml(test);
@@ -132,12 +207,42 @@ String test=mapContent.get("rendered").toString();
         RequestQueue rQueue = Volley.newRequestQueue(Post.this);
         rQueue.add(request);
     }
-    public static String changedHeaderHtml(String htmlText) {
+    public  String changedHeaderHtml(String htmlText) {
+        Display display = getWindowManager().getDefaultDisplay();
+        int width=display.getWidth();
 
-        String head = "<head><meta name=\"viewport\" content=\"width=device-width,  user-scalable=no\" /><style>img{max-width: 100%; width:auto; height: auto;}</style><style>iframe{max-width: 100%; width:auto; height: auto;}</style></head>";
+        String head = "<head><meta name=\"viewport\" content=\"width=device-width,  user-scalable=no\" /><style>img{display:inline;max-width: 100%; width:auto; height: auto;}</style><style>iframe{max-width: 100%; width:auto; height: auto;}</style></head>";
 
         String closedTag = "</body></html>";
         String changeFontHtml = head + htmlText + closedTag;
         return changeFontHtml;
     }
+    private Intent getShareIntent(String type,  String text)
+    {
+        boolean found = false;
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+
+        // gets the list of intents that can be loaded.
+        List<ResolveInfo> resInfo = getApplicationContext().getPackageManager().queryIntentActivities(share, 0);
+        System.out.println("resinfo: " + resInfo);
+        if (!resInfo.isEmpty()){
+            for (ResolveInfo info : resInfo) {
+                if (info.activityInfo.packageName.toLowerCase().contains(type) ||
+                        info.activityInfo.name.toLowerCase().contains(type) ) {
+                    share.putExtra(Intent.EXTRA_TEXT,     text);
+                    share.setPackage(info.activityInfo.packageName);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                return null;
+
+            return share;
+        }
+        return null;
+    }
+
+
 }

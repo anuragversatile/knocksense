@@ -29,11 +29,11 @@ public class SelectCityScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_city_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar1);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
-        getSupportActionBar().setLogo(R.mipmap.knocksenselogo);
+
 
     }
     public void onCitySelected(View view){

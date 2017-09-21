@@ -269,7 +269,7 @@ private Context context;
                 }
             });
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.leftArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
@@ -279,11 +279,11 @@ private Context context;
                     }
                 }
             });
-            holder.mView.findViewById(R.id.article_item_row_more_left).setOnClickListener(new View.OnClickListener() {
+            holder.leftArticleView.findViewById(R.id.article_item_row_more_left).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //// TODO: 26-08-2017 save and share functionality
-                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_left));
+                    PopupMenu popup = new PopupMenu(context, holder.leftArticleView.findViewById(R.id.article_item_row_more_left));
                     //inflating menu from xml resource
                     popup.inflate(R.menu.options_menu);
                     //adding click listener
@@ -365,7 +365,7 @@ private Context context;
                 }
             });
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.rightArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
@@ -375,11 +375,11 @@ private Context context;
                     }
                 }
             });
-            holder.mView.findViewById(R.id.article_item_row_more_right).setOnClickListener(new View.OnClickListener() {
+            holder.rightArticleView.findViewById(R.id.article_item_row_more_right).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //// TODO: 26-08-2017 save and share functionality
-                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_right));
+                    PopupMenu popup = new PopupMenu(context, holder.rightArticleView.findViewById(R.id.article_item_row_more_right));
                     //inflating menu from xml resource
                     popup.inflate(R.menu.options_menu);
                     //adding click listener
