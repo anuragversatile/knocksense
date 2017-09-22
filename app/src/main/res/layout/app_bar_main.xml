@@ -16,8 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:layout_scrollFlags="scroll|enterAlways|snap"/>
+            android:minHeight="@dimen/abc_action_bar_default_height_material"
+
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+        <ImageView
+            android:layout_width="wrap_content"
+android:paddingRight="0.125in"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/knocksenselogo"/>
+        </android.support.v7.widget.Toolbar>
+
+
 
     </android.support.design.widget.AppBarLayout>
 

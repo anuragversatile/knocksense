@@ -47,12 +47,14 @@ private Context context;
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private OnCategoryClickListener onCategoryClickListener;
 
-    public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context,View view, HomeFragment homeFragment) {
+    public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context,View view, HomeFragment homeFragment, OnCategoryClickListener onCategoryClickListener) {
         GlobalLists globalListInstance = (GlobalLists)homeFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.HOME,this);
         mValues=makeFinalList(globalListInstance.getHomeArticlesList());
         mListener = listener;
+        this.onCategoryClickListener=onCategoryClickListener;
         this.context=context;
         this.progressBar=(ProgressBar)view.findViewById(R.id.home_progress_bar);
         globalListInstance.registerObserver(ListNameConstants.HOME,this);
@@ -119,7 +121,11 @@ private Context context;
 
             final Article article=mValues.get(position);
             holder.mItem = article;
-            if(article.getTitle().contains("&#8217;")) {
+            if(article.getTitle().contains("&#8216;")) {
+                String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+           else if(article.getTitle().contains("&#8217;")) {
                 String title = article.getTitle().replace("&#8217;", "'");
                 holder.title.setText(title);
             }
@@ -130,7 +136,13 @@ private Context context;
             else {
                 holder.title.setText(article.getTitle());
             }
-            holder.author.setText(article.getAuthor());
+            for (Article arti : GlobalLists.getAuthorList()) {
+                String authorId = arti.getId();
+                if (mValues.get(position).getAuthor().equals(authorId)) {
+                    holder.author.setText(arti.getName());
+                    break;
+                }
+            }
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
                 @Override
@@ -155,8 +167,8 @@ private Context context;
             });
             font  = new Font();
             font.setFont3(context,holder.title);
-            font.setFont2(context,holder.date);
-            font.setFont2(context,holder.author);
+            font.setFont3(context,holder.date);
+            font.setFont3(context,holder.author);
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,7 +229,11 @@ private Context context;
             final TwoArticles twoArticles = (TwoArticles) mValues.get(position);
             final Article leftArticle = twoArticles.getLeftArticle();
             holder.leftViewArticle=leftArticle;
-            if(leftArticle.getTitle().contains("&#8217;")) {
+            if(leftArticle.getTitle().contains("&#8216;")) {
+                String title = leftArticle.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.leftViewTitle.setText(title);
+            }
+           else if(leftArticle.getTitle().contains("&#8217;")) {
                 String title = leftArticle.getTitle().replace("&#8217;", "'");
                 holder.leftViewTitle.setText(title);
             }
@@ -253,7 +269,7 @@ private Context context;
                 }
             });
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.leftArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
@@ -263,11 +279,11 @@ private Context context;
                     }
                 }
             });
-            holder.mView.findViewById(R.id.article_item_row_more_left).setOnClickListener(new View.OnClickListener() {
+            holder.leftArticleView.findViewById(R.id.article_item_row_more_left).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //// TODO: 26-08-2017 save and share functionality
-                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_left));
+                    PopupMenu popup = new PopupMenu(context, holder.leftArticleView.findViewById(R.id.article_item_row_more_left));
                     //inflating menu from xml resource
                     popup.inflate(R.menu.options_menu);
                     //adding click listener
@@ -309,7 +325,11 @@ private Context context;
 
             final Article rightArticle = twoArticles.getRightArticle();
             holder.rightViewArticle = rightArticle;
-            if(rightArticle.getTitle().contains("&#8217;")) {
+            if(rightArticle.getTitle().contains("&#8216;")) {
+                String title = rightArticle.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.rightViewTitle.setText(title);
+            }
+           else if(rightArticle.getTitle().contains("&#8217;")) {
                 String title = rightArticle.getTitle().replace("&#8217;", "'");
                 holder.rightViewTitle.setText(title);
             }
@@ -345,7 +365,7 @@ private Context context;
                 }
             });
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            holder.rightArticleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
@@ -355,11 +375,11 @@ private Context context;
                     }
                 }
             });
-            holder.mView.findViewById(R.id.article_item_row_more_right).setOnClickListener(new View.OnClickListener() {
+            holder.rightArticleView.findViewById(R.id.article_item_row_more_right).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //// TODO: 26-08-2017 save and share functionality
-                    PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more_right));
+                    PopupMenu popup = new PopupMenu(context, holder.rightArticleView.findViewById(R.id.article_item_row_more_right));
                     //inflating menu from xml resource
                     popup.inflate(R.menu.options_menu);
                     //adding click listener
@@ -401,17 +421,28 @@ private Context context;
         }
         else if(temp==0 || temp==6 || temp==11){
             final CategoryViewHolder holder=(CategoryViewHolder) h;
-            Article category = mValues.get(position);
+            final Article category = mValues.get(position);
             holder.category.setText(category.getTitle());
+            holder.mItem= category;
             font  = new Font();
             font.setFont(context,holder.category);
+            holder.mView.findViewById(R.id.category_article_textView).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCategoryClickListener.onCategoryViewPressed(category.getId());
+                }
+            });
 
         }
         else if(temp==2 || temp==3 || temp==4 || temp==5 || temp==9 || temp==10 || temp==13 || temp==14 || temp==15){
             final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
             final Article article=mValues.get(position);
             holder.mItem = article;
-            if(article.getTitle().contains("&#8217;")) {
+            if(article.getTitle().contains("&#8216;") ) {
+                String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                holder.title.setText(title);
+            }
+            else if(article.getTitle().contains("&#8217;")) {
                 String title = article.getTitle().replace("&#8217;", "'");
                 holder.title.setText(title);
             }
@@ -422,7 +453,13 @@ private Context context;
             else {
                 holder.title.setText(article.getTitle());
             }
-            holder.author.setText(article.getAuthor());
+            for (Article arti : GlobalLists.getAuthorList()) {
+                String authorId = arti.getId();
+                if (mValues.get(position).getAuthor().equals(authorId)) {
+                    holder.author.setText(arti.getName());
+                    break;
+                }
+            }
             holder.date.setText(article.getDate());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
             font  = new Font();
@@ -545,4 +582,7 @@ private Context context;
     }
 
 
+}
+interface OnCategoryClickListener{
+    public void onCategoryViewPressed(String categoryId);
 }

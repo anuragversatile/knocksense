@@ -37,6 +37,7 @@ public class CategoryOrAuthorRecyclerViewAdapter extends RecyclerView.Adapter<Ca
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
 
+
     private final OnCategoryListItemClickedListener mListener;
 private  final Context context;
     private  Font font;
@@ -44,7 +45,7 @@ private  final Context context;
         GlobalLists globalListInstance=(GlobalLists) categoryOrAuthorScreen.getApplication();
         globalListInstance.registerObserver(ListNameConstants.CATEGORY,this);
         mValues = globalListInstance.getCategoryArticlesList();
-        mListener = listener;
+mListener=listener;
         this.context=context;
 
         this.progressBar =(ProgressBar)view.findViewById(R.id.category_or_author_progress_bar);
@@ -81,10 +82,15 @@ private  final Context context;
         DateConverter dateConverter=new DateConverter();
         final Article article=mValues.get(position);
         holder.mItem =article;
-        if(article.getTitle().contains("&#8217;")) {
+        if(article.getTitle().contains("&#8216;")) {
+            String title = article.getTitle().replace("&#8216;", "'");
+            holder.title.setText(title);
+        }
+        else if(article.getTitle().contains("&#8217;")) {
             String title = article.getTitle().replace("&#8217;", "'");
             holder.title.setText(title);
         }
+
         else if(article.getTitle().contains("&#038;")) {
             String title = article.getTitle().replace("&#038;", "&");
             holder.title.setText(title);
@@ -92,7 +98,13 @@ private  final Context context;
         else {
             holder.title.setText(article.getTitle());
         }
-        holder.author.setText(article.getAuthor());
+        for (Article arti : GlobalLists.getAuthorList()) {
+            String authorId = arti.getId();
+            if (mValues.get(position).getAuthor().equals(authorId)) {
+                holder.author.setText(arti.getName());
+                break;
+            }
+        }
         holder.date.setText(article.getDate());
         holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
@@ -123,7 +135,7 @@ private  final Context context;
             }
         });
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+       holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {

@@ -1,13 +1,26 @@
 package com.example.abhishek.knocksense;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.GlobalLists;
+import com.squareup.picasso.Picasso;
 
 public class WebViewScreen extends AppCompatActivity {
 
@@ -15,17 +28,115 @@ public class WebViewScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        Bundle extras = getIntent().getExtras();
+
+
+        DateConverter dc=new DateConverter();
+        final Bundle extras = getIntent().getExtras();
         String uri = extras.getString("uri");
         final String post = "post-"+extras.getString("id");
         final WebView webView = (WebView) findViewById(R.id.web_view);
+
+
+
+
+        ImageView iv=(ImageView)findViewById(R.id.featured);
+        String feature=extras.getString("feature");
+Picasso.with(this).load(feature).into(iv);
+        ImageView im=(ImageView)findViewById(R.id.avatar);
+        TextView tx=(TextView)findViewById(R.id.title);
+        String titles=extras.getString("title");
+        if(titles.contains("&#8216;")) {
+            String title = titles.replace("&#8216;", "'");
+            tx.setText(title);
+        }
+        else if(titles.contains("&#8217;")) {
+            String title = titles.replace("&#8217;", "'");
+            tx.setText(title);
+        }
+
+        else if(titles.contains("&#038;")) {
+            String title = titles.replace("&#038;", "&");
+            tx.setText(title);
+        }
+        else {
+           tx.setText(titles);
+        }
+        TextView tx1=(TextView)findViewById(R.id.date);
+        TextView tx2=(TextView)findViewById(R.id.author);
+        String dt=extras.getString("date");
+        Log.e("thdhfjfdjfjdhfjfh","fudytsdffjtdyt"+extras.getString("feature"));
+
+        tx1.setText(dc.getDate(dt)+" "+ dc.getMonth(dt)+ " "+dc.getYear(dt));
+
+        for(Article arti:  GlobalLists.getAuthorList()) {
+            String authorId = arti.getId();
+            if (extras.getString("author").equals(authorId)) {
+                tx2.setText(arti.getName());
+                Log.e("thdhfjfdjfjdhfjfh","fudytsdffjtdyt"+arti.getAuthorImage());
+                Picasso.with(this).load(arti.getAuthorImage()).into(im);
+                break;
+            }
+        }
+
+        /*ImageView is=(ImageView)findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 26-08-2017 save and share functionality
+                PopupMenu popup = new PopupMenu(getApplicationContext(), findViewById(R.id.article_item_row_more));
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String as = extras.getString("uri");
+                        switch (item.getItemId()) {
+                            case R.id.share:
+                                //handle menu1 click
+                                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                shareIntent.setType("text/plain");
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, ex);
+
+                                try {
+                                    getApplicationContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+                                } catch (Exception ex) {
+                                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                                break;
+                            case R.id.save:
+                                //handle menu2 click
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+
+
+        });
+
+*/
+
+
+
+
+
+
+
+
+
+
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress)
             {
                 //Make the bar disappear after URL is loaded, and changes string to Loading...
-                setTitle("Loading...");
+
                 setProgress(progress * 100); //Make the bar disappear after URL is loaded
 
                 // Return the app name after finish loading
@@ -40,10 +151,13 @@ public class WebViewScreen extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 webView.loadUrl(
                         "javascript:(function() { " +
-                                "var saved = document.getElementById('"+post+"');" +
+                                "var saved = document.querySelector('div.g1-content-narrow');" +
                                 "var elms = document.body.childNodes;" +
+
+
                                 "while (elms.length) document.body.removeChild(elms[0]);" +
                                 "document.body.appendChild(saved);" +
+
                                 "})()");
                 //// TODO: 07/09/17 set alpha from js
                 webView.setAlpha(1);

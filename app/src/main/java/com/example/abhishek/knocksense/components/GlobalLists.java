@@ -45,6 +45,7 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+    private static List<Article>authorList;
     private String selectedCityId;
     private String lastCategoryOrAuthorId=null;
 
@@ -59,15 +60,20 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
     private List<ListObserver> categoryListObserverList;
+    private List<ListObserver> authorListObserverList;
+    private  static GlobalLists instance=null;
+
 
 
     public GlobalLists(){
         cityArticlesList=new ArrayList<>();
         homeArticlesList=new ArrayList<>();
+        authorList=new ArrayList<>();
         categoryArticlesList=new ArrayList<>();
         cityListObserverList=new ArrayList<>();
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
+        authorListObserverList=new ArrayList<>();
     }
 
     public List<Article> getCategoryArticlesList() {
@@ -76,6 +82,22 @@ public class GlobalLists extends Application implements ListPublisher {
 
     public void setCategoryArticlesList(List<Article> categoryArticlesList) {
         this.categoryArticlesList = categoryArticlesList;
+    }
+
+    public static List<Article> getAuthorList() {
+        return GlobalLists.authorList;
+    }
+
+    public static void setAuthorList(List<Article> authorList) {
+        GlobalLists.authorList = authorList;
+    }
+
+    public List<ListObserver> getAuthorListObserverList() {
+        return authorListObserverList;
+    }
+
+    public void setAuthorListObserverList(List<ListObserver> authorListObserverList) {
+        this.authorListObserverList = authorListObserverList;
     }
 
     public List<Article> getCityArticlesList() {
@@ -111,6 +133,7 @@ public class GlobalLists extends Application implements ListPublisher {
                     @Override
                     public void onResponse(String s) {
                         try {
+
                             Gson gson = new Gson();
                             JSONArray ParentArray = new JSONArray(s);
                             for (int i = 0; i < 5; i++) {
@@ -152,6 +175,8 @@ public class GlobalLists extends Application implements ListPublisher {
     }
     }
 
+
+
     private void fetchCityData(Context context, String selectedCityId) {
         final GlobalLists globalListInstance=this;
         this.notifyListObservers(CITY, null, false, true);
@@ -178,6 +203,7 @@ public class GlobalLists extends Application implements ListPublisher {
                                 articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
                                 articleModel.setAuthor(ParentObject.getString("author"));
                                 articleModel.setLink(ParentObject.getString("link"));
+
                                 articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
                                 articleList.add(articleModel);
                                 if (articleList.size() == ParentArray.length()) {
@@ -202,6 +228,52 @@ public class GlobalLists extends Application implements ListPublisher {
 
 
     }
+
+
+    private void fetchAuthorData(Context context) {
+        final GlobalLists globalListInstance=this;
+        this.notifyListObservers(AUTHOR, null, false, true);
+
+        String url = UrlConstants.getAllAuthorsURL();
+
+        final List<Article> articleList = new ArrayList<>();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONArray ParentArray = new JSONArray(s);
+                            for (int i = 0; i < ParentArray.length(); i++) {
+                                JSONObject ParentObject = ParentArray.getJSONObject(i);
+                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                articleModel.setId(ParentObject.getString("id"));
+                                articleModel.setName(ParentObject.getString("name"));
+                                articleModel.setAuthorImage(ParentObject.getJSONObject("avatar_urls").getString("96"));
+                             articleList.add(articleModel);
+                                if (articleList.size() == ParentArray.length()) {
+                                    globalListInstance.setAuthorList(articleList);
+                                    globalListInstance.notifyListObservers(AUTHOR,articleList,true,false);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                volleyError.printStackTrace();
+            }
+        });
+        stringRequest.setTag(AUTHOR);
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+
+    }
+
     private void fetchCategoryData(Context context, String categoryId) {
         final GlobalLists globalListInstance=this;
         this.notifyListObservers(CATEGORY, null, false, true);
@@ -273,6 +345,7 @@ public class GlobalLists extends Application implements ListPublisher {
                 break;
             case AUTHOR:
                 //// TODO: 09/09/17
+                fetchAuthorData(context);
                 break;
         }
 
@@ -287,8 +360,13 @@ public class GlobalLists extends Application implements ListPublisher {
             case CITY:
                 cityListObserverList.add(listObserver);
                 break;
+
+            case AUTHOR:
+                authorListObserverList.add(listObserver);
+break;
             case CATEGORY:
                 categoryListObserverList.add(listObserver);
+break;
         }
     }
 
@@ -301,6 +379,8 @@ public class GlobalLists extends Application implements ListPublisher {
             case CITY:
                 cityListObserverList.remove(listObserver);
                 break;
+            case AUTHOR:
+                authorListObserverList.remove(listObserver);
             case CATEGORY:
                 categoryListObserverList.remove(listObserver);
         }
@@ -319,11 +399,19 @@ public class GlobalLists extends Application implements ListPublisher {
                     listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;
+
+            case AUTHOR:
+                for(ListObserver listObserver: authorListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
+                }
+                break;
             case CATEGORY:
                 for(ListObserver listObserver: categoryListObserverList){
+
                     listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;
         }
+
     }
 }

@@ -17,6 +17,16 @@ public class CategoryId {
     public static final String WEREVIEW_ID = "19";
     public static final String YOURSPACE_ID = "5224";// //
     public static final String HINDI_ID = "7005"; //ZERO POSTS
+public static final String BANGALORE_ID="633";
+    public static final String BHOPAL_ID="635";
+    public static final String CHANDIGARH_ID="732";
+    public static final String CHENNAI_ID="640";
+    public static final String GOA_ID="637";
+    public static final String GUJARAT_ID="636";
+    public static final String HYDERABAD_ID="639";
+    public static final String LUDHIANA_ID="3038";
+    public static final String KOLKATA_ID="638";
+    public static final String VARANASI_ID="632";
 
     public static String getCategoryName(String categoryId) {
         String categoryName;
@@ -34,7 +44,7 @@ public class CategoryId {
                 categoryName = "CULTURE";
                 break;
             case KNOCKKNOCK_ID:
-                categoryName = "KNOCKKNOCK";
+                categoryName = "KNOCK KNOCK";
                 break;
             case NEWS_ID:
                 categoryName = "NEWS";
@@ -50,6 +60,36 @@ public class CategoryId {
                 break;
             case YOURSPACE_ID:
                 categoryName = "YOURSPACE";
+                break;
+            case BANGALORE_ID:
+                categoryName = "BANGALORE";
+                break;
+            case BHOPAL_ID:
+                categoryName = "BHOPAL";
+                break;
+            case CHENNAI_ID:
+                categoryName = "CHENNAI";
+                break;
+            case CHANDIGARH_ID:
+                categoryName = "CHANDIGARH";
+                break;
+            case GOA_ID:
+                categoryName = "GOA";
+                break;
+            case GUJARAT_ID:
+                categoryName = "GUJARAT";
+                break;
+            case HYDERABAD_ID:
+                categoryName = "HYDERABAD";
+                break;
+            case KOLKATA_ID:
+                categoryName = "KOLKATA";
+                break;
+            case LUDHIANA_ID:
+                categoryName = "LUDHIANA";
+                break;
+            case VARANASI_ID:
+                categoryName = "VARANASI";
                 break;
 
             case HINDI_ID:

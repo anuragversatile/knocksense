@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private OnCategoryClickListener onCategoryClickListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter( mListener,context,view,this));
+            recyclerView.setAdapter(new HomeArticleRecyclerViewAdapter( mListener,context,view,this, onCategoryClickListener));
         return view;
     }
 
@@ -93,6 +94,8 @@ public class HomeFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
+            onCategoryClickListener = (OnCategoryClickListener) context;
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -103,6 +106,7 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        onCategoryClickListener = null;
     }
 
     /**

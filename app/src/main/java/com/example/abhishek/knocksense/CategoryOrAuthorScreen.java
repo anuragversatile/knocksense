@@ -25,12 +25,15 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_category_or_author_screen);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
 
         View view = (View)findViewById(R.id.category_or_author_relative_layout);
         GlobalLists globalListInstance=(GlobalLists)getApplication();
@@ -84,6 +87,7 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
                                     //handle menu2 click
                                     break;
 
+
                             }
                             return false;
                         }
@@ -93,15 +97,21 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
                 }
 
                else{
-                    Intent intent = new Intent(that, WebViewScreen.class);
+                    Intent intent = new Intent(that, Post.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id",item.getId());
                     bundle.putString("uri", item.getLink());
+                    bundle.putString("date",item.getDate());
+                    bundle.putString("author",item.getAuthor());
+                    bundle.putString("feature",item.getFeaturedImage());
+                    bundle.putString("title",item.getTitle());
+
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
             }
         }, getApplicationContext(), view, this, type, id);
+
         recyclerView.setAdapter(mAdapter);
     }
 

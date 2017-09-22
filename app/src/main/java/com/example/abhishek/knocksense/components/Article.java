@@ -20,6 +20,25 @@ public class Article {
     private String featuredImage;
     private String link;
     private String[] categories;
+    private  String name;
+    @SerializedName("avatar_urls.96")
+    private String authorImage;
+
+    public String getAuthorImage() {
+        return authorImage;
+    }
+
+    public void setAuthorImage(String authorImage) {
+        this.authorImage = authorImage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String[] getCategories() {
         return categories;

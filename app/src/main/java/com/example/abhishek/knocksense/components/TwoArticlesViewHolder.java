@@ -12,7 +12,9 @@ import com.example.abhishek.knocksense.R;
  */
 
 public class TwoArticlesViewHolder extends RecyclerView.ViewHolder{
-    public final View mView;
+    public final View containerView;
+    public final View leftArticleView;
+    public final View rightArticleView;
 
     public final TextView leftViewTitle;
    // public final TextView leftViewAuthor;
@@ -28,7 +30,9 @@ public class TwoArticlesViewHolder extends RecyclerView.ViewHolder{
 
     public TwoArticlesViewHolder(View view){
         super(view);
-        mView=view;
+        containerView=view;
+        leftArticleView=view.findViewById(R.id.article_two_item_row_left_relative_layout);
+        rightArticleView=view.findViewById(R.id.article_two_item_row_right_relative_layout);
 
         leftViewTitle=(TextView)view.findViewById(R.id.two_item_row_left_content);
        /* leftViewAuthor=(TextView)view.findViewById(R.id.two_item_row_left_author);

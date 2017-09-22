@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 
 public class MainActivityScreen extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener, OnCategoryClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     private ViewPager viewPager;
@@ -49,7 +51,10 @@ public class MainActivityScreen extends AppCompatActivity
         backButtonCount=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -64,6 +69,7 @@ public class MainActivityScreen extends AppCompatActivity
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -113,14 +119,14 @@ public class MainActivityScreen extends AppCompatActivity
         inflater.inflate(R.menu.main, menu);
 
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
+        /*SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-
+*/
         return true;
     }
 
@@ -163,36 +169,123 @@ public class MainActivityScreen extends AppCompatActivity
         } else if (id == R.id.DineSense) {
             categoryId = CategoryId.DINESENSE_ID;
         } else if (id == R.id.nav_home) {
-            //// TODO: 10-09-2017
-            Intent intent = new Intent(this, MainActivityScreen.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_city) {
-            Intent intent = new Intent(this, SelectCityScreen.class);
-            startActivity(intent);
+            categoryId="0";
+        }
+        else if(id==R.id.nav_city)
+        { categoryId="00";
+
         }
 
-        Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("ID", categoryId);
-        bundle.putString("TYPE", ListNameConstants.CATEGORY);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        else if (id == R.id.Bangalore) {
+            categoryId = CategoryId.BANGALORE_ID;
+        }
+        else if (id == R.id.Bhopal) {
+            categoryId = CategoryId.BHOPAL_ID;
+        }
+        else if (id == R.id.Chandigarh) {
+            categoryId = CategoryId.CHANDIGARH_ID;
+        }
+        else if (id == R.id.Chennai) {
+            categoryId = CategoryId.CHENNAI_ID;
+        }
+        else if (id == R.id.Goa) {
+            categoryId = CategoryId.GOA_ID;
+        }
+        else if (id == R.id.Gujarat) {
+            categoryId = CategoryId.GUJARAT_ID;
+        }
+        else if (id == R.id.Hyderabad) {
+            categoryId = CategoryId.HYDERABAD_ID;
+        }
+        else if (id == R.id.Ludhiana) {
+            categoryId = CategoryId.LUDHIANA_ID;
+        }
+        else if (id == R.id.Kolkata) {
+            categoryId = CategoryId.KOLKATA_ID;
+        }
+        else if (id == R.id.Varanasi) {
+            categoryId = CategoryId.VARANASI_ID;
+        }
+        else if (id == R.id.AboutUs) {
+            categoryId ="234";
+        }
+        else if (id == R.id.ContactUs) {
+            categoryId = "357";
+        }
+            if(categoryId.equals("0"))
+{
+    Intent intent =new Intent(this,MainActivityScreen.class);
+    startActivity(intent);
+}
+else if(categoryId.equals("00"))
+{
+    Intent intent =new Intent(this,SelectCityScreen.class);
+    startActivity(intent);
+}
+else if(categoryId.equals("234"))
+            {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+                Intent intent = new Intent(this, WebViewPage.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id","234");
+                bundle.putString("title","About Us");
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+            else if(categoryId.equals("357"))
+            {
+
+                Intent intent = new Intent(this, WebViewPage.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id","357");
+                bundle.putString("title","Contact Us");
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+
+            else {
+    Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
+    Bundle bundle = new Bundle();
+    bundle.putString("ID", categoryId);
+    bundle.putString("TYPE", ListNameConstants.CATEGORY);
+    intent.putExtras(bundle);
+    startActivity(intent);
+}
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
+
+
     }
 
 
     @Override
     public void onListFragmentInteraction(Article item) {
-        Intent intent = new Intent(this, WebViewScreen.class);
+        Intent intent = new Intent(this, Post.class);
         Bundle bundle = new Bundle();
         bundle.putString("id",item.getId());
         bundle.putString("uri", item.getLink());
+       bundle.putString("date",item.getDate());
+        bundle.putString("author",item.getAuthor());
+        bundle.putString("feature",item.getFeaturedImage());
+        bundle.putString("title",item.getTitle());
+
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
 
+    @Override
+    public void onCategoryViewPressed(String categoryId) {
+        Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("ID", categoryId);
+        bundle.putString("TYPE", ListNameConstants.CATEGORY);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }
