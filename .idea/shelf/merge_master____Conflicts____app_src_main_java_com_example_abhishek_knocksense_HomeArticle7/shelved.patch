@@ -1,0 +1,127 @@
+Index: app/src/main/res/xml/searchable.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/xml/searchable.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/xml/searchable.xml	(revision )
+@@ -2,4 +2,5 @@
+ 
+ <searchable xmlns:android="http://schemas.android.com/apk/res/android"
+     android:label="@string/app_name"
++    android:hint="searchh"
+      />
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java	(revision )
+@@ -9,6 +9,8 @@
+ import android.view.MenuItem;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.Filter;
++import android.widget.Filterable;
+ import android.widget.ProgressBar;
+ import android.widget.Toast;
+ 
+@@ -35,7 +37,7 @@
+  * specified {@link OnListFragmentInteractionListener}.
+  * TODO: Replace the implementation with code for your data type.
+  */
+-public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListObserver {
++public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListObserver,Filterable {
+ 
+     private int CATEGORY = 1011;
+     private int SINGLE_ARTICLE = 2022;
+@@ -582,6 +584,10 @@
+     }
+ 
+ 
++    @Override
++    public Filter getFilter() {
++        return null;
++    }
+ }
+ interface OnCategoryClickListener{
+     public void onCategoryViewPressed(String categoryId);
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -32,7 +32,7 @@
+ import com.example.abhishek.knocksense.components.ListNameConstants;
+ 
+ public class MainActivityScreen extends AppCompatActivity
+-        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener, OnCategoryClickListener{
++        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener, OnCategoryClickListener,SearchView.OnQueryTextListener{
+ 
+     SwipeRefreshLayout swipeRefreshLayout;
+     private ViewPager viewPager;
+@@ -41,6 +41,7 @@
+     private Fragment fragment = null;
+     private FragmentManager fragmentManager;
+     private int backButtonCount;
++    public SearchView searchView;
+ 
+ 
+     @Override
+@@ -118,6 +119,17 @@
+         MenuInflater inflater = getMenuInflater();
+         inflater.inflate(R.menu.main, menu);
+ 
++
++        SearchManager searchManager = (SearchManager)
++                getSystemService(Context.SEARCH_SERVICE);
++        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
++        searchView = (SearchView) searchMenuItem.getActionView();
++
++        searchView.setSearchableInfo(searchManager.
++                getSearchableInfo(getComponentName()));
++        searchView.setSubmitButtonEnabled(true);
++        searchView.setOnQueryTextListener(this);
++
+         // Associate searchable configuration with the SearchView
+         /*SearchManager searchManager =
+                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+@@ -130,6 +142,17 @@
+         return true;
+     }
+ 
++    @Override
++    public boolean onQueryTextSubmit(String query) {
++        return false;
++    }
++
++    @Override
++    public boolean onQueryTextChange(String newText) {
++        friendListAdapter.getFilter().filter(newText);
++
++        return true;
++    }
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+         // Handle action bar item clicks here. The action bar will
+Index: app/src/main/res/menu/main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/main.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/menu/main.xml	(revision )
+@@ -6,7 +6,7 @@
+     android:id="@+id/action_search"
+     android:orderInCategory="100"
+     android:title="@string/search"
+-    app:showAsAction="always"
++    app:showAsAction="collapseActionView|ifRoom"
+     app:actionViewClass="android.widget.SearchView"
+     />
+ 

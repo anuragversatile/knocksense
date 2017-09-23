@@ -8,8 +8,17 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.abhishek.knocksense.SearchResultsActivity">
+    <TextView
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:id="@+id/search_text_view"
+        android:layout_height="30dp"
+        android:text="Here search query will come"
+        android:maxLines="1"
+        android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/search_text_view"
         android:id="@+id/search_results_list"
         android:name="com.example.abhishek.knocksense.SearchResultsActivity"
         android:layout_width="match_parent"
@@ -20,7 +29,7 @@
         tools:listitem="@layout/article_item_row"
         />
     <ProgressBar
-        android:id="@+id/category_or_author_progress_bar"
+        android:id="@+id/search_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

@@ -1,0 +1,130 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -9,9 +9,9 @@
+     <application
+         android:name=".components.GlobalLists"
+         android:allowBackup="true"
+-        android:icon="@mipmap/knocksenseicon"
++        android:icon="@mipmap/knock"
+         android:label="@string/app_name"
+-        android:roundIcon="@mipmap/knocksenseicon"
++        android:roundIcon="@mipmap/knock"
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme">
+         <meta-data
+@@ -56,7 +56,12 @@
+             android:name=".WebViewScreen"
+             android:parentActivityName=".MainActivityScreen"
+             android:screenOrientation="portrait"
+-            android:theme="@style/AppTheme.NoActionBar" />
++            android:theme="@style/AppTheme.NoActionBar" >
++        <meta-data
++            android:name="android.app.searchable"
++            android:resource="@xml/searchable">
++        </meta-data>
++        </activity>
+ 
+         <service android:name=".MyFirebaseInstanceIdService">
+             <intent-filter>
+\ No newline at end of file
+Index: app/src/main/res/layout/post.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/post.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/layout/post.xml	(revision )
+@@ -33,7 +33,7 @@
+                 android:layout_alignParentTop="true"
+ 
+                 android:paddingRight="60dp"
+-                android:src="@drawable/ic_home_black_24dp" />
++                android:src="@mipmap/facebook" />
+ 
+             <ImageView
+                 android:id="@+id/whatsapp"
+@@ -43,7 +43,8 @@
+                 android:layout_alignParentTop="true"
+ 
+                 android:paddingRight="35dp"
+-                android:src="@drawable/ic_phone_black_24dp" />
++                android:src="@mipmap/whatsapp"
++                android:layout_alignParentBottom="true" />
+ 
+             <TextView
+             android:layout_width="0dp"
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_city.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_city.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/layout/fragment_city.xml	(revision )
+@@ -17,8 +17,8 @@
+     android:tag="city_fragment"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:layout_marginLeft="16dp"
+-    android:layout_marginRight="16dp"
++    android:layout_marginLeft="0dp"
++    android:layout_marginRight="0dp"
+     app:layoutManager="LinearLayoutManager"
+     tools:listitem="@layout/article_item_row"
+     />
+\ No newline at end of file
+Index: app/src/main/res/layout/article_item_row.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/article_item_row.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/layout/article_item_row.xml	(revision )
+@@ -63,6 +63,7 @@
+         android:id="@+id/article_item_row_more"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:paddingRight="7.45dp"
+         android:src="@drawable/ic_more_vert_black_24dp" />
+     <TextView
+         android:layout_width="0dp"
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ .idea/misc.xml	(revision )
+@@ -37,7 +37,7 @@
+     <ConfirmationsSetting value="0" id="Add" />
+     <ConfirmationsSetting value="0" id="Remove" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_home_article_list.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_home_article_list.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/layout/fragment_home_article_list.xml	(revision )
+@@ -11,8 +11,8 @@
+         android:name="com.example.abhishek.knocksense.HomeFragment"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:layout_marginLeft="16dp"
+-        android:layout_marginRight="16dp"
++        android:layout_marginLeft="0dp"
++        android:layout_marginRight="0dp"
+         app:layoutManager="LinearLayoutManager"
+         tools:context="com.example.abhishek.knocksense.HomeFragment"
+         tools:listitem="@layout/article_item_row" />

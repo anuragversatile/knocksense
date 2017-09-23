@@ -1,0 +1,79 @@
+<changelist name="merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7" date="1506160069744" recycled="false">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/shelved.patch" />
+  <option name="DESCRIPTION" value="merge master  # Conflicts: #&#9;app/src/main/java/com/example/abhishek/knocksense/HomeArticleRecyclerViewAdapter.java #&#9;app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java #&#9;app/src/main/java/com/example/abhishek/knocksense/SearchFragment.java #&#9;app/src/main/java/com/example/abhishek/knocksense/SelectCityScreen.java #&#9;app/src/main/java/com/example/abhishek/knocksense/SplashScreen.java #&#9;app/src/main/java/com/example/abhishek/knocksense/UrlConstants.java #&#9;app/src/main/java/com/example/abhishek/knocksense/components/GlobalLists.java #&#9;app/src/main/res/layout/article_item_row.xml #&#9;app/src/main/res/layout/article_two_item_row.xml #&#9;app/src/main/res/layout/fragment_search.xml " />
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxxhdpi/knock.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/knock.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xhdpi/facebook.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/facebook.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-hdpi/whatsapp.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/whatsapp.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxxhdpi/facebook.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/facebook.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-mdpi/knock.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/knock.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxhdpi/whatsapp.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/whatsapp.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-hdpi/knock.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/knock.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-mdpi/facebook.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/facebook.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxhdpi/knock.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/knock.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xhdpi/whatsapp.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/whatsapp.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xhdpi/knock.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/knock.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxhdpi/facebook.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/facebook.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-mdpi/whatsapp.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/whatsapp.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-xxxhdpi/whatsapp.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/whatsapp.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" />
+    <option name="AFTER_PATH" value="app/src/main/res/mipmap-hdpi/facebook.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/merge_master____Conflicts____app_src_main_java_com_example_abhishek_knocksense_HomeArticle7/facebook.png" />
+  </binary>
+</changelist>

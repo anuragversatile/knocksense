@@ -8,7 +8,7 @@ public class UrlConstants {
     //// TODO: 20-08-2017 use _embed to put author's name in response to fetch posts
 
     private static String specificCategoryOrCityArticlesURL = "http://www.knocksense.com/wp-json/wp/v2/posts/?categories=<__categoryID__>&per_page=<__number_of_posts__>&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
-    private static String searchURL="http://www.knocksense.com/wp-json/wp/v2/posts/?search=<__search__>&per_page=5&fields=id,title";
+    private static String searchURL="http://www.knocksense.com/wp-json/wp/v2/posts/?search=<__search__>&per_page=25&fields=id,date,title,author,link,categories,better_featured_image,featured_media";
 
 
   private static String allAuthorsURL = "http://www.knocksense.com/wp-json/wp/v2/users?fields=id,name,avatar_urls";
