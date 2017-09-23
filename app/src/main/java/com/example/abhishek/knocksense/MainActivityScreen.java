@@ -299,6 +299,8 @@ else if(categoryId.equals("234"))
         Bundle bundle=new Bundle();
         bundle.putString("ID", categoryId);
         bundle.putString("TYPE", ListNameConstants.CATEGORY);
+        bundle.putString("TITLE",CategoryId.getCategoryName(categoryId));
+
         intent.putExtras(bundle);
         startActivity(intent);
     }

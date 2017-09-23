@@ -25,7 +25,7 @@
         >
         <ImageView
             android:layout_width="wrap_content"
-            android:paddingRight="0.125in"
+            android:paddingRight="0.45in"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@mipmap/knocksenselogo"/>
@@ -42,12 +42,13 @@
         android:layout_alignParentStart="true"
         android:layout_width="match_parent"
         android:id="@+id/search_text_view"
-        android:layout_height="30dp"
+
+        android:layout_height="35dp"
         android:text="Here search query will come"
         android:maxLines="1"
 
         android:textStyle="bold"
-      android:textSize="15dp"/>
+      android:textSize="20dp"/>
 
 
     <android.support.v7.widget.RecyclerView

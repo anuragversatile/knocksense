@@ -21,7 +21,7 @@
        >
         <ImageView
             android:layout_width="wrap_content"
-            android:paddingRight="0.125in"
+            android:paddingRight="0.45in"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@mipmap/knocksenselogo"/>

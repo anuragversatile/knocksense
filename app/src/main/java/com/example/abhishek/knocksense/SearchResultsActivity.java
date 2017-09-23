@@ -106,9 +106,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                                         Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
+
 
 
                             }

@@ -203,9 +203,6 @@ private Context context;
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
 
                             }
                             return false;
@@ -303,9 +300,6 @@ private Context context;
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
 
                             }
                             return false;
@@ -398,9 +392,6 @@ private Context context;
                                     } catch (Exception ex) {
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
-                                    break;
-                                case R.id.save:
-                                    //handle menu2 click
                                     break;
 
                             }
@@ -521,9 +512,6 @@ private Context context;
                                     } catch (Exception ex) {
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
-                                    break;
-                                case R.id.save:
-                                    //handle menu2 click
                                     break;
 
                             }

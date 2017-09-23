@@ -18,7 +18,8 @@
 
     <string name="saved_selected_city">KNOCKSENSE_SELECTED_CITY</string>
     <string name="selected_city_file_key">SELECTED_CITY_FILE</string>
-    <string name="banner_home_footer">ca-app-pub-1676352533151251/5347854514</string>
+    <string name="banner_home_footer">ca-app-pub-1676352533151251/5347854514
+    </string>
 
     <string name="tab_home">HOME</string>
     <string name="tab_city">CITY</string>

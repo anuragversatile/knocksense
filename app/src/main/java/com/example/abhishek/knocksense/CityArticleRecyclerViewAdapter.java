@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.example.abhishek.knocksense.CityFragment.OnListFragmentInteractionListener;
 import com.example.abhishek.knocksense.components.Article;
+import com.example.abhishek.knocksense.components.BigArticleViewHolder;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
 import com.example.abhishek.knocksense.components.ListObserver;
+import com.example.abhishek.knocksense.components.SingleArticleViewHolder;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,15 +37,18 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<CityArticleRecyclerViewAdapter.ViewHolder> implements ListObserver {
+public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListObserver {
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
     private  Context context;
     private ProgressBar progressBar;
     private  Font font;
-    private static final int ads=4;
-private static int normal=1;
+    private List<Object> nativeAd;
+    private static final int ads=12345;
+private static int normal=23245;
+    private static final int bigArticle=321331;
+
     public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view,CityFragment cityFragment) {
         GlobalLists globalListInstance=(GlobalLists) cityFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.CITY,this);
@@ -62,37 +67,158 @@ private static int normal=1;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder viewHolder=null;
-        switch (viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            case ads:{
+        /*if(viewType==ads)
+
+           {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.admoblist, parent, false);
-                viewHolder= new ViewHolder(view);
-                break;
-            }
 
-            default:{
+                return new NativeAdViewHolder(view);
+
+
+            }*/
+           if(viewType==bigArticle){
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_big_item_row, parent, false);
+                return new BigArticleViewHolder(view);
+        }
+            else if(viewType==normal){
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.article_item_row, parent, false);
-                viewHolder= new ViewHolder(view);
-                break;}
+                return new SingleArticleViewHolder(view);
+
+                }
+                return null;
         }
-        return viewHolder;
-        }
+
+
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder h, int position) {
 
         DateConverter dateConverter = new DateConverter();
-        switch (holder.getItemViewType()) {
+   int temp=position%6;
 
-            case ads: {
+       /* if(temp==-1)
+        {
 
-                break;
+            // The NativeExpressAdViewHolder recycled by the RecyclerView may be a different
+            // instance than the one used previously for this position. Clear the
+            // NativeExpressAdViewHolder of any subviews in case it has a different
+            // AdView associated with it, and make sure the AdView for this position doesn't
+            // already have a parent of a different recycled NativeExpressAdViewHolder.
+
             }
- default: {
+       */    if(position==0){
+                final BigArticleViewHolder holder=(BigArticleViewHolder) h;
+
+                final Article article=mValues.get(position);
+                holder.mItem = article;
+                if(article.getTitle().contains("&#8216;")) {
+                    String title = article.getTitle().replace("&#8216;", "'").replace("&#8217;", "'");
+                    holder.title.setText(title);
+                }
+                else if(article.getTitle().contains("&#8217;")) {
+                    String title = article.getTitle().replace("&#8217;", "'");
+                    holder.title.setText(title);
+                }
+                else if(article.getTitle().contains("&#038;")) {
+                    String title = article.getTitle().replace("&#038;", "&");
+                    holder.title.setText(title);
+                }
+                else {
+                    holder.title.setText(article.getTitle());
+                }
+                for (Article arti : GlobalLists.getAuthorList()) {
+                    String authorId = arti.getId();
+                    if (mValues.get(position).getAuthor().equals(authorId)) {
+                        holder.author.setText(arti.getName());
+                        break;
+                    }
+                }
+                holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(mValues.get(position).getDate()));
+                ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.big_item_row_image, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String s, View view) {
+                        //finalHolder.progressBar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                        //  finalHolder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+
+                    }
+                });
+                font  = new Font();
+                font.setFont3(context,holder.title);
+                font.setFont3(context,holder.date);
+                font.setFont3(context,holder.author);
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (null != mListener) {
+                            // Notify the active callbacks interface (the activity, if the
+                            // fragment is attached to one) that an item has been selected.
+                            mListener.onListFragmentInteraction(holder.mItem);
+                        }
+                    }
+                });
+                holder.mView.findViewById(R.id.article_item_row_more).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //// TODO: 26-08-2017 save and share functionality
+                        PopupMenu popup = new PopupMenu(context, holder.mView.findViewById(R.id.article_item_row_more));
+                        //inflating menu from xml resource
+                        popup.inflate(R.menu.options_menu);
+                        //adding click listener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.share:
+                                        //handle menu1 click
+                                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                                        shareIntent.setType("text/plain");
+                                        shareIntent.putExtra(Intent.EXTRA_TEXT,article.getLink());
+
+                                        try {
+                                            context.startActivity(Intent.createChooser(shareIntent,"Share via"));
+                                        } catch (Exception ex) {
+                                            Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
+                                        }
+                                        break;
+
+
+                                }
+                                return false;
+                            }
+                        });
+                        //displaying the popup
+                        popup.show();
+
+                    }
+
+
+
+
+
+                });
+
+
+
+            }
+ else if(position!=0 ) {
+     final SingleArticleViewHolder holder=(SingleArticleViewHolder) h;
      final Article article = mValues.get(position);
      holder.mItem = article;
      if(article.getTitle().contains("&#8216;")) {
@@ -181,9 +307,7 @@ private static int normal=1;
                                  Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
                              }
                              break;
-                         case R.id.save:
-                             //handle menu2 click
-                             break;
+
 
                      }
                      return false;
@@ -196,10 +320,10 @@ private static int normal=1;
 
 
      });
- break;
+
  }
         }
-    }
+
 
     @Override
     public int getItemCount() {
@@ -208,9 +332,11 @@ private static int normal=1;
     @Override
     public int getItemViewType(int position) {
         int viewType;
-     int temp=position%5;
-        if(position%5==4)
-            viewType=ads;
+     int temp=position%6;/*
+        if(position%6==4)
+            viewType=ads;*/
+        if(position==0)
+            viewType=bigArticle;
         else viewType=normal;
 
         return viewType;
@@ -228,79 +354,14 @@ private static int normal=1;
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView title;
-        public final TextView author;
-        public final TextView date;
-        public  final ImageView featuredImage;
-        public Article mItem;
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            title = (TextView) view.findViewById(R.id.article_item_row_title);
-            author = (TextView) view.findViewById(R.id.article_item_row_author);
-            date = (TextView) view.findViewById(R.id.article_item_row_date);
-            featuredImage=(ImageView) view.findViewById(R.id.featuredImage);
-        }
 
-    }
     public  class NativeAdViewHolder extends RecyclerView.ViewHolder {
-        private final NativeExpressAdView mNativeAd;
+
 
         public NativeAdViewHolder(View itemView) {
             super(itemView);
-            mNativeAd = (NativeExpressAdView) itemView.findViewById(R.id.adView);
-            mNativeAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    if (mListener != null) {
-                        Log.i("AndroidBash", "onAdLoaded");
-                    }
-                }
 
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                    if (mListener != null) {
-                        Log.i("AndroidBash", "onAdClosed");
-                    }
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    super.onAdFailedToLoad(errorCode);
-                    if (mListener != null) {
-                        Log.i("AndroidBash", "onAdFailedToLoad");
-                    }
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    super.onAdLeftApplication();
-                    if (mListener != null) {
-                        Log.i("AndroidBash", "onAdLeftApplication");
-                    }
-                }
-
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
-                    if (mListener != null) {
-                        Log.i("AndroidBash", "onAdOpened");
-                    }
-                }
-            });
-           /* AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice(MainActivityScreen.DEVICE_ID_EMULATOR)
-                    .build();*/
-            //You can add the following code if you are testing in an emulator
-            AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).setRequestAgent("android:ad_template")
-                .build();
-            mNativeAd.loadAd(adRequest);
         }
     }
         }
