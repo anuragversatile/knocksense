@@ -33,7 +33,13 @@
                 android:layout_alignParentTop="true"
 
                 android:paddingRight="60dp"
-                android:src="@drawable/ic_home_black_24dp" />
+
+                android:src="@drawable/ic_home_black_24dp"
+                android:shadowColor="#000000"
+                android:shadowDx="6"
+                android:shadowDy="6"
+                android:shadowRadius="6"/>
+
 
             <ImageView
                 android:id="@+id/whatsapp"

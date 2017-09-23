@@ -46,16 +46,14 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+
     private List<Article> searchArticlesList;
+
 
     private static List<Article>authorList;
     private String selectedCityId;
     private String lastCategoryOrAuthorId=null;
 
-    private  List<ListObserver> cityListObserverList;
-    private  List<ListObserver> homeListObserverList;
-    private List<ListObserver> categoryListObserverList;
-    private List<ListObserver> authorListObserverList;
     private List<ListObserver> searchListObserverList;
 
     public List<Article> getSearchArticlesList() {
@@ -74,6 +72,15 @@ public class GlobalLists extends Application implements ListPublisher {
         this.lastCategoryOrAuthorId = lastCategoryOrAuthorId;
     }
 
+
+    private  List<ListObserver> cityListObserverList;
+    private  List<ListObserver> homeListObserverList;
+    private List<ListObserver> categoryListObserverList;
+    private List<ListObserver> authorListObserverList;
+    private  static GlobalLists instance=null;
+
+
+
     public GlobalLists(){
         cityArticlesList=new ArrayList<>();
         homeArticlesList=new ArrayList<>();
@@ -83,8 +90,10 @@ public class GlobalLists extends Application implements ListPublisher {
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
         authorListObserverList=new ArrayList<>();
+
         searchArticlesList=new ArrayList<>();
         searchListObserverList=new ArrayList<>();
+
     }
 
     public List<Article> getCategoryArticlesList() {
@@ -396,12 +405,14 @@ public class GlobalLists extends Application implements ListPublisher {
                 fetchCategoryData(context, id);
                 break;
             case AUTHOR:
+
                 requestQueue.cancelAll(AUTHOR);
                 fetchAuthorData(context);
                 break;
             case SEARCH:
                 requestQueue.cancelAll(SEARCH);
                 fetchSearchData(context,id);
+
                 break;
         }
 
@@ -419,6 +430,7 @@ public class GlobalLists extends Application implements ListPublisher {
 
             case AUTHOR:
                 authorListObserverList.add(listObserver);
+
             break;
             case CATEGORY:
                 categoryListObserverList.add(listObserver);
@@ -426,6 +438,7 @@ public class GlobalLists extends Application implements ListPublisher {
             case SEARCH:
                 searchListObserverList.add(listObserver);
                 break;
+
 
         }
     }

@@ -26,6 +26,7 @@
             android:layout_gravity="center"
             android:src="@mipmap/knocksenselogo"/>
     </android.support.v7.widget.Toolbar>
+
     <TextView
         android:id="@+id/category_title_text_view"
         android:layout_below="@id/my_toolbar"
@@ -33,6 +34,7 @@
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="30dp" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_or_author_list"

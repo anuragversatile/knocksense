@@ -129,9 +129,11 @@ public class MainActivityScreen extends AppCompatActivity
                 searchManager.getSearchableInfo(getComponentName()));
 
 */
+
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()) );
+
         return true;
     }
 
@@ -260,7 +262,9 @@ else if(categoryId.equals("234"))
     Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
     Bundle bundle = new Bundle();
     bundle.putString("ID", categoryId);
+
     bundle.putString("TITLE",CategoryId.getCategoryName(categoryId));
+
     bundle.putString("TYPE", ListNameConstants.CATEGORY);
     intent.putExtras(bundle);
     startActivity(intent);
@@ -298,6 +302,7 @@ else if(categoryId.equals("234"))
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
     @Override
     public boolean onSearchRequested() {
         Bundle appData = new Bundle();
@@ -305,4 +310,5 @@ else if(categoryId.equals("234"))
         startSearch(null, false, appData, false);
         return true;
     }
+
 }
