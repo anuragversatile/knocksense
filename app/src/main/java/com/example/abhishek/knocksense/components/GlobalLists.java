@@ -34,6 +34,7 @@ import static com.example.abhishek.knocksense.components.ListNameConstants.AUTHO
 import static com.example.abhishek.knocksense.components.ListNameConstants.CATEGORY;
 import static com.example.abhishek.knocksense.components.ListNameConstants.CITY;
 import static com.example.abhishek.knocksense.components.ListNameConstants.HOME;
+import static com.example.abhishek.knocksense.components.ListNameConstants.SEARCH;
 
 
 /**
@@ -45,9 +46,23 @@ public class GlobalLists extends Application implements ListPublisher {
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;
+
+    private List<Article> searchArticlesList;
+
+
     private static List<Article>authorList;
     private String selectedCityId;
     private String lastCategoryOrAuthorId=null;
+
+    private List<ListObserver> searchListObserverList;
+
+    public List<Article> getSearchArticlesList() {
+        return searchArticlesList;
+    }
+
+    public void setSearchArticlesList(List<Article> searchArticlesList) {
+        this.searchArticlesList = searchArticlesList;
+    }
 
     public String getLastCategoryOrAuthorId() {
         return lastCategoryOrAuthorId;
@@ -56,6 +71,7 @@ public class GlobalLists extends Application implements ListPublisher {
     public void setLastCategoryOrAuthorId(String lastCategoryOrAuthorId) {
         this.lastCategoryOrAuthorId = lastCategoryOrAuthorId;
     }
+
 
     private  List<ListObserver> cityListObserverList;
     private  List<ListObserver> homeListObserverList;
@@ -74,6 +90,10 @@ public class GlobalLists extends Application implements ListPublisher {
         homeListObserverList=new ArrayList<>();
         categoryListObserverList=new ArrayList<>();
         authorListObserverList=new ArrayList<>();
+
+        searchArticlesList=new ArrayList<>();
+        searchListObserverList=new ArrayList<>();
+
     }
 
     public List<Article> getCategoryArticlesList() {
@@ -320,6 +340,51 @@ public class GlobalLists extends Application implements ListPublisher {
 
     }
 
+    private void fetchSearchData(Context context, String searchQuery){
+        final GlobalLists globalListInstance=this;
+        this.notifyListObservers(SEARCH, null, false, true);
+        String url = UrlConstants.getSearchURL(searchQuery);
+
+        final List<Article> articleList = new ArrayList<>();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            Gson gson = new Gson();
+                            JSONArray ParentArray = new JSONArray(s);
+                            for (int i = 0; i < ParentArray.length(); i++) {
+                                JSONObject ParentObject = ParentArray.getJSONObject(i);
+                                Article articleModel = gson.fromJson(ParentObject.toString(), Article.class);
+                                articleModel.setId(ParentObject.getString("id"));
+                                articleModel.setDate(ParentObject.getString("date"));
+                                articleModel.setTitle(ParentObject.getJSONObject("title").getString("rendered"));
+                                articleModel.setAuthor(ParentObject.getString("author"));
+                                articleModel.setLink(ParentObject.getString("link"));
+                                articleModel.setFeaturedImage(ParentObject.getJSONObject("better_featured_image").getString("source_url"));
+                                articleList.add(articleModel);
+                                if (articleList.size() == ParentArray.length()) {
+                                    globalListInstance.setSearchArticlesList(articleList);
+                                    globalListInstance.notifyListObservers(SEARCH,articleList,true,false);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                volleyError.printStackTrace();
+            }
+        });
+        stringRequest.setTag(SEARCH);
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+    }
+
     public void fireRefreshData(Context context, String listType, String id){
         /*
             * id :? selectedCityId, authorId, categoryId, etc
@@ -328,24 +393,26 @@ public class GlobalLists extends Application implements ListPublisher {
         RequestQueue requestQueue=VolleySingleton.getInstance(context).getRequestQueue();
         switch (listType){
             case HOME:
-//                cancel previous request before starting new one
                 requestQueue.cancelAll(HOME);
-
                 fetchHomeData(context);
                 break;
             case CITY:
-                //cancel previous request before starting new one
                 requestQueue.cancelAll(CITY);
                 fetchCityData(context, id);
                 break;
             case CATEGORY:
-                //// TODO: 09/09/17
                 requestQueue.cancelAll(CATEGORY);
                 fetchCategoryData(context, id);
                 break;
             case AUTHOR:
-                //// TODO: 09/09/17
+
+                requestQueue.cancelAll(AUTHOR);
                 fetchAuthorData(context);
+                break;
+            case SEARCH:
+                requestQueue.cancelAll(SEARCH);
+                fetchSearchData(context,id);
+
                 break;
         }
 
@@ -363,10 +430,16 @@ public class GlobalLists extends Application implements ListPublisher {
 
             case AUTHOR:
                 authorListObserverList.add(listObserver);
-break;
+
+            break;
             case CATEGORY:
                 categoryListObserverList.add(listObserver);
-break;
+            break;
+            case SEARCH:
+                searchListObserverList.add(listObserver);
+                break;
+
+
         }
     }
 
@@ -383,6 +456,10 @@ break;
                 authorListObserverList.remove(listObserver);
             case CATEGORY:
                 categoryListObserverList.remove(listObserver);
+                break;
+            case SEARCH:
+                searchListObserverList.remove(listObserver);
+                break;
         }
     }
 
@@ -411,6 +488,10 @@ break;
                     listObserver.updateList(articles, hasLoaded, isLoading);
                 }
                 break;
+            case SEARCH:
+                for (ListObserver listObserver:searchListObserverList){
+                    listObserver.updateList(articles, hasLoaded, isLoading);
+                }
         }
 
     }

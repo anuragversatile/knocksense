@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.abhishek.knocksense.components.Article;
@@ -20,7 +21,6 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
 
     private RecyclerView recyclerView;
     private CategoryOrAuthorRecyclerViewAdapter mAdapter;
-    private OnCategoryListItemClickedListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,13 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
 
 
         View view = (View)findViewById(R.id.category_or_author_relative_layout);
+        TextView textView=(TextView)findViewById(R.id.category_title_text_view);
         GlobalLists globalListInstance=(GlobalLists)getApplication();
         Bundle bundle = getIntent().getExtras();
         String id=bundle.getString("ID");
         String type=bundle.getString("TYPE");
-
+        String categoryName=bundle.getString("TITLE");
+        textView.setText(categoryName);
 
 
 

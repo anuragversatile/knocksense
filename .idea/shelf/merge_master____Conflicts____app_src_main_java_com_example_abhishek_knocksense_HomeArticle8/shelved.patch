@@ -1,0 +1,143 @@
+Index: app/src/main/res/xml/searchable.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/xml/searchable.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/res/xml/searchable.xml	(revision )
+@@ -2,4 +2,5 @@
+ 
+ <searchable xmlns:android="http://schemas.android.com/apk/res/android"
+     android:label="@string/app_name"
++    android:hint="@string/search"
+      />
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_searchable.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_searchable.xml	(revision )
++++ app/src/main/res/layout/activity_searchable.xml	(revision )
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context="com.example.abhishek.knocksense.SearchableActivity">
++
++</android.support.constraint.ConstraintLayout>
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -33,9 +33,6 @@
+             android:name=".MainActivityScreen"
+             android:screenOrientation="portrait"
+             android:theme="@style/AppTheme.NoActionBar">
+-            <meta-data
+-                android:name="android.app.searchable"
+-                android:resource="@xml/searchable" />
+ 
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+@@ -89,7 +86,18 @@
+             android:name=".WebViewPage"
+             android:screenOrientation="portrait"
+             android:theme="@style/AppTheme.NoActionBar" />
++        <activity android:name=".SearchableActivity"
++            android:launchMode="singleTop">
+ 
++            <intent-filter>
++                <action android:name="android.intent.action.SEARCH" />
++            </intent-filter>
++
++            <meta-data
++                android:name="android.app.searchable"
++                android:resource="@xml/searchable" />
++
++        </activity>
+     </application>
+ 
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/example/abhishek/knocksense/SearchableActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/SearchableActivity.java	(revision )
++++ app/src/main/java/com/example/abhishek/knocksense/SearchableActivity.java	(revision )
+@@ -0,0 +1,30 @@
++package com.example.abhishek.knocksense;
++
++import android.app.SearchManager;
++import android.content.Intent;
++import android.support.v7.app.AppCompatActivity;
++import android.os.Bundle;
++
++public class SearchableActivity extends AppCompatActivity {
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_searchable);
++        handleIntent(getIntent());
++
++    }
++    @Override
++    protected void onNewIntent(Intent intent) {
++        setIntent(intent);
++        handleIntent(intent);
++    }
++
++    private void handleIntent(Intent intent) {
++        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
++            String query = intent.getStringExtra(SearchManager.QUERY);
++            doMySearch(query);
++        }
++    }
++
++}
+Index: app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision ec2dbba427311bca03b890c60de4ecad9a8e61f4)
++++ app/src/main/java/com/example/abhishek/knocksense/MainActivityScreen.java	(revision )
+@@ -89,6 +89,9 @@
+                     }
+                 }
+         );
++
++
++
+        }
+     @Override
+     public void onBackPressed() {
+@@ -127,6 +130,13 @@
+                 searchManager.getSearchableInfo(getComponentName()));
+ 
+ */
++        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
++        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
++        // Assumes current activity is the searchable activity
++        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
++        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
++
++
+         return true;
+     }
+ 
+@@ -288,4 +298,5 @@
+         intent.putExtras(bundle);
+         startActivity(intent);
+     }
++    
+ }

@@ -18,7 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.example.abhishek.knocksense.components.Article;
 import com.example.abhishek.knocksense.components.GlobalLists;
 import com.example.abhishek.knocksense.components.ListNameConstants;
+
+import static android.R.attr.id;
 
 public class MainActivityScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnListFragmentInteractionListener, CityFragment.OnListFragmentInteractionListener, OnCategoryClickListener{
@@ -127,6 +129,11 @@ public class MainActivityScreen extends AppCompatActivity
                 searchManager.getSearchableInfo(getComponentName()));
 
 */
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()) );
+
         return true;
     }
 
@@ -142,6 +149,10 @@ public class MainActivityScreen extends AppCompatActivity
 //
 //            return true;
 //        }
+        if (id == R.id.action_search) {
+            onSearchRequested();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -251,6 +262,9 @@ else if(categoryId.equals("234"))
     Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
     Bundle bundle = new Bundle();
     bundle.putString("ID", categoryId);
+
+    bundle.putString("TITLE",CategoryId.getCategoryName(categoryId));
+
     bundle.putString("TYPE", ListNameConstants.CATEGORY);
     intent.putExtras(bundle);
     startActivity(intent);
@@ -288,4 +302,13 @@ else if(categoryId.equals("234"))
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    @Override
+    public boolean onSearchRequested() {
+        Bundle appData = new Bundle();
+        appData.putString("hello", "world");
+        startSearch(null, false, appData, false);
+        return true;
+    }
+
 }
