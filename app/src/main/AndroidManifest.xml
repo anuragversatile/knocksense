@@ -9,9 +9,9 @@
     <application
         android:name=".components.GlobalLists"
         android:allowBackup="true"
-        android:icon="@mipmap/knocksenseicon"
+        android:icon="@mipmap/knocks"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/knocksenseicon"
+        android:roundIcon="@mipmap/knocks"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
