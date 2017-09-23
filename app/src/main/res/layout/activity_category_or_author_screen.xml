@@ -31,9 +31,10 @@
         android:id="@+id/category_title_text_view"
         android:layout_below="@id/my_toolbar"
         android:text="category name here"
-        android:textAlignment="center"
+     android:textStyle="bold"
+        android:textSize="20dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="35dp" />
 
 
     <android.support.v7.widget.RecyclerView
@@ -42,8 +43,8 @@
         android:name="com.example.abhishek.knocksense.CategoryOrAuthorScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/article_item_row"
         />

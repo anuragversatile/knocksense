@@ -72,6 +72,7 @@ private static int normal=1;
                 viewHolder= new ViewHolder(view);
                 break;
             }
+
             default:{
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.article_item_row, parent, false);
