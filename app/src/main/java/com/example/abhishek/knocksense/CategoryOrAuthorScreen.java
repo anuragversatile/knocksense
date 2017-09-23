@@ -1,6 +1,8 @@
 package com.example.abhishek.knocksense;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -31,8 +33,7 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         View view = (View)findViewById(R.id.category_or_author_relative_layout);

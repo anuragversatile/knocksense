@@ -31,11 +31,11 @@
         android:id="@+id/category_title_text_view"
         android:layout_below="@id/my_toolbar"
         android:text="category name here"
+
      android:textStyle="bold"
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="35dp" />
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_or_author_list"
