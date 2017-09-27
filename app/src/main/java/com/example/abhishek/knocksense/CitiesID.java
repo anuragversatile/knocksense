@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class CitiesID {
     public static final String JAIPUR_ID = "634";
-    public static final String MUMBAI_ID = "631";
+    public static final String GOA_ID = "637";
     public static final String NEW_DELHI_ID = "641";
     public static final String LUCKNOW_ID = "630";
     public static final String REST_OF_INDIA_ID = "629";
@@ -19,8 +19,8 @@ public class CitiesID {
             case "JAIPUR":
                 id = JAIPUR_ID;
                 break;
-            case "MUMBAI":
-                id = MUMBAI_ID;
+            case "GOA":
+                id = GOA_ID;
                 break;
             case "NEW DELHI":
                 id = NEW_DELHI_ID;

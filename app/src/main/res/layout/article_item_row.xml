@@ -28,25 +28,30 @@
                android:id="@+id/article_item_row_title"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:maxLines="2"
+               android:maxLines="3"
                android:paddingLeft="7.45dp"
                android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
                android:textStyle="bold"
-               android:textSize="13sp"
+               android:textSize="12sp"
                android:textColor="@color/black_overlay"
                />
 
-
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="horizontal"
+               android:weightSum="2">
            <TextView
                android:id="@+id/article_item_row_author"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:maxLines="1"
+               android:layout_weight="1"
                android:paddingLeft="7.45dp"
                android:text="KnockSense"
                android:textStyle="bold"
 
-               android:textSize="12sp"
+               android:textSize="11sp"
 
 
 
@@ -57,12 +62,15 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:maxLines="1"
+               android:text="date here"
+               android:layout_weight="1"
                android:paddingLeft="7.45dp"
                android:textStyle="bold"
 
                android:textSize="11sp"
 
                android:textColor="@color/black_overlay"/>
+               </LinearLayout>
 
        </LinearLayout>
 

@@ -4,9 +4,10 @@
 
 
 
+    <group android:checkableBehavior="single">
 
-    <item android:title="">
-        <menu>
+
+
             <item
                 android:id="@+id/nav_home"
 
@@ -15,7 +16,7 @@
             <item
                 android:id="@+id/nav_city"
 
-                android:title="Change City"
+                android:title="Change Region"
                 android:textColor="@color/white"/>
 
              <item
@@ -65,8 +66,8 @@
                 android:title="Chandigarh" />
             <item android:id="@+id/Chennai"
                 android:title="Chennai" />
-            <item android:id="@+id/Goa"
-                android:title="Goa" />
+            <item android:id="@+id/Mumbai"
+                android:title="Mumbai" />
             <item android:id="@+id/Gujarat"
                 android:title="Gujarat" />
             <item android:id="@+id/Hyderabad"
@@ -77,12 +78,22 @@
                 android:title="Ludhiana" />
             <item android:id="@+id/Varanasi"
                 android:title="Varanasi" />
+            </group>
+    <item android:title=""
+        >
+        <menu>
             <item android:id="@+id/AboutUs"
                 android:title="About Us" />
             <item android:id="@+id/ContactUs"
                 android:title="Contact Us" />
+            <item android:id="@+id/Tex"
+
+                android:title="Developed by Tex "
+                />
 
 
         </menu>
     </item>
+
+
     </menu>
