@@ -50,7 +50,7 @@ private static int normal=23245;
     private static final int bigArticle=321331;
 
     public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view,CityFragment cityFragment) {
-        GlobalLists globalListInstance=(GlobalLists) cityFragment.getActivity().getApplication();
+        GlobalLists globalListInstance=(GlobalLists)cityFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.CITY,this);
         mValues = globalListInstance.getCityArticlesList();
         mListener = listener;
@@ -229,6 +229,10 @@ private static int normal=23245;
                     String title = article.getTitle().replace("&#8217;", "'");
                     holder.title.setText(title);
                 }
+     else   if(article.getTitle().contains("&#8211;")) {
+         String title = article.getTitle().replace("&#8211;", "-");
+         holder.title.setText(title);
+     }
                 else if(article.getTitle().contains("&#038;")) {
                     String title = article.getTitle().replace("&#038;", "&");
                     holder.title.setText(title);
@@ -246,9 +250,9 @@ private static int normal=23245;
      holder.date.setText(article.getDate());
      holder.date.setText(dateConverter.getDate(article.getDate()) + " " + dateConverter.getMonth(article.getDate()) + " " + dateConverter.getYear(article.getDate()));
      font = new Font();
-     font.setFont(context, holder.title);
-     font.setFont1(context, holder.date);
-     font.setFont1(context, holder.author);
+     font.setFont3(context, holder.title);
+     font.setFont3(context, holder.date);
+     font.setFont3(context, holder.author);
 
 
      ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {

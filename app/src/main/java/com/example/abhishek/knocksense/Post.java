@@ -133,7 +133,12 @@ final Post that=this;
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         ImageView sharingb = (ImageView)findViewById(R.id.facebookshare);
@@ -165,11 +170,16 @@ final Post that=this;
                     targetedShareIntents.add(facebookIntent);
 
 
-                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "Facebook");
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "WhatsApp");
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         ImageView sharingd = (ImageView)findViewById(R.id.allshare);
@@ -181,9 +191,9 @@ final Post that=this;
                 shareIntent.putExtra(Intent.EXTRA_TEXT,links );
 
                 try {
-                    getApplicationContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+                    that.startActivity(Intent.createChooser(shareIntent, "Share via"));
                 } catch (Exception ex) {
-                    Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(that, ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -206,7 +216,12 @@ final Post that=this;
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

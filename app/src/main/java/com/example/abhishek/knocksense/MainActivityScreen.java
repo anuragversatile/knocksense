@@ -194,12 +194,6 @@ public class MainActivityScreen extends AppCompatActivity
         else if (id == R.id.Bhopal) {
             categoryId = CategoryId.BHOPAL_ID;
         }
-        else if (id == R.id.Chandigarh) {
-            categoryId = CategoryId.CHANDIGARH_ID;
-        }
-        else if (id == R.id.Chennai) {
-            categoryId = CategoryId.CHENNAI_ID;
-        }
         else if (id == R.id.Mumbai) {
             categoryId = CategoryId.MUMBAI_ID;
         }
@@ -211,9 +205,6 @@ public class MainActivityScreen extends AppCompatActivity
         }
         else if (id == R.id.Ludhiana) {
             categoryId = CategoryId.LUDHIANA_ID;
-        }
-        else if (id == R.id.Kolkata) {
-            categoryId = CategoryId.KOLKATA_ID;
         }
         else if (id == R.id.Varanasi) {
             categoryId = CategoryId.VARANASI_ID;

@@ -32,7 +32,7 @@
                android:paddingLeft="7.45dp"
                android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
                android:textStyle="bold"
-               android:textSize="12sp"
+               android:textSize="14sp"
                android:textColor="@color/black_overlay"
                />
 
@@ -40,7 +40,9 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="horizontal"
-               android:weightSum="2">
+               android:weightSum="2"
+               android:paddingTop="3dp"
+               >
            <TextView
                android:id="@+id/article_item_row_author"
                android:layout_width="match_parent"
@@ -64,7 +66,7 @@
                android:maxLines="1"
                android:text="date here"
                android:layout_weight="1"
-               android:paddingLeft="7.45dp"
+               android:paddingLeft="5dp"
                android:textStyle="bold"
 
                android:textSize="11sp"
