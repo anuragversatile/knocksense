@@ -133,6 +133,10 @@ private Context context;
                 String title = article.getTitle().replace("&#038;", "&");
                 holder.title.setText(title);
             }
+            else   if(article.getTitle().contains("&#8211;")) {
+                String title = article.getTitle().replace("&#8211;", "-");
+                holder.title.setText(title);
+            }
             else {
                 holder.title.setText(article.getTitle());
             }
@@ -203,9 +207,6 @@ private Context context;
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
 
                             }
                             return false;
@@ -241,9 +242,16 @@ private Context context;
                 String title = leftArticle.getTitle().replace("&#038;", "&");
                 holder.leftViewTitle.setText(title);
             }
+            else   if(leftArticle.getTitle().contains("&#8211;")) {
+                String title = leftArticle.getTitle().replace("&#8211;", "-");
+                holder.leftViewTitle.setText(title);
+            }
             else {
                 holder.leftViewTitle.setText(leftArticle.getTitle());
             }
+            font  = new Font();
+            font.setFont3(context,holder.leftViewTitle);
+
             /*holder.leftViewDate.setText(leftArticle.getDate());
             holder.leftViewAuthor.setText(leftArticle.getAuthor());
             */
@@ -303,9 +311,6 @@ private Context context;
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
 
                             }
                             return false;
@@ -337,9 +342,16 @@ private Context context;
                 String title = rightArticle.getTitle().replace("&#038;", "&");
                 holder.rightViewTitle.setText(title);
             }
+            else   if(rightArticle.getTitle().contains("&#8211;")) {
+                String title = rightArticle.getTitle().replace("&#8211;", "-");
+                holder.rightViewTitle.setText(title);
+            }
             else {
                 holder.rightViewTitle.setText(rightArticle.getTitle());
             }
+            font  = new Font();
+            font.setFont3(context,holder.rightViewTitle);
+
           /*  holder.rightViewDate.setText(rightArticle.getDate());
             holder.rightViewAuthor.setText(rightArticle.getAuthor());
           */
@@ -399,9 +411,6 @@ private Context context;
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
 
                             }
                             return false;
@@ -450,6 +459,10 @@ private Context context;
                 String title = article.getTitle().replace("&#038;", "&");
                 holder.title.setText(title);
             }
+            else   if(article.getTitle().contains("&#8211;")) {
+                String title = article.getTitle().replace("&#8211;", "-");
+                holder.title.setText(title);
+            }
             else {
                 holder.title.setText(article.getTitle());
             }
@@ -463,9 +476,9 @@ private Context context;
             holder.date.setText(article.getDate());
             holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
             font  = new Font();
-            font.setFont(context,holder.title);
-            font.setFont1(context,holder.date);
-            font.setFont1(context,holder.author);
+            font.setFont3(context,holder.title);
+            font.setFont3(context,holder.date);
+            font.setFont3(context,holder.author);
             ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String s, View view) {
@@ -521,9 +534,6 @@ private Context context;
                                     } catch (Exception ex) {
                                         Toast.makeText(context, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
-                                    break;
-                                case R.id.save:
-                                    //handle menu2 click
                                     break;
 
                             }

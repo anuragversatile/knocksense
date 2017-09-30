@@ -120,4 +120,5 @@ public class CityFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Article article);
     }
+
 }

@@ -21,7 +21,7 @@ public static final String BANGALORE_ID="633";
     public static final String BHOPAL_ID="635";
     public static final String CHANDIGARH_ID="732";
     public static final String CHENNAI_ID="640";
-    public static final String GOA_ID="637";
+    public static final String MUMBAI_ID = "631";
     public static final String GUJARAT_ID="636";
     public static final String HYDERABAD_ID="639";
     public static final String LUDHIANA_ID="3038";
@@ -35,7 +35,7 @@ public static final String BANGALORE_ID="633";
                 categoryName = "BOLLYWOOD";
                 break;
             case DINESENSE_ID:
-                categoryName = "DINESENSE";
+                categoryName = "DINE SENSE";
                 break;
             case ENTERTAINMENT_ID:
                 categoryName = "ENTERTAINMENT";
@@ -56,7 +56,7 @@ public static final String BANGALORE_ID="633";
                 categoryName = "TECHSENSE";
                 break;
             case WEREVIEW_ID:
-                categoryName = "WEREVIEW";
+                categoryName = "WE REVIEW";
                 break;
             case YOURSPACE_ID:
                 categoryName = "YOURSPACE";
@@ -73,8 +73,8 @@ public static final String BANGALORE_ID="633";
             case CHANDIGARH_ID:
                 categoryName = "CHANDIGARH";
                 break;
-            case GOA_ID:
-                categoryName = "GOA";
+            case MUMBAI_ID :
+                categoryName = "MUMBAI";
                 break;
             case GUJARAT_ID:
                 categoryName = "GUJARAT";
@@ -96,7 +96,7 @@ public static final String BANGALORE_ID="633";
                 categoryName = "HINDI";
                 break;
             default:
-                categoryName = "Experience India";
+                categoryName = "EXPERIENCE INDIA";
                 break;
         }
         return categoryName;

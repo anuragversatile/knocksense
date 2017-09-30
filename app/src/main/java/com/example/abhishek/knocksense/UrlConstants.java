@@ -27,7 +27,7 @@ public class UrlConstants {
 
 
     public static String getSpecificCategoryOrCityArticlesURL(String categoryId) {
-        return specificCategoryOrCityArticlesURL.replace("<__categoryID__>",categoryId).replace("<__number_of_posts__>",String.valueOf(25));
+        return specificCategoryOrCityArticlesURL.replace("<__categoryID__>",categoryId).replace("<__number_of_posts__>",String.valueOf(35));
 
     }
 

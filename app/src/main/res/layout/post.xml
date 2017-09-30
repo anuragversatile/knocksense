@@ -16,25 +16,49 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="7.5dp">
+            >
         <ImageView
             android:id="@+id/featured"
             android:layout_width="match_parent"
             android:layout_height="1.5in"
             android:scaleType="fitXY"
+
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/article_big_item_row_relative_lay"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@drawable/gradient"
+            >
+c
 
-            <ImageView
+        <ImageView
                 android:id="@+id/facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:paddingRight="70dp"
+                android:src="@mipmap/shares"
+
+                android:shadowColor="#000000"
+                android:shadowDx="6"
+                android:shadowDy="6"
+                android:shadowRadius="6"/>
+            <ImageView
+                android:id="@+id/backs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
 
                 android:paddingRight="60dp"
 
-                android:src="@drawable/ic_home_black_24dp"
+
+                android:src="@drawable/ic_arrow_back_black_24dp"
+
                 android:shadowColor="#000000"
                 android:shadowDx="6"
                 android:shadowDy="6"
@@ -48,8 +72,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
 
-                android:paddingRight="35dp"
-                android:src="@drawable/ic_phone_black_24dp" />
+                android:paddingRight="40dp"
+                android:src="@mipmap/whats" />
 
             <TextView
             android:layout_width="0dp"
@@ -66,7 +90,8 @@
                 android:layout_alignParentTop="true"
 
                 android:paddingRight="10dp"
-                android:src="@drawable/ic_menu_share" />
+                android:src="@mipmap/shrs" />
+            </RelativeLayout>
 
 
 
@@ -75,22 +100,13 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="7.5dp"
             >
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:scaleType="fitXY"
-                />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+
+
 
                 <TextView
                     android:id="@+id/title"
@@ -101,6 +117,8 @@
                     android:text="Here we will have some text which will be at most 3 lines ling after which it will truncate"
                     android:textStyle="bold"
                     android:textSize="14dp"
+
+
 
 
                     android:textColor="@color/black_overlay"
@@ -129,12 +147,57 @@
                     android:textColor="@color/black_overlay"/>
 
             </LinearLayout>
-        </LinearLayout>
+
 
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contentPost" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.39in"
+            android:backgroundTint="@color/cardview_light_background"
+            android:orientation="horizontal"
+            android:layout_below="@id/contentPost"
+            android:padding="7.5dp"
+            android:weightSum="3">
+
+            <ImageView
+                android:id="@+id/whatsappshare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:background="#25d366"
+
+                android:padding="7.45dp"
+                android:src="@mipmap/footerwhats" />
+
+            <ImageView
+                android:id="@+id/facebookshare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:padding="7.45dp"
+                android:background="#3b5998"
+                android:src="@mipmap/footerface" />
+
+            <ImageView
+                android:id="@+id/allshare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:padding="7.45dp"
+
+                android:background="@color/white"
+                android:src="@mipmap/bigshare" />
+        </LinearLayout>
 
 </LinearLayout>
     </ScrollView>

@@ -95,6 +95,10 @@ mListener=listener;
             String title = article.getTitle().replace("&#038;", "&");
             holder.title.setText(title);
         }
+        else   if(article.getTitle().contains("&#8211;")) {
+            String title = article.getTitle().replace("&#8211;", "-");
+            holder.title.setText(title);
+        }
         else {
             holder.title.setText(article.getTitle());
         }
@@ -108,9 +112,9 @@ mListener=listener;
         holder.date.setText(article.getDate());
         holder.date.setText(dateConverter.getDate(article.getDate())+" "+ dateConverter.getMonth(article.getDate())+ " "+dateConverter.getYear(article.getDate()));
         font  = new Font();
-        font.setFont(context,holder.title);
-        font.setFont1(context,holder.date);
-        font.setFont1(context,holder.author);
+        font.setFont3(context,holder.title);
+        font.setFont3(context,holder.date);
+        font.setFont3(context,holder.author);
 
 
         ImageLoader.getInstance().displayImage(article.getFeaturedImage(), holder.featuredImage, new ImageLoadingListener() {

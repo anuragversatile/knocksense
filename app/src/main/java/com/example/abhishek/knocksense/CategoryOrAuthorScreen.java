@@ -2,6 +2,7 @@ package com.example.abhishek.knocksense;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
 
     private RecyclerView recyclerView;
     private CategoryOrAuthorRecyclerViewAdapter mAdapter;
-
+    private Font font;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,9 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
         String categoryName=bundle.getString("TITLE");
         textView.setText(categoryName);
 
+
+        Font font = new Font();
+        font.setFont(this,textView);
 
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -85,9 +89,6 @@ public class CategoryOrAuthorScreen extends AppCompatActivity{
                                     } catch (Exception ex) {
                                         Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
-                                    break;
-                                case R.id.save:
-                                    //handle menu2 click
                                     break;
 
 

@@ -61,7 +61,7 @@
             android:text="@string/lucknow"/>
         <TextView
             android:layout_weight="1"
-            android:id="@+id/city_mumbai"
+            android:id="@+id/city_goa"
             android:layout_width="match_parent"
             android:onClick="onCitySelected"
             android:clickable="true"
@@ -71,8 +71,8 @@
             android:textSize="32dp"
 
             android:textColor="@color/white"
-            android:background="@mipmap/mumbai"
-            android:text="@string/mumbai"/>
+            android:background="@mipmap/goas"
+            android:text="@string/goa"/>
         <TextView
             android:layout_weight="1"
             android:id="@+id/city_new_delhi"

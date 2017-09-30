@@ -7,9 +7,14 @@
     android:id="@+id/search_results_relative_layout"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.abhishek.knocksense.SearchResultsActivity">
+
+    tools:context="com.example.abhishek.knocksense.SearchResultsActivity"
+    >
+
+
     <android.support.v7.widget.Toolbar
         android:layout_alignParentStart="true"
+
         android:id="@+id/my_toolbar_search"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -20,21 +25,32 @@
         >
         <ImageView
             android:layout_width="wrap_content"
-            android:paddingRight="0.125in"
+            android:paddingRight="0.45in"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@mipmap/knocksenselogo"/>
     </android.support.v7.widget.Toolbar>
+
+
+
+
+
+
 
     <TextView
         android:layout_below="@id/my_toolbar_search"
         android:layout_alignParentStart="true"
         android:layout_width="match_parent"
         android:id="@+id/search_text_view"
-        android:layout_height="30dp"
-        android:text="Here search query will come"
-        android:maxLines="1"
-        android:textAlignment="center"/>
+android:maxLines="1"
+        android:text="here your search query will come"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black_overlay"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_height="40dp"
+        android:paddingLeft="7.5dp"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_below="@id/search_text_view"
@@ -42,8 +58,8 @@
         android:name="com.example.abhishek.knocksense.SearchResultsActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/article_item_row"
         />

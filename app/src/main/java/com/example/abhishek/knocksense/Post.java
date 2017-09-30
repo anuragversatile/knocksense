@@ -3,6 +3,7 @@ package com.example.abhishek.knocksense;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,7 +60,7 @@ Font font=new Font();
         ImageView iv=(ImageView)findViewById(R.id.featured);
         String feature=extras.getString("feature");
         Picasso.with(this).load(feature).into(iv);
-        ImageView im=(ImageView)findViewById(R.id.avatar);
+
         TextView tx=(TextView)findViewById(R.id.title);
         String titles=extras.getString("title");
         if(titles.contains("&#8216;")) {
@@ -91,14 +92,14 @@ Font font=new Font();
             if (extras.getString("author").equals(authorId)) {
                 tx2.setText(arti.getName());
                 Log.e("thdhfjfdjfjdhfjfh", "fudytsdffjtdyt" + arti.getAuthorImage());
-                Picasso.with(this).load(arti.getAuthorImage()).into(im);
+
                 break;
             }
         }
         ImageView sharingButton = (ImageView)findViewById(R.id.article_item_row_more);
 
         final String links=extras.getString("uri");
-
+final Post that=this;
       sharingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +110,7 @@ Font font=new Font();
                                 shareIntent.putExtra(Intent.EXTRA_TEXT,links );
 
                                 try {
-                                    getApplicationContext().startActivity(Intent.createChooser(shareIntent, "Share via"));
+                                   that.startActivity(Intent.createChooser(shareIntent, "Share via"));
                                 } catch (Exception ex) {
                                     Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -133,9 +134,78 @@ Font font=new Font();
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
             }
         });
+        ImageView sharingb = (ImageView)findViewById(R.id.facebookshare);
+        sharingb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Intent> targetedShareIntents = new ArrayList<Intent>();
+
+                Intent facebookIntent = getShareIntent("facebook",  links);
+                if(facebookIntent != null)
+                    targetedShareIntents.add(facebookIntent);
+
+
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "Facebook");
+
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        ImageView sharingc = (ImageView)findViewById(R.id.whatsappshare);
+        sharingc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Intent> targetedShareIntents = new ArrayList<Intent>();
+
+                Intent facebookIntent = getShareIntent("com.whatsapp",  links);
+                if(facebookIntent != null)
+                    targetedShareIntents.add(facebookIntent);
+
+
+                Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "WhatsApp");
+
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
+
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        ImageView sharingd = (ImageView)findViewById(R.id.allshare);
+        sharingd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,links );
+
+                try {
+                    that.startActivity(Intent.createChooser(shareIntent, "Share via"));
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+
+        });
+
         ImageView sharing1 = (ImageView)findViewById(R.id.whatsapp);
         sharing1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,18 +215,31 @@ Font font=new Font();
                 Intent whatsAppIntent = getShareIntent("com.whatsapp",  links);
                 if(whatsAppIntent != null)
                     targetedShareIntents.add(whatsAppIntent);
-
-
                 Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "WhatsApp");
+
+                try {
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                    startActivity(chooser);
+
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+
             }
         });
 
 
+        ImageView back = (ImageView)findViewById(R.id.backs);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(that, MainActivityScreen.class);
 
+                startActivity(intent);
+            }
+        });
 
         final String id = getIntent().getExtras().getString("id");
 
@@ -223,8 +306,9 @@ String test=mapContent.get("rendered").toString();
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
 
+        String sharerUrl= "";
         // gets the list of intents that can be loaded.
-        List<ResolveInfo> resInfo = getApplicationContext().getPackageManager().queryIntentActivities(share, 0);
+        List<ResolveInfo> resInfo = this.getPackageManager().queryIntentActivities(share, 0);
         System.out.println("resinfo: " + resInfo);
         if (!resInfo.isEmpty()){
             for (ResolveInfo info : resInfo) {
@@ -236,9 +320,22 @@ String test=mapContent.get("rendered").toString();
                     break;
                 }
             }
-            if (!found)
-                return null;
+            if (!found && type.equalsIgnoreCase("facebook"))
+            {
+                     sharerUrl = "https://www.facebook.com/sharer/sharer.php?u="+ text;
+                    share = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
+                }
+            if (!found && type.equalsIgnoreCase("com.whatsapp"))
 
+            {
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+
+            }
             return share;
         }
         return null;

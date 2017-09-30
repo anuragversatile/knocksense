@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuffXfermode;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -180,10 +181,10 @@ public class MainActivityScreen extends AppCompatActivity
         } else if (id == R.id.DineSense) {
             categoryId = CategoryId.DINESENSE_ID;
         } else if (id == R.id.nav_home) {
-            categoryId="0";
+            categoryId="DevelopedByAnuragDwivedi";
         }
         else if(id==R.id.nav_city)
-        { categoryId="00";
+        { categoryId="DevelopedByAbhishekLohani";
 
         }
 
@@ -193,14 +194,8 @@ public class MainActivityScreen extends AppCompatActivity
         else if (id == R.id.Bhopal) {
             categoryId = CategoryId.BHOPAL_ID;
         }
-        else if (id == R.id.Chandigarh) {
-            categoryId = CategoryId.CHANDIGARH_ID;
-        }
-        else if (id == R.id.Chennai) {
-            categoryId = CategoryId.CHENNAI_ID;
-        }
-        else if (id == R.id.Goa) {
-            categoryId = CategoryId.GOA_ID;
+        else if (id == R.id.Mumbai) {
+            categoryId = CategoryId.MUMBAI_ID;
         }
         else if (id == R.id.Gujarat) {
             categoryId = CategoryId.GUJARAT_ID;
@@ -211,9 +206,6 @@ public class MainActivityScreen extends AppCompatActivity
         else if (id == R.id.Ludhiana) {
             categoryId = CategoryId.LUDHIANA_ID;
         }
-        else if (id == R.id.Kolkata) {
-            categoryId = CategoryId.KOLKATA_ID;
-        }
         else if (id == R.id.Varanasi) {
             categoryId = CategoryId.VARANASI_ID;
         }
@@ -223,12 +215,17 @@ public class MainActivityScreen extends AppCompatActivity
         else if (id == R.id.ContactUs) {
             categoryId = "357";
         }
-            if(categoryId.equals("0"))
+        else if (id == R.id.Tex) {
+  categoryId="DevelopedByAbhishekAndAnurag";
+
+        }
+
+        if(categoryId.equals("DevelopedByAnuragDwivedi"))
 {
     Intent intent =new Intent(this,MainActivityScreen.class);
     startActivity(intent);
 }
-else if(categoryId.equals("00"))
+else if(categoryId.equals("DevelopedByAbhishekLohani"))
 {
     Intent intent =new Intent(this,SelectCityScreen.class);
     startActivity(intent);
@@ -257,6 +254,11 @@ else if(categoryId.equals("234"))
                 startActivity(intent);
 
             }
+            else if(categoryId.equals("DevelopedByAbhishekAndAnurag"))
+        {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://tex.org.in")));
+        }
+
 
             else {
     Intent intent = new Intent(this, CategoryOrAuthorScreen.class);
@@ -299,6 +301,8 @@ else if(categoryId.equals("234"))
         Bundle bundle=new Bundle();
         bundle.putString("ID", categoryId);
         bundle.putString("TYPE", ListNameConstants.CATEGORY);
+        bundle.putString("TITLE",CategoryId.getCategoryName(categoryId));
+
         intent.putExtras(bundle);
         startActivity(intent);
     }

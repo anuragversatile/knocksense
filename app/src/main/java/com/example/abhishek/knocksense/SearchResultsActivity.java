@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +23,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+
 public class SearchResultsActivity extends AppCompatActivity {
+
     private TextView title;
     private RecyclerView recyclerView;
     private SearchResultsRecyclerViewAdapter mAdapter;
@@ -31,9 +36,11 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         view=(View)findViewById(R.id.search_results_relative_layout);
+
         Toolbar toolbar=(Toolbar) findViewById(R.id.my_toolbar_search);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         title=(TextView)findViewById(R.id.search_text_view);
         recyclerView=(RecyclerView)findViewById(R.id.search_results_list);
         handleIntent(getIntent());
@@ -99,9 +106,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                                         Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
                                     }
                                     break;
-                                case R.id.save:
-                                    //handle menu2 click
-                                    break;
+
 
 
                             }
