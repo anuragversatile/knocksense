@@ -159,6 +159,7 @@ c
             android:layout_height="0.39in"
             android:backgroundTint="@color/cardview_light_background"
             android:orientation="horizontal"
+            android:layout_below="@id/contentPost"
             android:padding="7.5dp"
             android:weightSum="3">
 

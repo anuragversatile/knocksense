@@ -3,6 +3,7 @@ package com.example.abhishek.knocksense;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -156,7 +157,11 @@ final Post that=this;
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                startActivity(chooser);
+                try {
+                    startActivity(chooser);
+                } catch (Exception ex) {
+                    Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
+                }
             }
         });
         ImageView sharingc = (ImageView)findViewById(R.id.whatsappshare);
@@ -210,17 +215,17 @@ final Post that=this;
                 Intent whatsAppIntent = getShareIntent("com.whatsapp",  links);
                 if(whatsAppIntent != null)
                     targetedShareIntents.add(whatsAppIntent);
-
-
                 Intent chooser = Intent.createChooser(targetedShareIntents.remove(0), "WhatsApp");
+
+                try {
 
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[]{}));
 
-                try {
                     startActivity(chooser);
+
                 } catch (Exception ex) {
                     Toast.makeText(that, ex.getMessage(),Toast.LENGTH_LONG).show();
-                }
+                    }
 
             }
         });
@@ -301,6 +306,7 @@ String test=mapContent.get("rendered").toString();
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
 
+        String sharerUrl= "";
         // gets the list of intents that can be loaded.
         List<ResolveInfo> resInfo = this.getPackageManager().queryIntentActivities(share, 0);
         System.out.println("resinfo: " + resInfo);
@@ -314,9 +320,22 @@ String test=mapContent.get("rendered").toString();
                     break;
                 }
             }
-            if (!found)
-                return null;
+            if (!found && type.equalsIgnoreCase("facebook"))
+            {
+                     sharerUrl = "https://www.facebook.com/sharer/sharer.php?u="+ text;
+                    share = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
+                }
+            if (!found && type.equalsIgnoreCase("com.whatsapp"))
 
+            {
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+
+            }
             return share;
         }
         return null;

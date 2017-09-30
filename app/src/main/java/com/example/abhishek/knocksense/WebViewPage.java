@@ -6,6 +6,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -48,6 +49,11 @@ public class WebViewPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webviewpage);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar_webViewPage);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Bundle extras = getIntent().getExtras();
 
 
@@ -117,5 +123,7 @@ public class WebViewPage extends AppCompatActivity {
         String changeFontHtml = head + htmlText + closedTag;
         return changeFontHtml;
     }
+
+
 
 }

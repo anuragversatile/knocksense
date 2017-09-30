@@ -2,10 +2,12 @@ package com.example.abhishek.knocksense.components;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -200,11 +202,17 @@ public class GlobalLists extends Application implements ListPublisher {
     private void fetchCityData(Context context, String selectedCityId) {
         final GlobalLists globalListInstance=this;
         this.notifyListObservers(CITY, null, false, true);
-        if (selectedCityId != null) {
-            this.selectedCityId= selectedCityId;
+        try {
+            if (selectedCityId != null) {
+                this.selectedCityId= selectedCityId;
 
-            Log.d("SELECTED_ID_GLOBAL", "fetchCityData: "+this.selectedCityId);
+                Log.d("SELECTED_ID_GLOBAL", "fetchCityData: "+this.selectedCityId);
+            }
+
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(),Toast.LENGTH_LONG).show();
         }
+
         String url = UrlConstants.getSpecificCategoryOrCityArticlesURL(this.selectedCityId);
 
         final List<Article> articleList = new ArrayList<>();

@@ -35,7 +35,7 @@ public static final String BANGALORE_ID="633";
                 categoryName = "BOLLYWOOD";
                 break;
             case DINESENSE_ID:
-                categoryName = "DINESENSE";
+                categoryName = "DINE SENSE";
                 break;
             case ENTERTAINMENT_ID:
                 categoryName = "ENTERTAINMENT";
@@ -96,7 +96,7 @@ public static final String BANGALORE_ID="633";
                 categoryName = "HINDI";
                 break;
             default:
-                categoryName = "Experience India";
+                categoryName = "EXPERIENCE INDIA";
                 break;
         }
         return categoryName;
