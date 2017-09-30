@@ -45,6 +45,8 @@ import static com.example.abhishek.knocksense.components.ListNameConstants.SEARC
 
 public class GlobalLists extends Application implements ListPublisher {
 
+    public boolean shouldShowLoader=true;
+
     private  List<Article> cityArticlesList;
     private  List<Article> homeArticlesList;
     private List<Article> categoryArticlesList;

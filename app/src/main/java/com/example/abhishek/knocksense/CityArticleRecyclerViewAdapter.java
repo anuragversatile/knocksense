@@ -48,9 +48,10 @@ public class CityArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private static final int ads=12345;
 private static int normal=23245;
     private static final int bigArticle=321331;
+    private GlobalLists globalListInstance;
 
     public CityArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, View view,CityFragment cityFragment) {
-        GlobalLists globalListInstance=(GlobalLists)cityFragment.getActivity().getApplication();
+        globalListInstance=(GlobalLists)cityFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.CITY,this);
         mValues = globalListInstance.getCityArticlesList();
         mListener = listener;
@@ -348,13 +349,14 @@ private static int normal=23245;
 
     @Override
     public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
-        if(isLoading){
+        if(isLoading && globalListInstance.shouldShowLoader){
             this.progressBar.setVisibility(View.VISIBLE);
         }
         else if(!isLoading && hasLoaded){
             this.progressBar.setVisibility(View.GONE);
             mValues=articleList;
             this.notifyDataSetChanged();
+            globalListInstance.shouldShowLoader=true;
         }
     }
 

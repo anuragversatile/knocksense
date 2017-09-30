@@ -84,6 +84,7 @@ public class MainActivityScreen extends AppCompatActivity
                                 swipeRefreshLayout.setRefreshing(false);
                             }
                         }, 3000);
+                        globalListInstance.shouldShowLoader=false;
                         globalListInstance.fireRefreshData(getApplicationContext(),ListNameConstants.CITY,null);
                         globalListInstance.fireRefreshData(getApplicationContext(), ListNameConstants.HOME, null);
                         //// TODO: 09/09/17 refresh city too. Show loader till loading has not finished

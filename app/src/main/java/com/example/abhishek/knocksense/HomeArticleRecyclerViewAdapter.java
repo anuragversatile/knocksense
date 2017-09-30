@@ -44,13 +44,14 @@ public class HomeArticleRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 private Context context;
     private ProgressBar progressBar;
     private Font font;
+    private GlobalLists globalListInstance;
 
     private List<Article> mValues;
     private final OnListFragmentInteractionListener mListener;
     private OnCategoryClickListener onCategoryClickListener;
 
     public HomeArticleRecyclerViewAdapter(OnListFragmentInteractionListener listener,Context context,View view, HomeFragment homeFragment, OnCategoryClickListener onCategoryClickListener) {
-        GlobalLists globalListInstance = (GlobalLists)homeFragment.getActivity().getApplication();
+        globalListInstance = (GlobalLists)homeFragment.getActivity().getApplication();
         globalListInstance.registerObserver(ListNameConstants.HOME,this);
         mValues=makeFinalList(globalListInstance.getHomeArticlesList());
         mListener = listener;
@@ -581,13 +582,14 @@ private Context context;
 
     @Override
     public void updateList(List<Article> articleList, boolean hasLoaded, boolean isLoading) {
-        if(isLoading){
+        if(isLoading && globalListInstance.shouldShowLoader){
             this.progressBar.setVisibility(View.VISIBLE);
         }
         else if(!isLoading && hasLoaded){
             this.progressBar.setVisibility(View.GONE);
             mValues = makeFinalList(articleList);
             this.notifyDataSetChanged();
+            globalListInstance.shouldShowLoader=true;
         }
     }
 
