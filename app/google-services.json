@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "945107352576",
-    "firebase_url": "https://knocksense-34170.firebaseio.com",
-    "project_id": "knocksense-34170",
-    "storage_bucket": "knocksense-34170.appspot.com"
+    "project_number": "393558267753",
+    "firebase_url": "https://knocksense-9c6c5.firebaseio.com",
+    "project_id": "knocksense-9c6c5",
+    "storage_bucket": "knocksense-9c6c5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:945107352576:android:92d9856c82e828c9",
+        "mobilesdk_app_id": "1:393558267753:android:52f161d83ffb5055",
         "android_client_info": {
-          "package_name": "com.example.abhishek.knocksense"
+          "package_name": "com.example.tex.knocksense"
         }
       },
       "oauth_client": [
         {
-          "client_id": "945107352576-n89c2rvsdk964115nskoi6radm8be9jh.apps.googleusercontent.com",
+          "client_id": "393558267753-pfa50k65dq5gj9s1rdoioa3pm953mq75.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADP6wDEVvOj-m7GgF8blfhErfbj7jzupg"
+          "current_key": "AIzaSyCrTl8BW81tgdWa9DPBqjH-Tfjzm9zwcCc"
         }
       ],
       "services": {

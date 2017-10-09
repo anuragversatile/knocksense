@@ -14,7 +14,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.example.abhishek.knocksense.HomeFragment"
+        tools:context="com.example.tex.knocksense.HomeFragment"
         tools:listitem="@layout/article_item_row" />
     <ProgressBar
         android:id="@+id/home_progress_bar"

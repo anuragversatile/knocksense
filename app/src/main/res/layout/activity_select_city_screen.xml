@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="6"
-    tools:context="com.example.abhishek.knocksense.SelectCityScreen">
+    tools:context="com.example.tex.knocksense.SelectCityScreen">
 
     <LinearLayout
         android:orientation="vertical"
