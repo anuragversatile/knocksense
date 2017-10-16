@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.tex.knocksense.components.Article;
 import com.example.tex.knocksense.components.GlobalLists;
 import com.example.tex.knocksense.components.ListNameConstants;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import static android.R.attr.id;
@@ -65,7 +66,7 @@ public class MainActivityScreen extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(com.example.tex.knocksense.R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        MobileAds.initialize(this, "YOUR_ADMOB_APP_ID");
         viewPager=(ViewPager)findViewById(com.example.tex.knocksense.R.id.viewPager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
